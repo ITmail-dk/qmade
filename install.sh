@@ -410,7 +410,7 @@ if [ ! -d ~/Wallpapers ]; then
 mkdir -p ~/Wallpapers
 echo -e "${GREEN} Download some wallpapers, Please wait..."
 
-#wget -P ~/Wallpapers https://raw.githubusercontent.com/ITmail-dk/bspwm-install-ma-dte/main/wallpapers/default-wallpaper.jpg
+wget -O ~/Wallpapers/default_wallpaper_by_natalia-y_on_unsplash.jpg https://github.com/ITmail-dk/qmade/blob/main/default_wallpaper_by_natalia-y_on_unsplash.jpg?raw=true
 
 # Download random wallpapers from https://unsplash.com
 # Set the desired number of wallpapers to download
