@@ -74,6 +74,30 @@ BLUE="\033[0;94m"
 
 clear
 
+# Check User Sudo Access
+check_sudo_access() {
+    if sudo -n true 2>/dev/null; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+if check_sudo_access; then
+    echo "User has SUDO Access, installation continues..."
+else
+    echo -e "${RED}  ${NC}"
+    echo -e "${RED}-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'- ${NC}"
+    echo -e "${RED}  ${NC}"
+    echo -e "${RED}       ERROR: This installation must be run by a normal user with SUDO Access. ${NC}"
+    echo -e "${RED}  ${NC}"
+    echo -e "${RED}-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'- ${NC}"
+    echo -e "${RED}  ${NC}"
+    exit 1
+fi
+# Check User Sudo Access Done
+clear
+
 if ! dpkg -s whiptail >/dev/null 2>&1; then
     echo -e "${RED} "
     echo -e "${RED}-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-"
