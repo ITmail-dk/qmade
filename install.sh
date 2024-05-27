@@ -1390,7 +1390,7 @@ map kitty_mod+delete clear_terminal reset active
 map kitty_mod+f5 load_config_file
 map kitty_mod+f6 debug_config
 
-include ~/.config/kitty/themes/theme.conf
+include ~/.config/kitty/themes/kittytheme.conf
 
 KITTYCONFIG
 
