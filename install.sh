@@ -270,8 +270,7 @@ pgrep -x picom > /dev/null || picom -b &
 if [ -f ~/.fehbg ]; then
     . ~/.fehbg
 else
-    feh --bg-scale "$(find ~/Wallpapers -type f | shuf -n 1)"
-    . ~/.fehbg
+    feh --bg-scale ~/Wallpapers/default_wallpaper_by_natalia-y_on_unsplash.jpg
 fi
 
 amixer set Master 10% &
@@ -295,22 +294,22 @@ fi
 if [ ! -f ~/.config/qtile/qtile_colors.py ]; then
 cat << "QTILECOLORS" > ~/.config/qtile/qtile_colors.py
 colors = {
-    "base00": "#111517",  # Default Background
-    "base01": "#202529",  # Lighter Background (Used for status bars, line number and folding marks)
-    "base02": "#1e2022",  # Selection Background
-    "base03": "#141817",  # Comments, Invisibles, Line Highlighting
-    "base04": "#514029",  # Dark Foreground (Used for status bars)
-    "base05": "#4d616e",  # Default Foreground, Caret, Delimiters, Operators
-    "base06": "#785b41",  # Light Foreground (Not often used)
-    "base07": "#5a635f",  # Light Background (Not often used)
-    "base08": "#a07f56",  # Variables, XML Tags, Markup Link Text, Markup Lists, Diff Deleted
-    "base09": "#96a2ac",  # Integers, Boolean, Constants, XML Attributes, Markup Link Url
-    "base0A": "#b7a18d",  # Classes, Markup Bold, Search Text Background
-    "base0B": "#a5aba9",  # Strings, Inherited Class, Markup Code, Diff Inserted
-    "base0C": "#d4c0a5",  # Support, Regular Expressions, Escape Characters, Markup Quotes
-    "base0D": "#cacfce",  # Functions, Methods, Attribute IDs, Headings
-    "base0E": "#c9d1d4",  # Keywords, Storage, Selector, Markup Italic, Diff Changed
-    "base0F": "#dbcfc0",  # Deprecated, Opening/Closing Embedded Language Tags
+    "base00": "#1b0200",  # Default Background
+    "base01": "#240002",  # Lighter Background (Used for status bars, line number and folding marks)
+    "base02": "#d74d00",  # Selection Background
+    "base03": "#d74d00",  # Comments, Invisibles, Line Highlighting
+    "base04": "#9c2101",  # Dark Foreground (Used for status bars)
+    "base05": "#d74d00",  # Default Foreground, Caret, Delimiters, Operators
+    "base06": "#d74d00",  # Light Foreground (Not often used)
+    "base07": "#d74d00",  # Light Background (Not often used)
+    "base08": "#d74d00",  # Variables, XML Tags, Markup Link Text, Markup Lists, Diff Deleted
+    "base09": "#830508",  # Integers, Boolean, Constants, XML Attributes, Markup Link Url
+    "base0A": "#d74d00",  # Classes, Markup Bold, Search Text Background
+    "base0B": "#d74d00",  # Strings, Inherited Class, Markup Code, Diff Inserted
+    "base0C": "#9a292f",  # Support, Regular Expressions, Escape Characters, Markup Quotes
+    "base0D": "#e46324",  # Functions, Methods, Attribute IDs, Headings
+    "base0E": "#ea6f10",  # Keywords, Storage, Selector, Markup Italic, Diff Changed
+    "base0F": "#ee712d",  # Deprecated, Opening/Closing Embedded Language Tags
 }
 QTILECOLORS
 
@@ -491,62 +490,24 @@ echo -e "${YELLOW} Kitty theme.conf Start ${NC}"
 if [ ! -f $HOME/.config/kitty/themes/kittytheme.conf ]; then
 mkdir -p $HOME/.config/kitty/themes
 cat << "KITTYTHEMECONF" > $HOME/.config/kitty/themes/kittytheme.conf
-foreground            #f8f8f2
-background            #12161a
-selection_foreground  #ffffff
-selection_background  #3a454f
-
-url_color #7abeeb
-
-# black
-color0  #1a2024
-color8  #628da4
-
-# red
-color1  #ff5555
-color9  #ff6e6e
-
-# green
-color2  #49b869
-color10 #69ff94
-
-# yellow
-color3  #f1fa8c
-color11 #ffffa5
-
-# blue
-color4  #3f7fba
-color12 #93c8f9
-
-# magenta
-color5  #f05bb0
-color13 #ff92df
-
-# cyan
-color6  #8be9fd
-color14 #a4ffff
-
-# white
-color7  #f2f5f8
-color15 #ffffff
-
-# Cursor colors
-cursor            #f2f5f8
-cursor_text_color background
-
-# Tab bar colors
-active_tab_foreground   #283036
-active_tab_background   #f8f8f2
-inactive_tab_foreground #f2f5f8
-inactive_tab_background #6272a4
-
-# Marks
-mark1_foreground #283036
-mark1_background #ff5555
-
-# Splits/Windows
-active_border_color #f8f8f2
-inactive_border_color #6272a4
+background #1b0200
+foreground #ee712d
+color0 #1b0200
+color1 #240002
+color2 #d74d00
+color3 #d74d00
+color4 #9c2101
+color5 #d74d00
+color6 #d74d00
+color7 #d74d00
+color8 #d74d00
+color9 #830508
+color10 #d74d00
+color11 #d74d00
+color12 #9a292f
+color13 #e46324
+color14 #ea6f10
+color15 #ee712d
 
 KITTYTHEMECONF
 
