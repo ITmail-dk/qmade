@@ -1,7 +1,9 @@
 #!/bin/bash
-#
+
 # Qtile Martin Andersen Desktop Environment, Qmade for short.! install - ITmail.dk
 
+# bash -c "$(wget -O- https://raw.githubusercontent.com/ITmail-dk/qmade/main/install.sh)"
+# sudo apt install -y git && git clone https://github.com/ITmail-dk/qmade && cd qmade && . install.sh
 
 # Resource links to source
 # https://qtile.org
