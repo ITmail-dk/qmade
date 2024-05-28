@@ -412,7 +412,7 @@ if __name__ == "__main__":
     kb_map = get_kb_map(config_path)
     for modifier, keys in kb_map.items():
         if not modifier:
-            filename = "no_modifier.png"
+            filename = "keybinding_no_modifier.png"
         else:
             filename = "keybinding_{}.png".format(modifier)
 
