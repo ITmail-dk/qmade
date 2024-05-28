@@ -12,3 +12,9 @@ Run this one command to start Qmade install and you're good to go.:
 *Or you can run these commands... if you think it's easier.*
 
 `sudo apt install -y git && git clone https://github.com/ITmail-dk/qmade && cd qmade && . install.sh`
+
+
+## Keybindings
+For a quick reference to the keybindings used in Qmade, check out the image files in the `keybinding-images` directory.
+
+![Image of mod4 keybindings](keybinding-images/keybinding_mod4.png)
