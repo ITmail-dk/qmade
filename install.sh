@@ -135,8 +135,8 @@ PROGRAMS=$(whiptail --title "The Install selection" --checklist --separate-outpu
 "Choose what to install:" 20 78 15 \
 "1" "Do you want to install Libre Office" OFF \
 "2" "Is this a laptop we are installing on!" OFF \
-"3" "Install XRDP Remote desktop" OFF \
-"4" "Install Thunar file manager" ON \
+"3" "Install XRDP Server" OFF \
+"4" "Install XfreeRDP Client" OFF \
 "5" "Install Google Chrome Webbrowser" ON \
 "6" "Install Firefox Webbrowser" OFF \
 "7" "Install Neovim Text Editor" ON \
@@ -180,10 +180,8 @@ sudo apt update
 # -------------------------------------------------------------------------------------------------
 clear
 echo -e "${YELLOW} Core System APT install ${NC}"
-sudo apt install -y xserver-xorg x11-utils xinit arandr autorandr picom fwupd mesa-utils htop wget curl git tmux numlockx kitty cups xsensors xbacklight brightnessctl unzip network-manager dunst libnotify-bin notify-osd xautolock xsecurelock pm-utils rofi fontconfig fontconfig-config fonts-noto-core libfontconfig1 fonts-arkpandora
+sudo apt install -y xserver-xorg x11-utils xinit arandr autorandr picom fwupd mesa-utils htop wget curl git tmux numlockx kitty cups xsensors xbacklight brightnessctl unzip network-manager dunst libnotify-bin notify-osd xautolock xsecurelock pm-utils rofi imagemagick nitrogen nsxiv mpv flameshot speedcrunch mc thunar gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq fontconfig fontconfig-config fonts-noto-core libfontconfig1 fonts-arkpandora pipewire pipewire-pulse wireplumber pavucontrol alsa-utils --ignore-missing
 sudo apt install -y sddm --no-install-recommends
-
-sudo apt install -y imagemagick nitrogen nsxiv mpv flameshot speedcrunch mc gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq
 
 clear
 # -------------------------------------------------------------------------------------------------
@@ -195,7 +193,6 @@ echo -e "${YELLOW} Audio Start - https://alsa.opensrc.org - https://wiki.debian.
 
 
 # PipeWire Sound Server "Audio" - https://pipewire.org/
-sudo apt install -y pipewire pipewire-pulse wireplumber pavucontrol alsa-utils
 systemctl enable --user --now pipewire.socket pipewire-pulse.socket wireplumber.service
 
 # More Audio tools
@@ -254,7 +251,7 @@ xdg-user-dirs-update
 xdg-mime default kitty.desktop text/x-shellscript
 xdg-mime default nsxiv.desktop image/jpeg
 xdg-mime default nsxiv.desktop image/png
-
+xdg-mime default thunar.desktop inode/directory
 
 # Picom (Yshui) install
 #sudo apt install -y libconfig-dev libdbus-1-dev libegl-dev libev-dev libgl-dev libepoxy-dev libpcre2-dev libpixman-1-dev libx11-xcb-dev libxcb1-dev libxcb-composite0-dev libxcb-damage0-dev libxcb-dpms0-dev libxcb-glx0-dev libxcb-image0-dev libxcb-present-dev libxcb-randr0-dev libxcb-render0-dev libxcb-render-util0-dev libxcb-shape0-dev libxcb-util-dev libxcb-xfixes0-dev libxext-dev meson ninja-build uthash-dev
@@ -1449,8 +1446,7 @@ do
             sudo apt install -y xrdp && sudo systemctl restart xrdp.service
             ;;
         "4")
-            sudo apt install -y thunar
-            xdg-mime default thunar.desktop inode/directory
+            sudo apt install -y freerdp2-x11 libfreerdp-client2-2 libfreerdp2-2 libwinpr2-2
             ;;
         "5")
             cd /tmp/ && wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && sudo apt install -y /tmp/google-chrome-stable_current_amd64.deb && rm google-chrome-stable_current_amd64.deb
