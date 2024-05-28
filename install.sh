@@ -122,7 +122,7 @@ clear
 # Installation start screen
 FULLUSERNAME=$(awk -v user="$USER" -F":" 'user==$1{print $5}' /etc/passwd | rev | cut -c 4- | rev)
 
-if (whiptail --title "Installation of the Martin Qtile Desktop" --yesno "Hi $FULLUSERNAME do you want to start \nthe installation of Qtile Martin Andersen Desktop Environment, Qmade for short.!\nRemember you user must have sudo access to run the installation." 15 50); then
+if (whiptail --title "Installation of the Martin Qtile Desktop" --yesno "Hi $FULLUSERNAME do you want to start \nthe installation of Qtile Martin Andersen Desktop Environment, Qmade for short.!\nRemember you user must have sudo access to run the installation." 20 60); then
     echo -e "${GREEN} Okay, let's start the installation"
 else
     exit 1
