@@ -15,6 +15,13 @@ Run this one command to start Qmade install and you're good to go.:
 
 
 ## Keybindings
-For a quick reference to the keybindings used in Qmade, check out the image files in the `keybinding-images` directory.
+Default Modkey is the Windows key (**MOD4**) and **MOD1** is Alt Left.
+**MOD4 + Enter** = Opens a Terminal.
+**MOD4 + B** = Opens a browser.
+
+**MOD4 + Control + MOD1** = Autogenerate a new background image and color theme, from the Wallpaper folder in your home directory.
+
+For a quick reference to the keybindings used in Qmade, 
+check out the image files in the `keybinding-images` directory.
 
 ![Image of mod4 keybindings](keybinding-images/keybinding_mod4.png)
