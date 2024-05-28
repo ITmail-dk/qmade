@@ -183,7 +183,7 @@ echo -e "${YELLOW} Core System APT install ${NC}"
 sudo apt install -y xserver-xorg x11-utils xinit arandr autorandr picom fwupd mesa-utils htop wget curl git tmux numlockx kitty cups xsensors xbacklight brightnessctl unzip network-manager dunst libnotify-bin notify-osd xautolock xsecurelock pm-utils rofi fontconfig fontconfig-config fonts-noto-core libfontconfig1 fonts-arkpandora
 sudo apt install -y sddm --no-install-recommends
 
-sudo apt install -y imagemagick nitrogen nsxiv mpv flameshot speedcrunch mc gvfs-backends parted gparted mpd mpc ncmpcpp fzf xarchiver notepadqq
+sudo apt install -y imagemagick nitrogen nsxiv mpv flameshot speedcrunch mc gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq
 
 clear
 # -------------------------------------------------------------------------------------------------
