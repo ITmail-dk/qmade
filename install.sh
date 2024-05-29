@@ -181,6 +181,10 @@ sudo apt update
 clear
 echo -e "${YELLOW} Core System APT install ${NC}"
 sudo apt install -y xserver-xorg x11-utils xinit arandr autorandr picom fwupd mesa-utils htop wget curl git tmux numlockx kitty cups xsensors xbacklight brightnessctl unzip network-manager dunst libnotify-bin notify-osd xautolock xsecurelock pm-utils rofi imagemagick nitrogen nsxiv mpv flameshot speedcrunch mc thunar gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq fontconfig fontconfig-config fonts-noto-core libfontconfig1 fonts-arkpandora pipewire pipewire-pulse wireplumber pavucontrol alsa-utils --ignore-missing
+
+
+
+
 sudo apt install -y sddm --no-install-recommends
 
 clear
@@ -349,6 +353,7 @@ echo -e "${YELLOW} MPD Setup & config START ${NC}"
 mkdir -p ~/.config/mpd/playlists
 mkdir -p ~/.local/state/mpd
 if [ ! -f ~/.config/mpd/mpd.conf ]; then
+touch ~/.config/mpd/database
 cat << MPDCONFIG > ~/.config/mpd/mpd.conf
 # ~/.config/mpd/mpd.conf or /etc/mpd.conf
 # Example: /usr/share/doc/mpd/mpdconf.example
@@ -398,7 +403,7 @@ audio_output {
     type     "pipewire"                                                       
     name     "PipeWire Sound Server"                                           
     enabled  "yes"   
-
+}
 audio_output {                                                                 
     type     "pulse"                                                           
     name     "Local PulseAudio Server"                                         
