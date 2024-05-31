@@ -161,7 +161,7 @@ echo -e "${RED}-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-"
 echo -e "${RED} ${NC}"
 
 if ! dpkg -s apt-transport-https >/dev/null 2>&1; then
-    sudo apt install -y apt-transport-https
+    sudo apt -y install apt-transport-https
     sudo sed -i 's+http:+https:+g' /etc/apt/sources.list
 else
     echo "apt-transport-https is already installed."
@@ -180,12 +180,12 @@ sudo apt update
 # -------------------------------------------------------------------------------------------------
 clear
 echo -e "${YELLOW} Core System APT install ${NC}"
-sudo apt install -y xserver-xorg x11-utils xinit arandr autorandr picom fwupd mesa-utils htop wget curl git tmux numlockx kitty cups xsensors xbacklight brightnessctl unzip network-manager dunst libnotify-bin notify-osd xautolock xsecurelock pm-utils rofi imagemagick nitrogen nsxiv mpv flameshot speedcrunch mc thunar gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq fontconfig fontconfig-config fonts-noto-core libfontconfig1 fonts-arkpandora pipewire pipewire-pulse wireplumber pavucontrol alsa-utils --ignore-missing
+sudo apt -y install xserver-xorg x11-utils xinit arandr autorandr picom fwupd mesa-utils htop wget curl git tmux numlockx kitty cups xsensors xbacklight brightnessctl unzip network-manager dunst libnotify-bin notify-osd xautolock xsecurelock pm-utils rofi imagemagick nitrogen nsxiv mpv flameshot speedcrunch mc thunar gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq fontconfig fontconfig-config fonts-noto-core libfontconfig1 fonts-arkpandora pipewire pipewire-pulse wireplumber pavucontrol alsa-utils --ignore-missing
+sudo apt -y install linux-headers-$(uname -r)
 
 
 
-
-sudo apt install -y sddm --no-install-recommends
+sudo apt -y install sddm --no-install-recommends
 
 clear
 # -------------------------------------------------------------------------------------------------
@@ -224,7 +224,7 @@ fi
 
 if [ "$CPUVENDOR" == "AuthenticAMD" ]; then
     if ! dpkg -s amd64-microcode >/dev/null 2>&1; then
-    sudo apt install -y amd64-microcode
+    sudo apt -y install amd64-microcode
     fi
 else
     echo -e "${GREEN} Amd64 Microcode OK ${NC}"
@@ -241,7 +241,7 @@ echo 'bind '"'"'"\C-f":"open "$(fzf)"\n"'"'" >> ~/.bashrc
 
 # -------------------------------------------------------------------------------------------------
 echo -e "${YELLOW} Qtile Core Dependencies apt install ${NC}"
-sudo apt install -y python3-pip python3-xcffib python3-cairocffi python3-cffi libpangocairo-1.0-0 python-dbus-dev libxkbcommon-dev libxkbcommon-x11-dev python3-venv python3-psutil feh
+sudo apt -y install python3-pip python3-xcffib python3-cairocffi python3-cffi libpangocairo-1.0-0 python-dbus-dev libxkbcommon-dev libxkbcommon-x11-dev python3-venv python3-psutil feh
 
 # Colorgram for auto-generated color themes
 pip3 install colorgram.py --break-system-packages
@@ -1724,16 +1724,16 @@ layout_theme = init_layout_theme()
 layouts = [
     layout.MonadTall(**layout_theme),
     layout.Max(**layout_theme),
-    layout.Bsp(**layout_theme),
-    # layout.Columns(**layout_theme),
-    # layout.Stack(num_stacks=2),
-    # layout.Matrix(**layout_theme),
-    # layout.MonadWide(**layout_theme),
-    # layout.RatioTile(**layout_theme),
-    # layout.Tile(**layout_theme),
-    # layout.TreeTab(**layout_theme),
-    # layout.VerticalTile(**layout_theme),
-    # layout.Zoomy(**layout_theme),
+    #layout.Bsp(**layout_theme),
+    #layout.Columns(**layout_theme),
+    #layout.Stack(num_stacks=2),
+    #layout.Matrix(**layout_theme),
+    #layout.MonadWide(**layout_theme),
+    #layout.RatioTile(**layout_theme),
+    #layout.Tile(**layout_theme),
+    #layout.TreeTab(**layout_theme),
+    #layout.VerticalTile(**layout_theme),
+    #layout.Zoomy(**layout_theme),
 ]
 
 widget_defaults = dict(
@@ -1756,16 +1756,16 @@ screens = [
                 widget.Spacer(),
                 widget.WindowName(width=bar.CALCULATED, max_chars=120),
                 widget.Spacer(),
-                widget.Systray(fmt="󱊖 {}", icon_size=20),
+                widget.Systray(fmt="󱊖  {}", icon_size=20),
                 # NB Wayland is incompatible with Systray, consider using StatusNotifier
                 # widget.StatusNotifier(),
                 #widget.Wallpaper(directory="~/Wallpapers/", label="", random_selection="True"),
                 #widget.NetGraph(type='line', line_width=1),
                 #widget.Net(prefix='M'),
                 widget.ThermalSensor(format='CPU: {temp:.0f}{unit}'),
-                widget.Volume(fmt=" {}"),
+                widget.Volume(fmt="  {}"),
                 widget.Spacer(length=5),
-                widget.Clock(fmt=" {}",format="%H:%M %A %d-%m-%Y %p"),
+                widget.Clock(fmt="  {}",format="%H:%M %A %d-%m-%Y %p"),
                 #widget.QuickExit(default_text="LOGOUT", countdown_format="     {}     "),
                 widget.Spacer(length=20),
             ], 30, # Define bar height
