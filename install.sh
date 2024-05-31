@@ -1557,7 +1557,7 @@ keys = [
     Key([mod], "e", lazy.spawn(fileexplorer), desc="File Explorer"),
     Key([mod], "r", lazy.spawn(runmenu), desc="Run Menu"),
     Key([mod, "shift"], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
-    Key([mod], "l", lazy.spawn(os.path.expanduser("xsecurelock")), desc="Computer Lockdown"),
+    Key([mod, "control", "mod1"], "l", lazy.spawn(os.path.expanduser("xsecurelock")), desc="Computer Lockdown"),
     Key([mod, "control", "mod1"], "t", lazy.spawn(os.path.expanduser("auto-new-wallpaper-and-colors")), desc="Random Theme"),
     Key([mod, "control", "mod1"], "w", lazy.spawn(os.path.expanduser("~/.config/rofi/rofi-wifi-menu.sh")), desc="WiFi Menu"),
 
