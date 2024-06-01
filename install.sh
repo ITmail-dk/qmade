@@ -143,9 +143,7 @@ PROGRAMS=$(whiptail --title "The Install selection" --checklist --separate-outpu
 "8" "Install VS Code Editor" OFF \
 "9" "Install SMB/CIFS Storage Client" ON \
 "10" "Install NFS Storage Client" OFF \
-"11" "Install Ceph Storage Client" OFF \
-"12" "Install Discord" OFF \
-"13" "Install Steam" OFF 3>&1 1>&2 2>&3)
+"11" "Install Ceph Storage Client" OFF 3>&1 1>&2 2>&3)
 
 # See the actual installation below - Install selection choose what to install End
 
@@ -1471,15 +1469,6 @@ do
         "11")
             sudo apt install -y ceph-commen
             ;;
-        "12")
-            cd /tmp/ && wget -O discord.deb https://discord.com/api/download?platform=linux&format=deb && sudo apt install -y /tmp/discord.deb && rm discord.deb
-            ;;
-        "13")
-            sudo dpkg --add-architecture i386
-            sudo apt update && sudo apt install -y mesa-vulkan-drivers libglx-mesa0:i386 mesa-vulkan-drivers:i386 libgl1-mesa-dri:i386
-            sudo apt install -y steam-installer
-            ;;
-
     esac
 done
 echo -e "${YELLOW} Install selection choose what to install End ${NC}"
