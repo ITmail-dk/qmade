@@ -180,11 +180,8 @@ sudo apt update
 # -------------------------------------------------------------------------------------------------
 clear
 echo -e "${YELLOW} Core System APT install ${NC}"
-sudo apt -y install xserver-xorg x11-utils xinit arandr autorandr picom fwupd mesa-utils htop wget curl git tmux numlockx kitty cups xsensors xbacklight brightnessctl unzip network-manager dunst libnotify-bin notify-osd xautolock xsecurelock pm-utils rofi imagemagick nitrogen nsxiv mpv flameshot speedcrunch mc thunar gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq fontconfig fontconfig-config fonts-noto-core libfontconfig1 fonts-arkpandora pipewire pipewire-pulse wireplumber pavucontrol alsa-utils --ignore-missing
+sudo apt -y install xserver-xorg x11-utils xinit arandr autorandr picom fwupd mesa-utils htop wget curl git tmux numlockx kitty cups xsensors xbacklight brightnessctl unzip network-manager dunst libnotify-bin notify-osd xautolock xsecurelock pm-utils rofi imagemagick nitrogen nsxiv mpv flameshot speedcrunch mc thunar gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq fontconfig fontconfig-config fonts-liberation fonts-dejavu-core fonts-freefont-ttf fonts-noto-core libfontconfig1 fonts-arkpandora pipewire pipewire-pulse wireplumber pavucontrol alsa-utils --ignore-missing
 sudo apt -y install linux-headers-$(uname -r)
-
-
-
 sudo apt -y install sddm --no-install-recommends
 
 clear
