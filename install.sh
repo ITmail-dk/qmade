@@ -973,8 +973,21 @@ configuration {
   modi: "window,run,drun";
 }
 
-@theme "/dev/null"
+/* The Theme */
+@theme "~/.config/rofi/rofi-colors.rasi"
 
+// Theme location is "/usr/share/rofi/themes/name.rasi"
+//@theme "/usr/share/rofi/themes/Arc-Dark.rasi"
+
+ROFICONFIG
+
+else 
+	echo "Rofi rofi-colors file already exists."
+fi
+
+if [ ! -f ~/.config/rofi/rofi-colors.rasi ]; then
+#touch ~/.config/rofi/config.rasi
+cat << "ROFITHEMECONFIG" > ~/.config/rofi/rofi-colors.rasi
 * {
   bg: #10171c;
   bg-alt: #344959;
@@ -990,6 +1003,16 @@ configuration {
   spacing: 0;
 }
 
+@import "rofi-common.rasi"
+
+ROFITHEMECONFIG
+
+else 
+	echo "Rofi config file already exists."
+fi
+
+if [ ! -f ~/.config/rofi/rofi-common.rasi ]; then
+cat << "ROFITHEMECOMMONCONFIG" > ~/.config/rofi/rofi-common.rasi
 window {
   width: 30%;
 }
@@ -1042,15 +1065,10 @@ prompt {
   text-color: @fg;
 }
 
-/* vim: ft=sass
-
-// Theme location is "/usr/share/rofi/themes/name.rasi"
-//@theme "/usr/share/rofi/themes/Arc-Dark.rasi"
-
-ROFICONFIG
+ROFITHEMECOMMONCONFIG
 
 else 
-	echo "Rofi config file already exists."
+	echo "Rofi rofi-common file already exists."
 fi
 
 echo -e "${YELLOW} Rofi Run menu END ${NC}"
