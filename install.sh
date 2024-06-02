@@ -1639,8 +1639,9 @@ keys = [
     Key([], "XF86AudioPlay", lazy.spawn("playerctl play-pause"), desc='Play-Pause'),
     Key([], "XF86AudioPrev", lazy.spawn("playerctl previous"), desc='Previous'),
     Key([], "XF86AudioNext", lazy.spawn("playerctl next"), desc='Next'),
-    Key([], "XF86MonBrightnessUp", lazy.spawn("brightnessctl set +10"), desc='brightness UP'),
-    Key([], "XF86MonBrightnessDown", lazy.spawn("brightnessctl set 10-"), desc='brightness Down'),
+    Key([], "XF86MonBrightnessUp", lazy.spawn("brightnessctl set +10"), desc='Brightness UP'),
+    Key([], "XF86MonBrightnessDown", lazy.spawn("brightnessctl set 10-"), desc='Brightness Down'),
+    Key([], "Print", lazy.spawn("bash -c 'flameshot gui --path ~/Screenshots'"), desc='Screenshot'),
 ]
 
 # Add key bindings to switch VTs in Wayland.
