@@ -236,7 +236,7 @@ echo 'bind '"'"'"\C-f":"open "$(fzf)"\n"'"'" >> ~/.bashrc
 
 # -------------------------------------------------------------------------------------------------
 echo -e "${YELLOW} Qtile Core Dependencies apt install ${NC}"
-sudo apt -y install python3-pip python3-xcffib python3-cairocffi python3-cffi libpangocairo-1.0-0 python-dbus-dev libxkbcommon-dev libxkbcommon-x11-dev python3-venv python3-psutil feh
+sudo apt -y install python3 python3-pip python3-venv python3-dbus python3-psutil python3-xcffib python3-cairocffi python3-cffi libpangocairo-1.0-0 python-dbus-dev libxkbcommon-dev libxkbcommon-x11-dev feh
 
 # Colorgram for auto-generated color themes
 pip3 install colorgram.py --break-system-packages
@@ -264,9 +264,18 @@ xdg-mime default thunar.desktop inode/directory
 
 # -------------------------------------------------------------------------------------------------
 echo -e "${YELLOW} Install Qtile from source via github and Pip ${NC}"
-cd /tmp/
-sudo rm -rf qtile
-git clone https://github.com/qtile/qtile.git && cd qtile && pip install . --break-system-packages --no-warn-script-location
+cd ~
+mkdir -p ~/.local/bin
+mkdir -p ~/.local/src && cd ~/.local/src
+python3 -m venv qtile_venv && cd qtile_venv
+git clone https://github.com/qtile/qtile.git
+bin/pip install qtile/.
+#cp ~/.local/src/qtile_venv/bin/qtile ~/.local/bin/
+
+#cd /tmp/
+#sudo rm -rf qtile
+#git clone https://github.com/qtile/qtile.git && cd qtile && pip install . --break-system-packages --no-warn-script-location
+
 
 sudo mkdir -p /usr/share/xsessions/
 sudo bash -c 'cat << "QTILEDESKTOP" >> /usr/share/xsessions/qtile.desktop
@@ -642,7 +651,7 @@ else
 	echo "/etc/gtk-3.0 already exists."
 fi
 
-sudo bash -c 'cat << "GTKSETTINGS" >> /etc/gtk-3.0/settings.ini
+sudo bash -c 'cat << "GTK3SETTINGS" >> /etc/gtk-3.0/settings.ini
 [Settings]
 gtk-theme-name=EliverLara-Nordic
 gtk-fallback-icon-theme=default
@@ -654,7 +663,29 @@ gtk-cursor-theme-size=0
 gtk-icon-theme-name=Nordzy-icon
 gtk-enable-event-sounds=0
 gtk-enable-input-feedback-sounds=0
-GTKSETTINGS'
+GTK3SETTINGS'
+
+if [ ! -d /etc/gtk-4.0 ]; then
+mkdir -p /etc/gtk-4.0
+
+else 
+	echo "/etc/gtk-4.0 already exists."
+fi
+
+sudo bash -c 'cat << "GTK4SETTINGS" >> /etc/gtk-4.0/settings.ini
+[Settings]
+gtk-theme-name=EliverLara-Nordic
+gtk-fallback-icon-theme=default
+gtk-toolbar-style=GTK_TOOLBAR_BOTH
+gtk-font-name=DejaVu Sans Mono 10
+gtk-application-prefer-dark-theme=1
+gtk-cursor-theme-name=Nordzy-cursors
+gtk-cursor-theme-size=0
+gtk-icon-theme-name=Nordzy-icon
+gtk-enable-event-sounds=0
+gtk-enable-input-feedback-sounds=0
+GTK4SETTINGS'
+
 
 sudo sed -i 's/Adwaita/Nordzy-cursors/g' /usr/share/icons/default/index.theme
 
