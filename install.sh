@@ -1595,6 +1595,7 @@ keys = [
     Key([mod, "control", "mod1"], "l", lazy.spawn(os.path.expanduser("xsecurelock")), desc="Computer Lockdown"),
     Key([mod, "control", "mod1"], "t", lazy.spawn(os.path.expanduser("auto-new-wallpaper-and-colors")), desc="Random Theme"),
     Key([mod, "control", "mod1"], "w", lazy.spawn(os.path.expanduser("~/.config/rofi/rofi-wifi-menu.sh")), desc="WiFi Menu"),
+    Key([mod, "control", "mod1"], "n", lazy.spawn(os.path.expanduser("nmtui")), desc="Network Menu"),
 
     # Default
     Key([mod], "h", lazy.layout.left(), desc="Move focus to left"),
