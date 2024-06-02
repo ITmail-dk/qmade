@@ -270,7 +270,7 @@ mkdir -p ~/.local/src && cd ~/.local/src
 python3 -m venv qtile_venv && cd qtile_venv
 git clone https://github.com/qtile/qtile.git
 bin/pip install qtile/.
-#cp ~/.local/src/qtile_venv/bin/qtile ~/.local/bin/
+cp ~/.local/src/qtile_venv/bin/qtile ~/.local/bin/
 
 #cd /tmp/
 #sudo rm -rf qtile
