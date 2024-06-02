@@ -305,7 +305,7 @@ else
     feh --bg-scale ~/Wallpapers/default_wallpaper_by_natalia-y_on_unsplash.jpg
 fi
 
-amixer set Master 10% &
+wpctl set-volume @DEFAULT_AUDIO_SINK@ 10% &
 dunst &
 numlockx on &
 mpd &
@@ -1625,24 +1625,17 @@ keys = [
     Key([mod, "mod1", "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
 
     # Audio
-    Key([mod, "mod1"], "Up", lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ +1%"), desc='Volume Up'),
-    Key([mod, "mod1"], "Down", lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ -5%"), desc='Volume Down'),
-    Key([mod, "mod1"], "m", lazy.spawn("pactl set-sink-mute @DEFAULT_SINK@ toggle"), desc='Volume Mute Toggle'),
+    Key([mod, "mod1"], "Up", lazy.spawn(os.path.expanduser("wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%+")), desc='Volume Up'),
+    Key([mod, "mod1"], "Down", lazy.spawn(os.path.expanduser("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-")), desc='Volume Down'),
+    Key([mod, "mod1"], "m", lazy.spawn(os.path.expanduser("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle")), desc='Volume Mute Toggle'),
 
     # XF86 Audio & Brightness keys
-    Key([], "XF86AudioRaiseVolume", lazy.spawn("wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 1%+"), desc='Volume Up'),
-    Key([], "XF86AudioLowerVolume", lazy.spawn("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"), desc='Volume down'),
-    Key([], "XF86AudioMute", lazy.spawn("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"), desc='Volume Mute toggle'),
+    Key([], "XF86AudioRaiseVolume", lazy.spawn(os.path.expanduser("wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%+")), desc='Volume Up'),
+    Key([], "XF86AudioLowerVolume", lazy.spawn(os.path.expanduser("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-")), desc='Volume Down'),
+    Key([], "XF86AudioMute", lazy.spawn(os.path.expanduser("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle")), desc='Volume Mute Toggle'),
 # mute/unmute the microphone - wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
 # Show volume level - wpctl get-volume @DEFAULT_AUDIO_SINK@
 
-#    Key([], "XF86AudioRaiseVolume", lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ +1%"), desc='Volume Up'),
-#    Key([], "XF86AudioLowerVolume", lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ -5%"), desc='Volume down'),
-#    Key([], "XF86AudioMute", lazy.spawn("pactl set-sink-mute @DEFAULT_SINK@ toggle"), desc='Volume Mute toggle'),
-
-#    Key([], "XF86AudioRaiseVolume", lazy.spawn("amixer set Master 2%+"), desc='Volume Up'),
-#    Key([], "XF86AudioLowerVolume", lazy.spawn("amixer set Master 5%+"), desc='Volume down'),
-#    Key([], "XF86AudioMute", lazy.spawn("amixer set Master toggle"), desc='Volume Mute'),
     Key([], "XF86AudioPlay", lazy.spawn("playerctl play-pause"), desc='Play-Pause'),
     Key([], "XF86AudioPrev", lazy.spawn("playerctl previous"), desc='Previous'),
     Key([], "XF86AudioNext", lazy.spawn("playerctl next"), desc='Next'),
