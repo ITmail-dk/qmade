@@ -1128,6 +1128,17 @@ fi
 echo -e "${YELLOW} Rofi Wifi menu END ${NC}"
 
 # -------------------------------------------------------------------------------------------------
+if [ -f /etc/NetworkManager/NetworkManager.conf ]; then
+sudo sed -i 's/managed=false/managed=true/' /etc/NetworkManager/NetworkManager.conf
+sudo systemctl restart NetworkManager
+
+else 
+	echo "NetworkManager.conf file does not exist."
+fi
+
+# -------------------------------------------------------------------------------------------------
+
+
 
 # -------------------------------------------------------------------------------------------------
 echo -e "${YELLOW} Kitty config file START ${NC}"
