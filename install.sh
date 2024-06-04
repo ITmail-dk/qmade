@@ -660,7 +660,10 @@ sudo cp -r /tmp/EliverLara-Nordic /usr/share/themes/
 # https://github.com/alvatip/Nordzy-cursors
 
 cd /tmp/
-sudo rm -rf Nordzy-cursors
+if [ -d Nordzy-cursors ]; then
+    sudo rm -rf Nordzy-cursors
+fi
+
 git clone https://github.com/alvatip/Nordzy-cursors
 cd Nordzy-cursors
 sudo ./install.sh
@@ -674,7 +677,11 @@ cd /tmp/
 # https://github.com/alvatip/Nordzy-icon
 
 cd /tmp/
-sudo rm -rf Nordzy-icon
+
+if [ -d Nordzy-icon ]; then
+    sudo rm -rf Nordzy-icon
+fi
+
 git clone https://github.com/alvatip/Nordzy-icon
 cd Nordzy-icon/
 sudo ./install.sh
