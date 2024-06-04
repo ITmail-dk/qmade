@@ -680,7 +680,7 @@ cd /tmp/
 # /etc/gtk-3.0/settings.ini
 # https://docs.gtk.org/gtk4/property.Settings.gtk-cursor-theme-name.html
 if [ ! -d /etc/gtk-3.0 ]; then
-mkdir -p /etc/gtk-3.0
+sudo kdir -p /etc/gtk-3.0
 
 else 
 	echo "/etc/gtk-3.0 already exists."
@@ -701,7 +701,7 @@ gtk-enable-input-feedback-sounds=0
 GTK3SETTINGS'
 
 if [ ! -d /etc/gtk-4.0 ]; then
-mkdir -p /etc/gtk-4.0
+sudo mkdir -p /etc/gtk-4.0
 
 else 
 	echo "/etc/gtk-4.0 already exists."
