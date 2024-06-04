@@ -176,9 +176,23 @@ clear
 sudo apt update
 
 # -------------------------------------------------------------------------------------------------
+# Function to echo, handle errors
+error_handler() {
+    echo -e "${RED} An error occurred during installation and has been stopped ${NC}"
+    exit 1
+}
+
+# Set the error handler to be called on any error
+trap error_handler ERR
+
+# Exit immediately if a command exits with a non-zero status
+set -e
+
+# -------------------------------------------------------------------------------------------------
+
 clear
 echo -e "${YELLOW} Core System APT install ${NC}"
-sudo apt -y --ignore-missing install xserver-xorg x11-utils xinit arandr autorandr picom fwupd mesa-utils htop wget curl git tmux numlockx kitty cups xsensors xbacklight brightnessctl unzip network-manager dunst libnotify-bin notify-osd xautolock xsecurelock pm-utils rofi imagemagick nitrogen nsxiv mpv flameshot speedcrunch mc thunar gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq fontconfig fontconfig-config fonts-liberation fonts-dejavu-core fonts-freefont-ttf fonts-noto-core libfontconfig1 fonts-arkpandora pipewire pipewire-pulse wireplumber pipewire-alsa libspa-0.2-bluetooth pavucontrol alsa-utils zoxide
+sudo apt -y --ignore-missing install xserver-xorg x11-utils xinit arandr autorandr picom fwupd mesa-utils htop wget curl git tmux numlockx kitty cups xsensors xbacklight brightnessctl unzip network-manager dunst libnotify-bin notify-osd xautolock xsecurelock pm-utils rofi imagemagick nitrogen nsxiv mpv flameshot speedcrunch mc thunar gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq fontconfig fontconfig-config fonts-liberation fonts-dejavu-core fonts-freefont-ttf fonts-noto-core libfontconfig1 fonts-arkpandora pipewire pipewire-pulse wireplumber pipewire-alsa libspa-0.2-bluetooth pavucontrol alsa-utils
 sudo apt -y install linux-headers-$(uname -r)
 sudo apt -y install sddm --no-install-recommends
 
@@ -232,17 +246,12 @@ echo -e "${YELLOW} Alias echo to ~/.bashrc ${NC}"
 echo 'alias ls="ls --color=auto --group-directories-first -v -lah"' >> ~/.bashrc
 echo 'alias upup="sudo apt update && sudo apt upgrade -y && sudo apt clean && sudo apt autoremove -y"' >> ~/.bashrc
 echo 'bind '"'"'"\C-f":"open "$(fzf)"\n"'"'" >> ~/.bashrc
-echo 'eval "$(zoxide init --cmd cd bash)"' >> ~/.bashrc
+echo 'alias qtileconfig="nano ~/.config/qtile/config.py"' >> ~/.bashrc
 #echo "bind 'set show-all-if-ambiguous on'" >> ~/.bashrc
 
 # -------------------------------------------------------------------------------------------------
-echo -e "${YELLOW} Qtile Core Dependencies apt install ${NC}"
-sudo apt -y install python3 python3-pip python3-venv python3-dbus python3-psutil python3-xcffib python3-cairocffi python3-cffi libpangocairo-1.0-0 python-dbus-dev libxkbcommon-dev libxkbcommon-x11-dev feh
 
-# Colorgram for auto-generated color themes
-pip3 install colorgram.py --break-system-packages
 
-# -------------------------------------------------------------------------------------------------
 echo -e "${YELLOW} Set User folders via xdg-user-dirs-update & xdg-mime default. ${NC}"
 # ls /usr/share/applications/ Find The Default run.: "xdg-mime query default inode/directory"
 
@@ -263,6 +272,12 @@ xdg-mime default thunar.desktop inode/directory
 #mkdir -p ~/.config/picom
 #cp picom.sample.conf ~/.config/picom/picom.conf
 
+# -------------------------------------------------------------------------------------------------
+echo -e "${YELLOW} Qtile Core Dependencies apt install ${NC}"
+sudo apt -y install python3 python3-pip python3-venv python3-dbus python3-psutil python3-xcffib python3-cairocffi python3-cffi libpangocairo-1.0-0 python-dbus-dev libxkbcommon-dev libxkbcommon-x11-dev feh 
+
+# Colorgram for auto-generated color themes
+pip3 install colorgram.py --break-system-packages
 # -------------------------------------------------------------------------------------------------
 echo -e "${YELLOW} Install Qtile from source via github and Pip ${NC}"
 cd ~
