@@ -139,11 +139,11 @@ PROGRAMS=$(whiptail --title "The Install selection" --checklist --separate-outpu
 "4" "Install XfreeRDP Client" OFF \
 "5" "Install Google Chrome Webbrowser" ON \
 "6" "Install Firefox Webbrowser" OFF \
-"7" "Install Neovim Text Editor" ON \
-"8" "Install VS Code Editor" OFF \
-"9" "Install SMB/CIFS Storage Client" ON \
-"10" "Install NFS Storage Client" OFF \
-"11" "Install Ceph Storage Client" OFF 3>&1 1>&2 2>&3)
+"7" "Install SMB/CIFS Storage Client" ON \
+"8" "Install NFS Storage Client" OFF \
+"9" "Install Ceph Storage Client" OFF \
+"10" "Install VS Code Editor" OFF \
+"11" "Install Neovim Text Editor" ON 3>&1 1>&2 2>&3)
 
 # See the actual installation below - Install selection choose what to install End
 
@@ -1563,19 +1563,19 @@ do
             sudo apt install -y firefox-esr
             ;;
         "7")
-            sudo apt install -y neovim
-            ;;
-        "8")
-            cd /tmp/ && wget -O vscode_amd64.deb 'https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64' && sudo apt install -y /tmp/vscode_amd64.deb && rm vscode_amd64.deb
-            ;;
-        "9")
             sudo apt install -y smbclient
             ;;
-        "10")
+        "8")
             sudo apt install -y nfs-common
             ;;
-        "11")
+        "9")
             sudo apt install -y ceph-commen
+            ;;
+        "10")
+            cd /tmp/ && wget -O vscode_amd64.deb 'https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64' && sudo apt install -y /tmp/vscode_amd64.deb && rm vscode_amd64.deb
+            ;;
+        "11")
+            sudo apt install -y neovim
             ;;
     esac
 done
