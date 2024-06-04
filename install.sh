@@ -184,9 +184,9 @@ clear
 sudo apt update
 
 # -------------------------------------------------------------------------------------------------
-# Function to echo, handle errors
+# Function to echo, handle errors - Stop the entire installation if an error occurs during the installation
 error_handler() {
-    echo -e "${RED} An error occurred during installation and has been stopped ${NC}"
+    echo -e "${RED} An error occurred during installation and has been stopped. ${NC}"
     exit 1
 }
 
