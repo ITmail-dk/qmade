@@ -292,6 +292,11 @@ cd ~
 mkdir -p ~/.local/bin
 mkdir -p ~/.local/src && cd ~/.local/src
 python3 -m venv qtile_venv && cd qtile_venv
+
+if [ -d qtile ]; then
+    rm -rf qtile
+fi
+
 git clone https://github.com/qtile/qtile.git
 bin/pip install qtile/.
 cp ~/.local/src/qtile_venv/bin/qtile ~/.local/bin/
