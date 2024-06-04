@@ -451,6 +451,16 @@ fi
 echo -e "${YELLOW} MPD END ${NC}"
 # -------------------------------------------------------------------------------------------------
 
+echo -e "${YELLOW} Nano config START ${NC}"
+if [ ! -f ~/.nanorc ]; then
+    cp /etc/nanorc ~/.nanorc
+    sed -i 's/^# set linenumbers/set linenumbers/' ~/.nanorc
+    sed -i 's/^# set minibar/set minibar/' ~/.nanorc
+    sed -i 's/^# set softwrap/set softwrap/' ~/.nanorc
+else 
+	echo "File .nanorc already exists."
+fi
+
 # -------------------------------------------------------------------------------------------------
 echo -e "${YELLOW} Wallpapers START ${NC}"
 
