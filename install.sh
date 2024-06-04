@@ -178,7 +178,7 @@ sudo apt update
 # -------------------------------------------------------------------------------------------------
 clear
 echo -e "${YELLOW} Core System APT install ${NC}"
-sudo apt -y install xserver-xorg x11-utils xinit arandr autorandr picom fwupd mesa-utils htop wget curl git tmux numlockx kitty cups xsensors xbacklight brightnessctl unzip network-manager dunst libnotify-bin notify-osd xautolock xsecurelock pm-utils rofi imagemagick nitrogen nsxiv mpv flameshot speedcrunch mc thunar gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq fontconfig fontconfig-config fonts-liberation fonts-dejavu-core fonts-freefont-ttf fonts-noto-core libfontconfig1 fonts-arkpandora pipewire pipewire-pulse wireplumber pipewire-alsa libspa-0.2-bluetooth pavucontrol alsa-utils --ignore-missing
+sudo apt -y --ignore-missing install xserver-xorg x11-utils xinit arandr autorandr picom fwupd mesa-utils htop wget curl git tmux numlockx kitty cups xsensors xbacklight brightnessctl unzip network-manager dunst libnotify-bin notify-osd xautolock xsecurelock pm-utils rofi imagemagick nitrogen nsxiv mpv flameshot speedcrunch mc thunar gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq fontconfig fontconfig-config fonts-liberation fonts-dejavu-core fonts-freefont-ttf fonts-noto-core libfontconfig1 fonts-arkpandora pipewire pipewire-pulse wireplumber pipewire-alsa libspa-0.2-bluetooth pavucontrol alsa-utils zoxide
 sudo apt -y install linux-headers-$(uname -r)
 sudo apt -y install sddm --no-install-recommends
 
@@ -232,7 +232,8 @@ echo -e "${YELLOW} Alias echo to ~/.bashrc ${NC}"
 echo 'alias ls="ls --color=auto --group-directories-first -v -lah"' >> ~/.bashrc
 echo 'alias upup="sudo apt update && sudo apt upgrade -y && sudo apt clean && sudo apt autoremove -y"' >> ~/.bashrc
 echo 'bind '"'"'"\C-f":"open "$(fzf)"\n"'"'" >> ~/.bashrc
-
+echo 'eval "$(zoxide init --cmd cd bash)"' >> ~/.bashrc
+#echo "bind 'set show-all-if-ambiguous on'" >> ~/.bashrc
 
 # -------------------------------------------------------------------------------------------------
 echo -e "${YELLOW} Qtile Core Dependencies apt install ${NC}"
@@ -1656,22 +1657,22 @@ keys = [
     Key([mod, "mod1", "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
 
     # Audio
-    Key([mod, "mod1"], "Up", lazy.spawn(os.path.expanduser("wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%+")), desc='Volume Up'),
-    Key([mod, "mod1"], "Down", lazy.spawn(os.path.expanduser("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-")), desc='Volume Down'),
-    Key([mod, "mod1"], "m", lazy.spawn(os.path.expanduser("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle")), desc='Volume Mute Toggle'),
+    Key([mod, "mod1"], "Up", lazy.spawn("wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%+"), desc='Volume Up'),
+    Key([mod, "mod1"], "Down", lazy.spawn("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"), desc='Volume Down'),
+    Key([mod, "mod1"], "m", lazy.spawn("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"), desc='Volume Mute Toggle'),
 
     # XF86 Audio & Brightness keys
-    Key([], "XF86AudioRaiseVolume", lazy.spawn(os.path.expanduser("wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%+")), desc='Volume Up'),
-    Key([], "XF86AudioLowerVolume", lazy.spawn(os.path.expanduser("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-")), desc='Volume Down'),
-    Key([], "XF86AudioMute", lazy.spawn(os.path.expanduser("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle")), desc='Volume Mute Toggle'),
+    Key([], "XF86AudioRaiseVolume", lazy.spawn("wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%+"), desc='Volume Up'),
+    Key([], "XF86AudioLowerVolume", lazy.spawn("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"), desc='Volume Down'),
+    Key([], "XF86AudioMute", lazy.spawn("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"), desc='Volume Mute Toggle'),
 # mute/unmute the microphone - wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
 # Show volume level - wpctl get-volume @DEFAULT_AUDIO_SINK@
 
     Key([], "XF86AudioPlay", lazy.spawn("playerctl play-pause"), desc='Play-Pause'),
     Key([], "XF86AudioPrev", lazy.spawn("playerctl previous"), desc='Previous'),
     Key([], "XF86AudioNext", lazy.spawn("playerctl next"), desc='Next'),
-    Key([], "XF86MonBrightnessUp", lazy.spawn("brightnessctl set +10"), desc='Brightness UP'),
-    Key([], "XF86MonBrightnessDown", lazy.spawn("brightnessctl set 10-"), desc='Brightness Down'),
+    Key([], "XF86MonBrightnessUp", lazy.spawn("brightnessctl set 10%+"), desc='Brightness UP'),
+    Key([], "XF86MonBrightnessDown", lazy.spawn("brightnessctl set 10%-"), desc='Brightness Down'),
     Key([], "Print", lazy.spawn("bash -c 'flameshot gui --path ~/Screenshots'"), desc='Screenshot'),
 ]
 
