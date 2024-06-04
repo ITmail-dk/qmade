@@ -537,9 +537,9 @@ echo -e "${YELLOW} Wallpapers END ${NC}"
 # -------------------------------------------------------------------------------------------------
 echo -e "${YELLOW} Neovim config Start ${NC}"
 
-if [ ! -f ~.config/nvim/init.vim ]; then
+if [ ! -f ~/.config/nvim/init.vim ]; then
 mkdir -p ~/.config/nvim
-cat << "NEOVIMCONFIG" > ~.config/nvim/init.vim
+cat << "NEOVIMCONFIG" > ~/.config/nvim/init.vim
 syntax on
 set number
 set numberwidth=5
