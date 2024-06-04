@@ -148,9 +148,9 @@ PROGRAMS=$(whiptail --title "The Install selection" --checklist --separate-outpu
 # See the actual installation below - Install selection choose what to install End
 
 PROGRAMS_EXIT_STATUS=$?
+clear
 
 if [ $PROGRAMS_EXIT_STATUS != 0 ]; then
-  clear
   echo -e "${RED} Installation Cancel - You have now stopped the installation. ${NC}"
   exit 1
 fi
