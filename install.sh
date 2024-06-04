@@ -588,11 +588,11 @@ echo -e "${YELLOW} Kitty theme.conf END ${NC}"
 # -------------------------------------------------------------------------------------------------
 echo -e "${YELLOW} Tmux config Start ${NC}"
 
-if [ ! -f ~.config/tmux/tmux.conf ]; then
+if [ ! -f ~/.config/tmux/tmux.conf ]; then
 mkdir -p ~/.config/tmux
-cat << "TMUXCONFIG" > ~.config/tmux/tmux.conf
+cat << "TMUXCONFIG" > ~/.config/tmux/tmux.conf
 unbind r
-bind r source-file ~.config/tmux/tmux.conf
+bind r source-file ~/.config/tmux/tmux.conf
 
 TMUXCONFIG
 
