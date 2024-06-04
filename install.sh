@@ -457,6 +457,7 @@ if [ ! -f ~/.nanorc ]; then
     sed -i 's/^# set linenumbers/set linenumbers/' ~/.nanorc
     sed -i 's/^# set minibar/set minibar/' ~/.nanorc
     sed -i 's/^# set softwrap/set softwrap/' ~/.nanorc
+    sed -i 's/^# set atblanks/set atblanks/' ~/.nanorc
 else 
 	echo "File .nanorc already exists."
 fi
