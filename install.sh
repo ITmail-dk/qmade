@@ -654,6 +654,8 @@ echo -e "${YELLOW} Nerd Fonts END - https://www.nerdfonts.com/font-downloads "
 sudo rm -rf /tmp/EliverLara-Nordic
 sudo git clone https://github.com/EliverLara/Nordic /tmp/EliverLara-Nordic
 sudo cp -r /tmp/EliverLara-Nordic /usr/share/themes/
+sudo mkdir -p /usr/share/sddm/themes/debian-theme/
+sudo cp -r /tmp/EliverLara-Nordic/kde/sddm/Nordic-darker/ /usr/share/sddm/themes/debian-theme/
 
 # Nordzy-cursors --------------------------------------------------------
 
