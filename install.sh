@@ -200,7 +200,7 @@ set -e
 
 clear
 echo -e "${YELLOW} Core System APT install ${NC}"
-sudo apt -y --ignore-missing install xserver-xorg x11-utils xinit arandr autorandr picom fwupd mesa-utils htop wget curl git tmux numlockx kitty cups xsensors xbacklight brightnessctl unzip network-manager dunst libnotify-bin notify-osd xautolock xsecurelock pm-utils rofi imagemagick nitrogen nsxiv mpv flameshot speedcrunch mc thunar gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq fontconfig fontconfig-config fonts-liberation fonts-dejavu-core fonts-freefont-ttf fonts-noto-core libfontconfig1 fonts-arkpandora pipewire pipewire-pulse wireplumber pipewire-alsa libspa-0.2-bluetooth pavucontrol alsa-utils micro
+sudo apt -y --ignore-missing install xserver-xorg x11-utils xinit arandr autorandr picom fwupd mesa-utils htop wget curl git tmux numlockx kitty cups xsensors xbacklight brightnessctl unzip network-manager dunst libnotify-bin notify-osd xautolock xsecurelock pm-utils rofi imagemagick nitrogen nsxiv mpv flameshot speedcrunch mc thunar gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq fontconfig fontconfig-config fonts-liberation fonts-dejavu-core fonts-freefont-ttf fonts-noto-core libfontconfig1 fonts-arkpandora pipewire pipewire-pulse wireplumber pipewire-alsa libspa-0.2-bluetooth pavucontrol alsa-utils sddm-theme-maui
 sudo apt -y install linux-headers-$(uname -r)
 sudo apt -y install sddm --no-install-recommends
 
@@ -654,8 +654,9 @@ echo -e "${YELLOW} Nerd Fonts END - https://www.nerdfonts.com/font-downloads "
 sudo rm -rf /tmp/EliverLara-Nordic
 sudo git clone https://github.com/EliverLara/Nordic /tmp/EliverLara-Nordic
 sudo cp -r /tmp/EliverLara-Nordic /usr/share/themes/
-sudo mkdir -p /usr/share/sddm/themes/debian-theme/
-sudo cp -r /tmp/EliverLara-Nordic/kde/sddm/Nordic-darker/ /usr/share/sddm/themes/debian-theme/
+
+#sudo mkdir -p /usr/share/sddm/themes/debian-theme/
+#sudo cp -r /tmp/EliverLara-Nordic/kde/sddm/Nordic-darker/* /usr/share/sddm/themes/debian-theme/
 
 # Nordzy-cursors --------------------------------------------------------
 
