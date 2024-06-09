@@ -379,6 +379,8 @@ else
 fi
 
 # -------------------------------------------------------------------------------------------------
+# Add User NOPASSWD to shutdown now and reboot
+echo "$USER ALL=(ALL) NOPASSWD: /sbin/shutdown now, /sbin/reboot" | sudo tee /etc/sudoers.d/$USER && sudo visudo -c -f /etc/sudoers.d/$USER
 
 # -------------------------------------------------------------------------------------------------
 echo -e "${YELLOW} MPD Setup & config START ${NC}"
