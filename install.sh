@@ -325,6 +325,7 @@ if [ ! -f ~/.config/qtile/autostart.sh ]; then
 cat << "QTILEAUTOSTART" > ~/.config/qtile/autostart.sh
 #!/bin/sh
 pgrep -x picom > /dev/null || picom -b &
+autorandr --change &&
 
 # This here if statement sets your background image, with feh... 
 # and is also used for the auto-generation of the background image and colors.
@@ -338,6 +339,7 @@ wpctl set-volume @DEFAULT_AUDIO_SINK@ 10% &
 dunst &
 numlockx on &
 mpd &
+xrdb ~/.Xresources &
 #nitrogen --restore &
 
 # lock computer automatically after X time of minutes.
@@ -775,7 +777,7 @@ echo "$xrandrsetmaxcontent" | sudo tee /usr/local/bin/xrandr-set-max >/dev/null
 
 # SDDM Before Login - /usr/share/sddm/scripts/Xsetup and After Login - /usr/share/sddm/scripts/Xsession
 sudo sed -i '$a\. /usr/local/bin/xrandr-set-max' /usr/share/sddm/scripts/Xsetup
-sudo sed -i '$a\. /usr/local/bin/xrandr-set-max' /usr/share/sddm/scripts/Xsession
+#sudo sed -i '$a\. /usr/local/bin/xrandr-set-max' /usr/share/sddm/scripts/Xsession
 
 sudo chmod +x /usr/local/bin/xrandr-set-max
 
