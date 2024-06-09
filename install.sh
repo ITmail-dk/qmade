@@ -486,17 +486,17 @@ wget -O ~/Wallpapers/default_wallpaper_by_natalia-y_on_unsplash.jpg https://gith
 
 # Download random wallpapers from https://unsplash.com
 # Set the desired number of wallpapers to download
-count="9"
+#count="9"
 
 # Categories topics for the wallpapers like, minimalist-wallpapers "Remember to put a hyphen between the words"
-query="cool-colors-wallpapers"
+#query="cool-colors-wallpapers"
 
 # Downloading random wallpapers to ~/Wallpapers folder
-for ((i = 1; i <= count; i++)); do
-    wget -qO "$HOME/Wallpapers/unsplash_${query}_${i}.jpg" "https://source.unsplash.com/random/3440x1440/?$query"
-    done
+#for ((i = 1; i <= count; i++)); do
+#    wget -qO "$HOME/Wallpapers/unsplash_${query}_${i}.jpg" "https://source.unsplash.com/random/3440x1440/?$query"
+#    done
 
-echo "Wallpapers downloaded successfully."
+#echo "Wallpapers downloaded successfully."
 
 else 
 	echo "Wallpapers folder already exists."
