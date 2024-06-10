@@ -294,30 +294,36 @@ mkdir -p ~/.local/bin
 mkdir -p ~/.local/src && cd ~/.local/src
 
 # Git src install ----------------------------------------------------------
-#if [ -d qtile ]; then
-#    rm -rf qtile
-#fi
-
-#git clone https://github.com/qtile/qtile.git && cd qtile && pip install . --break-system-packages --no-warn-script-location
-
-
-# Python3 venv install -----------------------------------------------------
-
-python3 -m venv qtile_venv && cd qtile_venv
-
 if [ -d qtile ]; then
     rm -rf qtile
 fi
 
 git clone https://github.com/qtile/qtile.git
+cd qtile
 
-. ~/.local/src/qtile_venv/bin/activate
-pip3 install dbus-next psutil
-pip install -r qtile/requirements.txt
-bin/pip install qtile/.
-deactivate
+pip install dbus-next psutil wheel
+pip install -r requirements.txt
 
-cp ~/.local/src/qtile_venv/bin/qtile ~/.local/bin/
+pip install . --break-system-packages --no-warn-script-location
+
+
+# Python3 venv install -----------------------------------------------------
+
+#python3 -m venv qtile_venv && cd qtile_venv
+
+#if [ -d qtile ]; then
+#    rm -rf qtile
+#fi
+
+#git clone https://github.com/qtile/qtile.git
+
+#. ~/.local/src/qtile_venv/bin/activate
+#pip install dbus-next psutil wheel
+#pip install -r qtile/requirements.txt
+#bin/pip install qtile/.
+#deactivate
+
+#cp ~/.local/src/qtile_venv/bin/qtile ~/.local/bin/
 
 # ------------------------------------------------------------------------
 
