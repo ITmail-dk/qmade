@@ -282,7 +282,8 @@ xdg-mime default thunar.desktop inode/directory
 
 # -------------------------------------------------------------------------------------------------
 echo -e "${YELLOW} Qtile Core Dependencies apt install ${NC}"
-sudo apt -y install python3 python3-pip python3-venv python3-dbus python3-psutil python3-xcffib python3-cairocffi python3-cffi libpangocairo-1.0-0 python-dbus-dev libxkbcommon-dev libxkbcommon-x11-dev feh 
+sudo apt -y install feh python3 python3-pip python3-venv libxkbcommon-dev libxkbcommon-x11-dev libcairo2-dev pkg-config 
+#sudo apt -y install python3 python3-pip python3-venv python3-dbus python3-psutil python3-xcffib python3-cairocffi python3-cffi libpangocairo-1.0-0 python-dbus-dev libxkbcommon-dev libxkbcommon-x11-dev feh
 
 # Colorgram for auto-generated color themes
 pip3 install colorgram.py --break-system-packages
@@ -291,6 +292,17 @@ echo -e "${YELLOW} Install Qtile from source via github and Pip ${NC}"
 cd ~
 mkdir -p ~/.local/bin
 mkdir -p ~/.local/src && cd ~/.local/src
+
+# Git src install ----------------------------------------------------------
+#if [ -d qtile ]; then
+#    rm -rf qtile
+#fi
+
+#git clone https://github.com/qtile/qtile.git && cd qtile && pip install . --break-system-packages --no-warn-script-location
+
+
+# Python3 venv install -----------------------------------------------------
+
 python3 -m venv qtile_venv && cd qtile_venv
 
 if [ -d qtile ]; then
@@ -298,13 +310,16 @@ if [ -d qtile ]; then
 fi
 
 git clone https://github.com/qtile/qtile.git
+
+. ~/.local/src/qtile_venv/bin/activate
+pip3 install dbus-next psutil
+pip install -r qtile/requirements.txt
 bin/pip install qtile/.
+deactivate
+
 cp ~/.local/src/qtile_venv/bin/qtile ~/.local/bin/
 
-#cd /tmp/
-#sudo rm -rf qtile
-#git clone https://github.com/qtile/qtile.git && cd qtile && pip install . --break-system-packages --no-warn-script-location
-
+# ------------------------------------------------------------------------
 
 sudo mkdir -p /usr/share/xsessions/
 sudo bash -c 'cat << "QTILEDESKTOP" >> /usr/share/xsessions/qtile.desktop
@@ -610,6 +625,20 @@ else
 fi
 
 echo -e "${YELLOW} Tmux config END ${NC}"
+
+# -------------------------------------------------------------------------------------------------
+
+#echo -e "${YELLOW} Xresources config Start ${NC}"
+
+#if [ ! -f ~/.Xresources ]; then
+
+#cat << "XRCONFIG" > ~/.Xresources
+
+#XRCONFIG
+
+#else 
+#	echo ".Xresources config file already exists."
+#fi
 
 
 # -------------------------------------------------------------------------------------------------
