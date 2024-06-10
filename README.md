@@ -18,6 +18,7 @@ Run this one command to start Qmade install and you're good to go.:
 Default Modkey is the Windows key (**MOD4**) and **MOD1** is Alt Left.
 
 **MOD4 + Enter** = Opens a Terminal.
+
 **MOD4 + B** = Opens a browser.
 
 **MOD4 + Control + MOD1** = Autogenerate a new background image and color theme,  
