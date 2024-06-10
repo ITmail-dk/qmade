@@ -282,11 +282,11 @@ xdg-mime default thunar.desktop inode/directory
 
 # -------------------------------------------------------------------------------------------------
 echo -e "${YELLOW} Qtile Core Dependencies apt install ${NC}"
-sudo apt -y install feh python3 python3-pip python3-venv libxkbcommon-dev libxkbcommon-x11-dev libcairo2-dev pkg-config 
+sudo apt -y install feh python3-full python3-pip python3-venv libxkbcommon-dev libxkbcommon-x11-dev libcairo2-dev pkg-config 
 #sudo apt -y install python3 python3-pip python3-venv python3-dbus python3-psutil python3-xcffib python3-cairocffi python3-cffi libpangocairo-1.0-0 python-dbus-dev libxkbcommon-dev libxkbcommon-x11-dev feh
 
 # Colorgram for auto-generated color themes
-pip3 install colorgram.py --break-system-packages
+pip install colorgram.py --break-system-packages
 # -------------------------------------------------------------------------------------------------
 echo -e "${YELLOW} Install Qtile from source via github and Pip ${NC}"
 cd ~
