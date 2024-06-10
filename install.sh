@@ -301,8 +301,8 @@ fi
 git clone https://github.com/qtile/qtile.git
 cd qtile
 
-pip install dbus-next psutil wheel
-pip install -r requirements.txt
+pip install dbus-next psutil wheel --break-system-packages
+pip install -r requirements.txt --break-system-packages
 
 pip install . --break-system-packages --no-warn-script-location
 
