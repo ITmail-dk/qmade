@@ -1622,6 +1622,16 @@ done
 echo -e "${YELLOW} Install selection choose what to install End ${NC}"
 
 
+
+# Check for Nvidia graphics card ------------------------------------------------------------------
+
+if lspci | grep -i nvidia; then
+    echo "Nvidia graphics card detected. Installing drivers..."
+    sudo apt install -y --install-recommends --install-suggests nvidia-driver
+else
+    echo "No Nvidia graphics card detected."
+fi
+
 # -------------------------------------------------------------------------------------------------
 echo -e "${YELLOW} Qtile Config file START ${NC}"
 
