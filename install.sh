@@ -1628,7 +1628,7 @@ echo -e "${YELLOW} Install selection choose what to install End ${NC}"
 if lspci | grep -i nvidia; then
     echo "Nvidia graphics card detected. Installing drivers..."
     sudo apt install -y --install-recommends --install-suggests nvidia-driver
-    echo 'nvidia-settings --assign CurrentMetaMode=\"nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }\"' >> ~/.config/qtile/autostart.sh
+    echo 'nvidia-settings --assign CurrentMetaMode="nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }"' >> ~/.config/qtile/autostart.sh
 else
     echo "No Nvidia graphics card detected."
 fi
