@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # Qtile Martin Andersen Desktop Environment, Qmade for short.! install - ITmail.dk
 
 # bash -c "$(wget -O- https://raw.githubusercontent.com/ITmail-dk/qmade/main/install.sh)"
@@ -1610,7 +1609,7 @@ do
             sudo apt install -y nfs-common
             ;;
         "9")
-            sudo apt install -y ceph-commen
+            sudo apt install -y ceph-common
             ;;
         "10")
             cd /tmp/ && wget -O vscode_amd64.deb 'https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64' && sudo apt install -y /tmp/vscode_amd64.deb && rm vscode_amd64.deb
