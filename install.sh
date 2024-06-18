@@ -315,7 +315,7 @@ fi
 
 git clone https://github.com/qtile/qtile.git
 
-. ~/.local/src/qtile_venv/bin/activate
+source bin/activate
 pip install dbus-next psutil wheel
 pip install -r qtile/requirements.txt
 bin/pip install qtile/.
