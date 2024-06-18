@@ -292,36 +292,36 @@ mkdir -p ~/.local/bin
 mkdir -p ~/.local/src && cd ~/.local/src
 
 # Git src install ----------------------------------------------------------
-if [ -d qtile ]; then
-    rm -rf qtile
-fi
-
-git clone https://github.com/qtile/qtile.git
-cd qtile
-
-pip install dbus-next psutil wheel --break-system-packages
-pip install -r ~/.local/src/qtile/requirements.txt --break-system-packages
-
-pip install . --break-system-packages --no-warn-script-location
-
-
-# Python3 venv install -----------------------------------------------------
-
-#python3 -m venv qtile_venv && cd qtile_venv
-
 #if [ -d qtile ]; then
 #    rm -rf qtile
 #fi
 
 #git clone https://github.com/qtile/qtile.git
+#cd qtile
 
-#. ~/.local/src/qtile_venv/bin/activate
-#pip install dbus-next psutil wheel
-#pip install -r qtile/requirements.txt
-#bin/pip install qtile/.
-#deactivate
+#pip install dbus-next psutil wheel --break-system-packages
+#pip install -r ~/.local/src/qtile/requirements.txt --break-system-packages
 
-#cp ~/.local/src/qtile_venv/bin/qtile ~/.local/bin/
+#pip install . --break-system-packages --no-warn-script-location
+
+
+# Python3 venv install -----------------------------------------------------
+
+python3 -m venv qtile_venv && cd qtile_venv
+
+if [ -d qtile ]; then
+    rm -rf qtile
+fi
+
+git clone https://github.com/qtile/qtile.git
+
+. ~/.local/src/qtile_venv/bin/activate
+pip install dbus-next psutil wheel
+pip install -r qtile/requirements.txt
+bin/pip install qtile/.
+deactivate
+
+cp ~/.local/src/qtile_venv/bin/qtile ~/.local/bin/
 
 # ------------------------------------------------------------------------
 
@@ -1588,7 +1588,7 @@ do
             sudo apt install -y libreoffice
             ;;
         "2")
-            sudo apt install -y tlp tlp-rdw bluetooth bluez bluez-cups bluez-obexd bluez-meshd pulseaudio-module-bluetooth bluez-firmware blueman
+            sudo apt install -y tlp tlp-rdw bluetooth bluez bluez-cups bluez-obexd bluez-meshd pulseaudio-module-bluetooth bluez-firmware blueman acpi
             ;;
         "3")
             sudo apt install -y xrdp && sudo systemctl restart xrdp.service
@@ -1622,8 +1622,7 @@ done
 echo -e "${YELLOW} Install selection choose what to install End ${NC}"
 
 
-
-# Check for Nvidia graphics card ------------------------------------------------------------------
+# Check for Nvidia graphics card and install drivers ----------------------------------------------
 
 if lspci | grep -i nvidia; then
     echo "Nvidia graphics card detected. Installing drivers..."
@@ -1768,7 +1767,7 @@ keys = [
     Key([], "XF86AudioPlay", lazy.spawn("playerctl play-pause"), desc='Play-Pause'),
     Key([], "XF86AudioPrev", lazy.spawn("playerctl previous"), desc='Previous'),
     Key([], "XF86AudioNext", lazy.spawn("playerctl next"), desc='Next'),
-    Key([], "XF86MonBrightnessUp", lazy.spawn("brightnessctl set 10%+"), desc='Brightness UP'),
+    Key([], "XF86MonBrightnessUp", lazy.spawn("brightnessctl set +10%"), desc='Brightness UP'),
     Key([], "XF86MonBrightnessDown", lazy.spawn("brightnessctl set 10%-"), desc='Brightness Down'),
     Key([], "Print", lazy.spawn("bash -c 'flameshot gui --path ~/Screenshots'"), desc='Screenshot'),
 ]
