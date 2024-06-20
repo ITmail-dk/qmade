@@ -254,6 +254,8 @@ echo 'alias ls="ls --color=auto --group-directories-first -v -lah"' >> ~/.bashrc
 echo 'alias upup="sudo apt update && sudo apt upgrade -y && sudo apt clean && sudo apt autoremove -y"' >> ~/.bashrc
 echo 'bind '"'"'"\C-f":"open "$(fzf)"\n"'"'" >> ~/.bashrc
 echo 'alias qtileconfig="nano ~/.config/qtile/config.py"' >> ~/.bashrc
+echo 'alias qtileconfig-test="python3 .config/qtile/config.py"' >> ~/.bashrc
+echo 'alias qtileconfig-test-venv="source .local/src/qtile_venv/bin/activate && python3 .config/qtile/config.py && deactivate"' >> ~/.bashrc
 #echo "bind 'set show-all-if-ambiguous on'" >> ~/.bashrc
 
 # -------------------------------------------------------------------------------------------------
