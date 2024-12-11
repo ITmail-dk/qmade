@@ -110,7 +110,7 @@ if ! dpkg -s whiptail >/dev/null 2>&1; then
     echo -e "${RED}-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-"
     echo -e "${RED} ${NC}"
     sudo apt update
-    sudo apt install -y whiptail
+    sudo DEBIAN_FRONTEND=noninteractive apt install -y whiptail
 else
     echo -e "${YELLOW} Preparation before starting the installation... done ;-) ${NC}"
 fi
@@ -166,7 +166,7 @@ echo -e "${RED}-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-"
 echo -e "${RED} ${NC}"
 
 if ! dpkg -s apt-transport-https >/dev/null 2>&1; then
-    sudo apt -y install apt-transport-https
+    sudo DEBIAN_FRONTEND=noninteractive apt install -y apt-transport-https
     sudo sed -i 's+http:+https:+g' /etc/apt/sources.list
 else
     echo "apt-transport-https is already installed."
@@ -199,9 +199,9 @@ set -e
 
 clear
 echo -e "${YELLOW} Core System APT install ${NC}"
-sudo apt -y --ignore-missing install xserver-xorg x11-utils xinit arandr autorandr picom fwupd mesa-utils htop wget curl git tmux numlockx kitty cups xsensors xbacklight brightnessctl unzip network-manager dunst libnotify-bin notify-osd xautolock xsecurelock pm-utils rofi imagemagick nitrogen nsxiv mpv flameshot speedcrunch mc thunar gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq fontconfig fontconfig-config fonts-liberation fonts-dejavu-core fonts-freefont-ttf fonts-noto-core libfontconfig1 fonts-arkpandora pipewire pipewire-pulse wireplumber pipewire-alsa libspa-0.2-bluetooth pavucontrol alsa-utils qpwgraph sddm-theme-maui ffmpeg
-sudo apt -y install linux-headers-$(uname -r)
-sudo apt -y install sddm --no-install-recommends
+sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install xserver-xorg x11-utils xinit arandr autorandr picom fwupd mesa-utils htop wget curl git tmux numlockx kitty cups xsensors xbacklight brightnessctl unzip network-manager dunst libnotify-bin notify-osd xautolock xsecurelock pm-utils rofi imagemagick nitrogen nsxiv mpv flameshot speedcrunch mc thunar gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq fontconfig fontconfig-config fonts-liberation fonts-dejavu-core fonts-freefont-ttf fonts-noto-core libfontconfig1 fonts-arkpandora pipewire pipewire-pulse wireplumber pipewire-alsa libspa-0.2-bluetooth pavucontrol alsa-utils qpwgraph sddm-theme-maui ffmpeg
+sudo DEBIAN_FRONTEND=noninteractive apt -y install linux-headers-$(uname -r)
+sudo DEBIAN_FRONTEND=noninteractive apt -y install sddm --no-install-recommends
 
 clear
 # -------------------------------------------------------------------------------------------------
@@ -216,10 +216,10 @@ echo -e "${YELLOW} Audio Start - https://alsa.opensrc.org - https://wiki.debian.
 systemctl enable --user --now pipewire.socket pipewire-pulse.socket wireplumber.service
 
 # More Audio tools
-# sudo apt install -y alsa-tools
+# sudo DEBIAN_FRONTEND=noninteractive apt install -y alsa-tools
 
 # PulseAudio
-# sudo apt install -y pulseaudio
+# sudo DEBIAN_FRONTEND=noninteractive apt install -y pulseaudio
 # systemctl --user enable pulseaudio
 
 # sudo alsactl init
@@ -232,7 +232,7 @@ CPUVENDOR=$(lscpu | grep "Vendor ID:" | awk '{print $3}')
 
 if [ "$CPUVENDOR" == "GenuineIntel" ]; then
     if ! dpkg -s intel-microcode >/dev/null 2>&1; then
-    sudo apt install -y intel-microcode
+    sudo DEBIAN_FRONTEND=noninteractive apt install -y intel-microcode
     fi
 else
     echo -e "${GREEN} Intel Microcode OK ${NC}"
@@ -240,7 +240,7 @@ fi
 
 if [ "$CPUVENDOR" == "AuthenticAMD" ]; then
     if ! dpkg -s amd64-microcode >/dev/null 2>&1; then
-    sudo apt -y install amd64-microcode
+    sudo DEBIAN_FRONTEND=noninteractive apt install -y amd64-microcode
     fi
 else
     echo -e "${GREEN} Amd64 Microcode OK ${NC}"
@@ -272,7 +272,7 @@ xdg-mime default nsxiv.desktop image/png
 xdg-mime default thunar.desktop inode/directory
 
 # Picom (Yshui) install
-#sudo apt install -y libconfig-dev libdbus-1-dev libegl-dev libev-dev libgl-dev libepoxy-dev libpcre2-dev libpixman-1-dev libx11-xcb-dev libxcb1-dev libxcb-composite0-dev libxcb-damage0-dev libxcb-dpms0-dev libxcb-glx0-dev libxcb-image0-dev libxcb-present-dev libxcb-randr0-dev libxcb-render0-dev libxcb-render-util0-dev libxcb-shape0-dev libxcb-util-dev libxcb-xfixes0-dev libxext-dev meson ninja-build uthash-dev
+#sudo DEBIAN_FRONTEND=noninteractive apt install -y libconfig-dev libdbus-1-dev libegl-dev libev-dev libgl-dev libepoxy-dev libpcre2-dev libpixman-1-dev libx11-xcb-dev libxcb1-dev libxcb-composite0-dev libxcb-damage0-dev libxcb-dpms0-dev libxcb-glx0-dev libxcb-image0-dev libxcb-present-dev libxcb-randr0-dev libxcb-render0-dev libxcb-render-util0-dev libxcb-shape0-dev libxcb-util-dev libxcb-xfixes0-dev libxext-dev meson ninja-build uthash-dev
 #cd /tmp/
 #git clone https://github.com/yshui/picom
 #cd picom
@@ -283,7 +283,7 @@ xdg-mime default thunar.desktop inode/directory
 
 # -------------------------------------------------------------------------------------------------
 echo -e "${YELLOW} Qtile Core Dependencies apt install ${NC}"
-sudo apt -y install feh python3-full python3-pip python3-venv libxkbcommon-dev libxkbcommon-x11-dev libcairo2-dev pkg-config 
+sudo DEBIAN_FRONTEND=noninteractive apt install -y feh python3-full python3-pip python3-venv libxkbcommon-dev libxkbcommon-x11-dev libcairo2-dev pkg-config 
 
 # Colorgram for auto-generated color themes
 pip install colorgram.py --break-system-packages
@@ -1587,37 +1587,37 @@ for PROGRAM in $PROGRAMS
 do
     case $PROGRAM in
         "1")
-            sudo apt install -y libreoffice
+            sudo DEBIAN_FRONTEND=noninteractive apt install -y libreoffice
             ;;
         "2")
-            sudo apt install -y tlp tlp-rdw bluetooth bluez bluez-cups bluez-obexd bluez-meshd pulseaudio-module-bluetooth bluez-firmware blueman acpi
+            sudo DEBIAN_FRONTEND=noninteractive apt install -y tlp tlp-rdw bluetooth bluez bluez-cups bluez-obexd bluez-meshd pulseaudio-module-bluetooth bluez-firmware blueman acpi
             ;;
         "3")
-            sudo apt install -y xrdp && sudo systemctl restart xrdp.service
+            sudo DEBIAN_FRONTEND=noninteractive apt install -y xrdp && sudo systemctl restart xrdp.service
             ;;
         "4")
-            sudo apt install -y freerdp2-x11 libfreerdp-client2-2 libfreerdp2-2 libwinpr2-2
+            sudo DEBIAN_FRONTEND=noninteractive apt install -y freerdp2-x11 libfreerdp-client2-2 libfreerdp2-2 libwinpr2-2
             ;;
         "5")
-            cd /tmp/ && wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && sudo apt install -y /tmp/google-chrome-stable_current_amd64.deb && rm google-chrome-stable_current_amd64.deb
+            cd /tmp/ && wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && sudo DEBIAN_FRONTEND=noninteractive apt install -y /tmp/google-chrome-stable_current_amd64.deb && rm google-chrome-stable_current_amd64.deb
             ;;
         "6")
-            sudo apt install -y firefox-esr
+            sudo DEBIAN_FRONTEND=noninteractive apt install -y firefox-esr
             ;;
         "7")
-            sudo apt install -y smbclient
+            sudo DEBIAN_FRONTEND=noninteractive apt install -y smbclient
             ;;
         "8")
-            sudo apt install -y nfs-common
+            sudo DEBIAN_FRONTEND=noninteractive apt install -y nfs-common
             ;;
         "9")
-            sudo apt install -y ceph-common
+            sudo DEBIAN_FRONTEND=noninteractive apt install -y ceph-common
             ;;
         "10")
-            cd /tmp/ && wget -O vscode_amd64.deb 'https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64' && sudo apt install -y /tmp/vscode_amd64.deb && rm vscode_amd64.deb
+            cd /tmp/ && wget -O vscode_amd64.deb 'https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64' && sudo DEBIAN_FRONTEND=noninteractive apt install -y /tmp/vscode_amd64.deb && rm vscode_amd64.deb
             ;;
         "11")
-            sudo apt install -y neovim
+            sudo DEBIAN_FRONTEND=noninteractive apt install -y neovim
             ;;
     esac
 done
@@ -1628,7 +1628,7 @@ echo -e "${YELLOW} Install selection choose what to install End ${NC}"
 
 if lspci | grep -i nvidia; then
     echo "Nvidia graphics card detected. Installing drivers..."
-    sudo apt install -y --install-recommends --install-suggests nvidia-driver
+    sudo DEBIAN_FRONTEND=noninteractive apt install -y --install-recommends --install-suggests nvidia-driver
     echo 'nvidia-settings --assign CurrentMetaMode="nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }"' >> ~/.config/qtile/autostart.sh
 else
     echo "No Nvidia graphics card detected."
