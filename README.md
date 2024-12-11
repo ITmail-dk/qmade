@@ -7,7 +7,7 @@ Start the installation as regular users with SUDO rights, after you login to you
 
 Run this one command to start Qmade install and you're good to go.: 
 
-`bash -c "$(wget -O- https://raw.githubusercontent.com/ITmail-dk/qmade/main/install.sh)"`
+    bash -c "$(wget -O- https://raw.githubusercontent.com/ITmail-dk/qmade/main/install.sh)"
 
 *Or you can run these commands... if you think it's easier.*
 
