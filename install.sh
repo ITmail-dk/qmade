@@ -73,32 +73,24 @@ BLUE="\033[0;94m"
 
 clear
 
-# Check User Sudo Access
-#check_sudo_access() {
-#    if sudo -n true 2>/dev/null; then
-#        return 0
-#    else
-#        return 1
-#    fi
-#}
+if [ -f /etc/debian_version ]; then
+    echo "The system is running on Debian Linux, everything is fine..."
+else
+    echo "This installation should only be run on a Debian Linux System."
+    exit 1
+fi
 
-#if check_sudo_access; then
-#    echo "User has SUDO Access, installation continues..."
-#else
-#    echo -e "${RED} ${NC}"
-#    echo -e "${RED}-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'- ${NC}"
-#    echo -e "${RED} ${NC}"
-#    echo -e "${RED}       ERROR: This installation must be run by a normal user with SUDO Access. ${NC}"
-#    echo -e "${RED} ${NC}"
-#    echo -e "${RED}       So Add your user to sudo with this Command,from a user who has sudo access ${NC}"
-#    echo -e "${RED}       sudo usermod -aG sudo USERNAME ${NC}"
-#    echo -e "${RED} ${NC}"
-#    echo -e "${RED}-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'- ${NC}"
-#    echo -e "${RED} ${NC}"
-#    exit 1
-#fi
-# Check User Sudo Access Done
-clear
+# Function to echo, handle errors - Stop the entire installation if an error occurs during the installation
+error_handler() {
+    echo -e "${RED} An error occurred during installation and has been stopped. ${NC}"
+    exit 1
+}
+
+# Set the error handler to be called on any error
+trap error_handler ERR
+
+# Exit immediately if a command exits with a non-zero status
+set -e
 
 if ! dpkg -s whiptail >/dev/null 2>&1; then
     echo -e "${RED} "
@@ -165,6 +157,26 @@ echo -e "${RED} "
 echo -e "${RED}-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-"
 echo -e "${RED} ${NC}"
 
+# Default APT sources list
+sudo cp /usr/share/doc/apt/examples/sources.list /etc/apt/sources.list
+
+
+# APT Add - contrib non-free" to the sources list
+if [ -f /etc/apt/sources.list.d/debian.sources ]; then
+    if ! grep -q "Components:.* contrib non-free non-free-firmware" /etc/apt/sources.list.d/debian.sources; then
+        sudo sed -i 's/^Components:* main/& contrib non-free non-free-firmware/g' /etc/apt/sources.list.d/debian.sources
+    else
+        echo "contrib non-free non-free-firmware is already present in /etc/apt/sources.list.d/debian.sources"
+    fi
+else
+    if ! grep -q "deb .* contrib non-free" /etc/apt/sources.list; then
+        sudo sed -i 's/^deb.* main/& contrib non-free/g' /etc/apt/sources.list
+    else
+        echo "contrib non-free is already present in /etc/apt/sources.list"
+    fi
+fi
+
+# APT Add - apt-transport-https
 if ! dpkg -s apt-transport-https >/dev/null 2>&1; then
     sudo DEBIAN_FRONTEND=noninteractive apt install -y apt-transport-https
     sudo sed -i 's+http:+https:+g' /etc/apt/sources.list
@@ -172,28 +184,8 @@ else
     echo "apt-transport-https is already installed."
 fi
 
-# APT Add "contrib non-free" to the sources list
-if [ -f /etc/apt/sources.list.d/debian.sources ]; then
-    sudo sed -i 's/^Components:* main/& contrib non-free non-free-firmware/g' /etc/apt/sources.list.d/debian.sources
-else 
-	sudo sed -i 's/^deb.* main/& contrib non-free/g' /etc/apt/sources.list
-fi
-
 clear
 sudo apt update
-
-# -------------------------------------------------------------------------------------------------
-# Function to echo, handle errors - Stop the entire installation if an error occurs during the installation
-error_handler() {
-    echo -e "${RED} An error occurred during installation and has been stopped. ${NC}"
-    exit 1
-}
-
-# Set the error handler to be called on any error
-trap error_handler ERR
-
-# Exit immediately if a command exits with a non-zero status
-set -e
 
 # -------------------------------------------------------------------------------------------------
 
