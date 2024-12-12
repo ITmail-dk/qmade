@@ -1625,14 +1625,14 @@ echo -e "${YELLOW} Install selection choose what to install End ${NC}"
 
 
 # Check for Nvidia graphics card and install drivers ----------------------------------------------
-
-if lspci | grep -i nvidia; then
-    echo "Nvidia graphics card detected. Installing drivers..."
-    sudo DEBIAN_FRONTEND=noninteractive apt install -y --install-recommends --install-suggests nvidia-driver
-    echo 'nvidia-settings --assign CurrentMetaMode="nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }"' >> ~/.config/qtile/autostart.sh
-else
-    echo "No Nvidia graphics card detected."
-fi
+#
+#if lspci | grep -i nvidia; then
+#    echo "Nvidia graphics card detected. Installing drivers..."
+#    sudo DEBIAN_FRONTEND=noninteractive apt install -y --install-recommends --install-suggests nvidia-driver
+#    echo 'nvidia-settings --assign CurrentMetaMode="nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }"' >> ~/.config/qtile/autostart.sh
+#else
+#    echo "No Nvidia graphics card detected."
+#fi
 
 # -------------------------------------------------------------------------------------------------
 echo -e "${YELLOW} Qtile Config file START ${NC}"
