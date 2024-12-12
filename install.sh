@@ -92,6 +92,9 @@ trap error_handler ERR
 # Exit immediately if a command exits with a non-zero status
 set -e
 
+# Default APT sources list
+sudo cp /usr/share/doc/apt/examples/sources.list /etc/apt/sources.list
+
 if ! dpkg -s whiptail >/dev/null 2>&1; then
     echo -e "${RED} "
     echo -e "${RED}-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-"
@@ -156,9 +159,6 @@ echo -e "${RED}      Enter your user password, to continue if necessary"
 echo -e "${RED} "
 echo -e "${RED}-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-"
 echo -e "${RED} ${NC}"
-
-# Default APT sources list
-sudo cp /usr/share/doc/apt/examples/sources.list /etc/apt/sources.list
 
 
 # APT Add - contrib non-free" to the sources list
