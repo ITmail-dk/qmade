@@ -283,10 +283,15 @@ xdg-mime default thunar.desktop inode/directory
 
 # -------------------------------------------------------------------------------------------------
 echo -e "${YELLOW} Qtile Core Dependencies apt install ${NC}"
-sudo DEBIAN_FRONTEND=noninteractive apt install -y feh python3-full python3-pip python3-venv libxkbcommon-dev libxkbcommon-x11-dev libcairo2-dev pkg-config 
+sudo DEBIAN_FRONTEND=noninteractive apt install -y feh python3-full python3-pip python3-venv pipx libxkbcommon-dev libxkbcommon-x11-dev libcairo2-dev pkg-config 
 
-# Colorgram for auto-generated color themes
-pip install colorgram.py --break-system-packages
+# For auto-generated color themes
+# PyWAL install via pipx
+pipx install pywal16
+pipx ensurepath
+# wal --cols16 darken -q -i $HOME/Wallpapers
+
+#pip install colorgram.py --break-system-packages
 # -------------------------------------------------------------------------------------------------
 echo -e "${YELLOW} Install Qtile from source via github and Pip ${NC}"
 cd ~
@@ -1690,7 +1695,7 @@ keys = [
     Key([mod], "r", lazy.spawn(runmenu), desc="Run Menu"),
     Key([mod, "shift"], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
     Key([mod, "control", "mod1"], "l", lazy.spawn(os.path.expanduser("xsecurelock")), desc="Computer Lockdown"),
-    Key([mod, "control", "mod1"], "t", lazy.spawn(os.path.expanduser("auto-new-wallpaper-and-colors")), desc="Random Theme"),
+    Key([mod, "control", "mod1"], "t", lazy.spawn(os.path.expanduser("wal --cols16 darken -q -i $HOME/Wallpapers")), desc="Random Theme"),
     Key([mod, "control", "mod1"], "w", lazy.spawn(os.path.expanduser("~/.config/rofi/rofi-wifi-menu.sh")), desc="WiFi Manager"),
     Key([mod, "control", "mod1"], "n", lazy.spawn(os.path.expanduser("kitty -e sudo nmtui")), desc="Network Manager"),
 
