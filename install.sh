@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Qtile Martin Andersen Desktop Environment, Qmade for short.! install - ITmail.dk
 
 # bash -c "$(wget -O- https://raw.githubusercontent.com/ITmail-dk/qmade/main/install.sh)"
