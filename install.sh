@@ -353,7 +353,7 @@ autorandr --change &&
 if [ -f ~/.fehbg ]; then
     . ~/.fehbg
 else
-    feh --bg-scale ~/Wallpapers/default_wallpaper_by_natalia-y_on_unsplash.jpg
+    feh --bg-scale $(find $HOME/Wallpapers -type f | shuf -n 1)
 fi
 
 wpctl set-volume @DEFAULT_AUDIO_SINK@ 10% &
@@ -505,23 +505,9 @@ echo -e "${YELLOW} Wallpapers START ${NC}"
 
 if [ ! -d ~/Wallpapers ]; then
 mkdir -p ~/Wallpapers
-echo -e "${GREEN} Download some wallpapers, Please wait..."
+echo -e "${GREEN} Download some wallpaper, Please wait..."
 
-wget -O ~/Wallpapers/default_wallpaper_by_natalia-y_on_unsplash.jpg https://github.com/ITmail-dk/qmade/blob/main/default_wallpaper_by_natalia-y_on_unsplash.jpg?raw=true
-
-# Download random wallpapers from https://unsplash.com
-# Set the desired number of wallpapers to download
-#count="9"
-
-# Categories topics for the wallpapers like, minimalist-wallpapers "Remember to put a hyphen between the words"
-#query="cool-colors-wallpapers"
-
-# Downloading random wallpapers to ~/Wallpapers folder
-#for ((i = 1; i <= count; i++)); do
-#    wget -qO "$HOME/Wallpapers/unsplash_${query}_${i}.jpg" "https://source.unsplash.com/random/3440x1440/?$query"
-#    done
-
-#echo "Wallpapers downloaded successfully."
+wget -O ~/Wallpapers/default_wallpaper.jpg https://github.com/ITmail-dk/qmade/blob/main/default_wallpaper.jpg?raw=true
 
 else 
 	echo "Wallpapers folder already exists."
