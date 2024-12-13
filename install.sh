@@ -258,7 +258,6 @@ echo "bind 'TAB:menu-complete'" >> ~/.bashrc
 echo 'alias qtileconfig="nano ~/.config/qtile/config.py"' >> ~/.bashrc
 echo 'alias qtileconfig-test="python3 .config/qtile/config.py"' >> ~/.bashrc
 echo 'alias qtileconfig-test-venv="source .local/src/qtile_venv/bin/activate && python3 .config/qtile/config.py && deactivate"' >> ~/.bashrc
-#echo "bind 'set show-all-if-ambiguous on'" >> ~/.bashrc
 
 # -------------------------------------------------------------------------------------------------
 
