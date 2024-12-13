@@ -112,6 +112,14 @@ fi
 
 clear
 
+echo -e "${RED} "
+echo -e "${RED}-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-"
+echo -e "${RED} "
+echo -e "${RED}      Preparation before starting the installation..."
+echo -e "${RED}      Enter your user password, to continue if necessary"
+echo -e "${RED} "
+echo -e "${RED}-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-"
+echo -e "${RED} ${NC}"
 
 # Installation start screen
 FULLUSERNAME=$(awk -v user="$USER" -F":" 'user==$1{print $5}' /etc/passwd | rev | cut -c 4- | rev)
