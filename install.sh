@@ -10,8 +10,8 @@
 # Rofi - Run menu
 # https://github.com/ericmurphyxyz/rofi-wifi-menu
 
-# autorandr 
-# Autorandr “fingerprints” displays connected to the system and associate them 
+# autorandr
+# Autorandr “fingerprints” displays connected to the system and associate them
 # with their current X11 server settings in “profiles” which are automatically applied each time a fingerprint is matched.
 # Use "arandr" to set the Screens as you want them and then save them to a profile with "autorandr --save PROFILENAME"
 
@@ -71,45 +71,47 @@ GREEN="\033[0;32m"
 YELLOW="\033[0;33m"
 BLUE="\033[0;94m"
 
+
+# Function to check and exit on error # check_error "TXT"
+check_error() {
+  if [ $? -ne 0 ]; then
+    echo -e "${RED} An error occurred during installation and has been stopped. ${NC}"
+    echo -e "${RED} Error occurred during $1 ${NC}"
+    exit 1
+  fi
+}
+
 clear
 
 if [ -f /etc/debian_version ]; then
-    echo "The system is running on Debian Linux, everything is fine..."
+    echo "Preparation before starting the installation..."
 else
     echo "This installation should only be run on a Debian Linux System."
     exit 1
 fi
 
-# Function to echo, handle errors - Stop the entire installation if an error occurs during the installation
-error_handler() {
-    echo -e "${RED} An error occurred during installation and has been stopped. ${NC}"
-    exit 1
-}
 
-# Set the error handler to be called on any error
-trap error_handler ERR
+# Copy Default APT Sources List
+echo -e "${RED} "
+echo -e "${RED}-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-"
+echo -e "${RED} "
+echo -e "${RED}      Enter your user password, to continue if necessary"
+echo -e "${RED} "
+echo -e "${RED}-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-"
+echo -e "${RED} ${NC}"
 
-# Exit immediately if a command exits with a non-zero status
-set -e
-
-# Default APT sources list
 sudo cp /usr/share/doc/apt/examples/sources.list /etc/apt/sources.list
+check_error "Copy Default APT Sources list"
+clear
 
 if ! dpkg -s whiptail >/dev/null 2>&1; then
-    echo -e "${RED} "
-    echo -e "${RED}-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-"
-    echo -e "${RED} "
-    echo -e "${RED}      Preparation before starting the installation..."
-    echo -e "${RED}      Enter your user password, to continue if necessary"
-    echo -e "${RED} "
-    echo -e "${RED}-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-"
-    echo -e "${RED} ${NC}"
     sudo apt update
     sudo DEBIAN_FRONTEND=noninteractive apt install -y whiptail
 else
     echo -e "${YELLOW} Preparation before starting the installation... done ;-) ${NC}"
 fi
 
+check_error "APT install whiptail"
 clear
 
 echo -e "${RED} "
@@ -130,8 +132,7 @@ else
     exit 1
 fi
 
-
-echo -e "${YELLOW} Install selection choose what to install Start ${NC}"
+echo -e "${GREEN} Install selection choose what to install Start ${NC}"
 
 PROGRAMS=$(whiptail --title "The Install selection" --checklist --separate-output \
 "Choose what to install:" 20 78 15 \
@@ -183,6 +184,7 @@ else
         echo "contrib non-free is already present in /etc/apt/sources.list"
     fi
 fi
+check_error "TXT"
 
 # APT Add - apt-transport-https
 if ! dpkg -s apt-transport-https >/dev/null 2>&1; then
@@ -194,7 +196,7 @@ fi
 
 clear
 sudo apt update
-
+check_error "TXT"
 # -------------------------------------------------------------------------------------------------
 
 clear
@@ -204,6 +206,7 @@ sudo DEBIAN_FRONTEND=noninteractive apt -y install linux-headers-$(uname -r)
 sudo DEBIAN_FRONTEND=noninteractive apt -y install sddm --no-install-recommends
 
 clear
+check_error "Core System APT install"
 # -------------------------------------------------------------------------------------------------
 echo -e "${YELLOW} Audio Start - https://alsa.opensrc.org - https://wiki.debian.org/ALSA ${NC}"
 # See hardware run: "pacmd list-sinks" or "lspci | grep -i audio" or... sudo dmesg  | grep 'snd\|firmware\|audio'
@@ -223,10 +226,9 @@ systemctl enable --user --now pipewire.socket pipewire-pulse.socket wireplumber.
 # systemctl --user enable pulseaudio
 
 # sudo alsactl init
+check_error "TXT"
 
-echo -e "${YELLOW} Audio End ${NC}"
-# -------------------------------------------------------------------------------------------------
-echo -e "${YELLOW} CPU Microcode install ${NC}"
+# CPU Microcode install
 export LC_ALL=C # All subsequent command output will be in English
 CPUVENDOR=$(lscpu | grep "Vendor ID:" | awk '{print $3}')
 
@@ -246,10 +248,10 @@ else
     echo -e "${GREEN} Amd64 Microcode OK ${NC}"
 fi
 unset LC_ALL # unset the LC_ALL=C 
-echo -e "${YELLOW} CPU Microcode install END ${NC}"
-# -------------------------------------------------------------------------------------------------
 
-echo -e "${YELLOW} Alias echo to ~/.bashrc ${NC}"
+check_error "TXT"
+
+# Alias echo to ~/.bashrc
 echo 'alias ls="ls --color=auto --group-directories-first -v -lah"' >> ~/.bashrc
 echo 'alias upup="sudo apt update && sudo apt upgrade -y && sudo apt clean && sudo apt autoremove -y"' >> ~/.bashrc
 echo 'bind '"'"'"\C-f":"open "$(fzf)"\n"'"'" >> ~/.bashrc
@@ -259,10 +261,10 @@ echo 'alias qtileconfig="nano ~/.config/qtile/config.py"' >> ~/.bashrc
 echo 'alias qtileconfig-test="python3 .config/qtile/config.py"' >> ~/.bashrc
 echo 'alias qtileconfig-test-venv="source .local/src/qtile_venv/bin/activate && python3 .config/qtile/config.py && deactivate"' >> ~/.bashrc
 
-# -------------------------------------------------------------------------------------------------
+check_error "TXT"
 
 
-echo -e "${YELLOW} Set User folders via xdg-user-dirs-update & xdg-mime default. ${NC}"
+# Set User folders via xdg-user-dirs-update & xdg-mime default.
 # ls /usr/share/applications/ Find The Default run.: "xdg-mime query default inode/directory"
 
 xdg-user-dirs-update
@@ -272,29 +274,19 @@ xdg-mime default nsxiv.desktop image/jpeg
 xdg-mime default nsxiv.desktop image/png
 xdg-mime default thunar.desktop inode/directory
 
-# Picom (Yshui) install
-#sudo DEBIAN_FRONTEND=noninteractive apt install -y libconfig-dev libdbus-1-dev libegl-dev libev-dev libgl-dev libepoxy-dev libpcre2-dev libpixman-1-dev libx11-xcb-dev libxcb1-dev libxcb-composite0-dev libxcb-damage0-dev libxcb-dpms0-dev libxcb-glx0-dev libxcb-image0-dev libxcb-present-dev libxcb-randr0-dev libxcb-render0-dev libxcb-render-util0-dev libxcb-shape0-dev libxcb-util-dev libxcb-xfixes0-dev libxext-dev meson ninja-build uthash-dev
-#cd /tmp/
-#git clone https://github.com/yshui/picom
-#cd picom
-#meson setup --buildtype=release build && ninja -C build && sudo ninja -C build install
+check_error "TXT"
 
-#mkdir -p ~/.config/picom
-#cp picom.sample.conf ~/.config/picom/picom.conf
-
-# -------------------------------------------------------------------------------------------------
-echo -e "${YELLOW} Qtile Core Dependencies apt install ${NC}"
+# Qtile Core Dependencies apt install
 sudo DEBIAN_FRONTEND=noninteractive apt install -y feh python3-full python3-pip python3-venv pipx libxkbcommon-dev libxkbcommon-x11-dev libcairo2-dev pkg-config 
+check_error "TXT"
 
-# For auto-generated color themes
-# PyWAL install via pipx
+# PyWAL install via pipx for auto-generated color themes
 pipx install pywal16
 pipx ensurepath
 # wal --cols16 darken -q -i $HOME/Wallpapers
+check_error "TXT"
 
-#pip install colorgram.py --break-system-packages
-# -------------------------------------------------------------------------------------------------
-echo -e "${YELLOW} Install Qtile from source via github and Pip ${NC}"
+# Install Qtile from source via github and Pip
 cd ~
 mkdir -p ~/.local/bin
 mkdir -p ~/.local/src && cd ~/.local/src
@@ -330,7 +322,7 @@ bin/pip install qtile/.
 deactivate
 
 cp ~/.local/src/qtile_venv/bin/qtile ~/.local/bin/
-
+check_error "TXT"
 # ------------------------------------------------------------------------
 
 sudo mkdir -p /usr/share/xsessions/
@@ -345,6 +337,7 @@ QTILEDESKTOP'
 
 # Add .xsession
 touch ~/.xsession && echo "qtile start" > ~/.xsession
+check_error "TXT"
 
 # Qtile Autostart.sh file
 mkdir -p ~/.config/qtile/
@@ -379,6 +372,7 @@ chmod +x ~/.config/qtile/autostart.sh
 else 
 	echo "File autostart.sh already exists."
 fi
+check_error "TXT"
 
 # Qtile Colors.sh file
 if [ ! -f ~/.config/qtile/qtile_colors.py ]; then
@@ -407,12 +401,14 @@ else
 	echo "File qtile_colors.py already exists."
 fi
 
+check_error "TXT"
+
 # -------------------------------------------------------------------------------------------------
 # Add User NOPASSWD to shutdown now and reboot
 echo "$USER ALL=(ALL) NOPASSWD: /sbin/shutdown now, /sbin/reboot" | sudo tee /etc/sudoers.d/$USER && sudo visudo -c -f /etc/sudoers.d/$USER
+check_error "TXT"
 
-# -------------------------------------------------------------------------------------------------
-echo -e "${YELLOW} MPD Setup & config START ${NC}"
+# MPD Setup & config START
 
 mkdir -p ~/.config/mpd/playlists
 mkdir -p ~/.local/state/mpd
@@ -492,10 +488,9 @@ fi
 # mpd --stderr --no-daemon --verbose
 # aplay --list-pcm
 
-echo -e "${YELLOW} MPD END ${NC}"
-# -------------------------------------------------------------------------------------------------
+check_error "TXT"
 
-echo -e "${YELLOW} Nano config START ${NC}"
+# Nano config START
 if [ ! -f ~/.nanorc ]; then
     cp /etc/nanorc ~/.nanorc
     sed -i 's/^# set linenumbers/set linenumbers/' ~/.nanorc
@@ -505,9 +500,9 @@ if [ ! -f ~/.nanorc ]; then
 else 
 	echo "File .nanorc already exists."
 fi
+check_error "TXT"
 
-# -------------------------------------------------------------------------------------------------
-echo -e "${YELLOW} Wallpapers START ${NC}"
+#  Wallpapers START
 
 if [ ! -d ~/Wallpapers ]; then
 mkdir -p ~/Wallpapers
@@ -518,6 +513,8 @@ wget -O ~/Wallpapers/default_wallpaper.jpg https://github.com/ITmail-dk/qmade/bl
 else 
 	echo "Wallpapers folder already exists."
 fi
+
+check_error "TXT"
 
 # Nitrogen - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Download some wallpapers from https://unsplash.com/wallpapers
@@ -555,9 +552,9 @@ else
 	echo "Nitrogen config file already exists."
 fi
 
-echo -e "${YELLOW} Wallpapers END ${NC}"
-# -------------------------------------------------------------------------------------------------
-echo -e "${YELLOW} Neovim config Start ${NC}"
+check_error "TXT"
+
+# Neovim config Start
 
 if [ ! -f ~/.config/nvim/init.vim ]; then
 mkdir -p ~/.config/nvim
@@ -573,9 +570,9 @@ else
 	echo "Neovim config file already exists."
 fi
 
-echo -e "${YELLOW} Neovim config END ${NC}"
-# -------------------------------------------------------------------------------------------------
-echo -e "${YELLOW} Kitty theme.conf Start ${NC}"
+check_error "TXT"
+
+# Kitty theme.conf Start
 
 if [ ! -f $HOME/.config/kitty/themes/kittytheme.conf ]; then
 mkdir -p $HOME/.config/kitty/themes
@@ -605,10 +602,9 @@ else
 	echo "kittytheme.conf file already exists."
 fi
 
-echo -e "${YELLOW} Kitty theme.conf END ${NC}"
+check_error "TXT"
 
-# -------------------------------------------------------------------------------------------------
-echo -e "${YELLOW} Tmux config Start ${NC}"
+# Tmux config Start
 
 if [ ! -f ~/.config/tmux/tmux.conf ]; then
 mkdir -p ~/.config/tmux
@@ -622,7 +618,7 @@ else
 	echo "Tmux config file already exists."
 fi
 
-echo -e "${YELLOW} Tmux config END ${NC}"
+check_error "TXT"
 
 # -------------------------------------------------------------------------------------------------
 
@@ -639,9 +635,7 @@ echo -e "${YELLOW} Tmux config END ${NC}"
 #fi
 
 
-# -------------------------------------------------------------------------------------------------
-echo -e "${YELLOW} Themes START ${NC}"
-# -------------------------------------------------------------------------------------------------
+# Themes START
 echo -e "${YELLOW} Nerd Fonts START - https://www.nerdfonts.com/font-downloads - https://www.nerdfonts.com/cheat-sheet - - - ${NC}"
 if [ ! -d ~/.fonts ]; then
 mkdir -p ~/.fonts
@@ -669,7 +663,7 @@ unzip -q -n /tmp/DejaVuSansMono.zip -d ~/.fonts
 rm -f ~/.fonts/*.md
 rm -f ~/.fonts/*.txt
 
-echo -e "${YELLOW} Nerd Fonts END - https://www.nerdfonts.com/font-downloads "
+check_error "TXT"
 # -------------------------------------------------------------------------------------------------
 
 # -------------------------------------------------------------------------------------------------
@@ -774,11 +768,11 @@ sudo sed -i 's/Adwaita/Nordzy-cursors/g' /usr/share/icons/default/index.theme
 
 sudo fc-cache -fv
 
-echo -e "${YELLOW} Themes END ${NC}"
-# -------------------------------------------------------------------------------------------------
+check_error "TXT"
 
 # -------------------------------------------------------------------------------------------------
-echo -e "${YELLOW} xrandr-set-max + Xsession START ${NC}"
+
+# xrandr-set-max + Xsession START
 
 if [ ! -f /usr/local/bin/xrandr-set-max ]; then
 # Define the content of the script
@@ -819,223 +813,12 @@ fi
 #	echo "/etc/X11/Xsession.d/90_xrandr-set-max already exists."
 #fi
 
-echo -e "${YELLOW} xrandr-set-max + Xsession END ${NC}"
+check_error "xrandr-set-max"
 # -------------------------------------------------------------------------------------------------
 
 # -------------------------------------------------------------------------------------------------
-echo -e "${YELLOW} Download Unsplash Wallpapers BIN START ${NC}"
-sudo bash -c 'cat << "UNSPLASHDOWNLOADBIN" >> /usr/local/bin/unsplash-download-wallpapers
-#!/bin/bash
 
-# Function to download wallpapers
-download_wallpapers() {
-    # Set the desired number of wallpapers to download
-    count="$2"
-
-    # Categories topics for the wallpapers like, minimalist-wallpapers "Remember to put a hyphen between the words"
-    query="$1"
-
-    echo "Wallpapers are being downloaded, Please wait..."
-
-    # Download images
-    for ((i = 1; i <= count; i++)); do
-        wget -qO "$HOME/Wallpapers/unsplash_${query}_${i}.jpg" "https://source.unsplash.com/random/3440x1440/?$query"
-    done
-
-    echo "Wallpapers downloaded successfully."
-}
-
-if [ -z "$1" ] || [ -z "$2" ]; then
-    echo "Usage: unsplash-download-wallpapers <query> <count>"
-    echo "Example: unsplash-download-wallpapers hd-nature-landscape 15"
-    exit 1
-fi
-
-query="$1"
-count="$2"
-
-download_wallpapers "$query" "$count"
-UNSPLASHDOWNLOADBIN'
-
-sudo chmod +x /usr/local/bin/unsplash-download-wallpapers
-
-echo -e "${YELLOW} Download Unsplash Wallpapers BIN END ${NC}"
-# -------------------------------------------------------------------------------------------------
-echo -e "${YELLOW} auto-new-wallpaper-and-colors BIN START ${NC}"
-sudo bash -c 'cat << "AUTONEWWALLPAPERANDCOLORSBIN" >> /usr/local/bin/auto-new-wallpaper-and-colors
-#!/bin/bash
-export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$HOME/.local/bin
-
-if [ ! -f "$HOME/.config/qtile/extract_colors.py" ]; then
-    echo "$HOME/.config/qtile/extract_colors.py not found! Please ensure the Python script is in the same directory."
-    exit 1
-fi
-
-RWALLP="$(find $HOME/Wallpapers -type f | shuf -n 1)"
-
-notify-send -u low "Automatically new background and color theme" "Please wait while we find a new background image and some colors to match"
-
-python3 $HOME/.config/qtile/extract_colors.py $RWALLP
-feh --bg-scale $RWALLP
-qtile cmd-obj -o cmd -f reload_config
-kitty +kitten themes --reload-in=all Kittytheme
-
-notify-send -u low "Automatically new background and color theme" "The background image and colors has been updated."
-
-AUTONEWWALLPAPERANDCOLORSBIN'
-
-sudo chmod +x /usr/local/bin/auto-new-wallpaper-and-colors
-
-echo -e "${YELLOW} auto-new-wallpaper-and-colors BIN END ${NC}"
-
-# Extract New-Colors file
-if [ ! -f ~/.config/qtile/extract_colors.py ]; then
-cat << "EXTRACTCOLORS" > ~/.config/qtile/extract_colors.py
-import sys
-import os
-import colorgram
-from PIL import Image, ImageDraw, ImageFont
-
-def rgb_to_hex(rgb):
-    return '#{:02x}{:02x}{:02x}'.format(rgb[0], rgb[1], rgb[2])
-
-def luminance(rgb):
-    r, g, b = rgb[0]/255.0, rgb[1]/255.0, rgb[2]/255.0
-    a = [r, g, b]
-    for i in range(len(a)):
-        if a[i] <= 0.03928:
-            a[i] = a[i] / 12.92
-        else:
-            a[i] = ((a[i] + 0.055) / 1.055) ** 2.4
-    return 0.2126 * a[0] + 0.7152 * a[1] + 0.0722 * a[2]
-
-def choose_text_color(background_color):
-    if luminance(background_color) > 0.5:
-        return (0, 0, 0)  # dark text for light background
-    else:
-        return (255, 255, 255)  # light text for dark background
-
-def create_color_grid(colors, base16_colors, filename='color_grid.png'):
-    grid_size = 4  # 4x4 grid
-    square_size = 150  # Size of each small square
-    img_size = square_size * grid_size  # Calculate total image size
-
-    img = Image.new('RGB', (img_size, img_size))
-    draw = ImageDraw.Draw(img)
-
-    # Load a font
-    try:
-        font = ImageFont.truetype("arial.ttf", 30)
-    except IOError:
-        font = ImageFont.load_default()
-
-    # Fill the grid with colors and add text labels
-    for i, (key, value) in enumerate(base16_colors.items()):
-        x = (i % grid_size) * square_size
-        y = (i // grid_size) * square_size
-        draw.rectangle([x, y, x + square_size, y + square_size], fill=value)
-        # Choose text color based on background color luminance
-        text_color = choose_text_color(tuple(int(value[i:i+2], 16) for i in (1, 3, 5)))
-        # Add text label
-        text_position = (x + 10, y + 10)
-        draw.text(text_position, key, fill=text_color, font=font)
-
-    img.save(filename)
-
-
-def main(image_path):
-    colors = colorgram.extract(image_path, 16)
-
-    # Ensure there are exactly 16 colors by duplicating if necessary
-    while len(colors) < 16:
-        colors.append(colors[len(colors) % len(colors)])
-
-    # Sort colors by luminance
-    colors.sort(key=lambda col: luminance(col.rgb))
-
-    # Assign colors to Base16 scheme slots ensuring the tonal range
-    base16_colors = {
-        'base00': rgb_to_hex(colors[0].rgb),
-        'base01': rgb_to_hex(colors[5].rgb),
-        'base02': rgb_to_hex(colors[12].rgb),
-        'base03': rgb_to_hex(colors[9].rgb),
-        'base04': rgb_to_hex(colors[4].rgb),
-        'base05': rgb_to_hex(colors[10].rgb),
-        'base06': rgb_to_hex(colors[6].rgb),
-        'base07': rgb_to_hex(colors[14].rgb),
-        'base08': rgb_to_hex(colors[2].rgb),
-        'base09': rgb_to_hex(colors[3].rgb),
-        'base0A': rgb_to_hex(colors[1].rgb),
-        'base0B': rgb_to_hex(colors[11].rgb),
-        'base0C': rgb_to_hex(colors[8].rgb),
-        'base0D': rgb_to_hex(colors[13].rgb),
-        'base0E': rgb_to_hex(colors[7].rgb),
-        'base0F': rgb_to_hex(colors[15].rgb),
-    }
-
-    descriptions = [
-        "Default Background",
-        "Lighter Background (Used for status bars, line number and folding marks)",
-        "Selection Background",
-        "Comments, Invisibles, Line Highlighting",
-        "Dark Foreground (Used for status bars)",
-        "Default Foreground, Caret, Delimiters, Operators",
-        "Light Foreground (Not often used)",
-        "Light Background (Not often used)",
-        "Variables, XML Tags, Markup Link Text, Markup Lists, Diff Deleted",
-        "Integers, Boolean, Constants, XML Attributes, Markup Link Url",
-        "Classes, Markup Bold, Search Text Background",
-        "Strings, Inherited Class, Markup Code, Diff Inserted",
-        "Support, Regular Expressions, Escape Characters, Markup Quotes",
-        "Functions, Methods, Attribute IDs, Headings",
-        "Keywords, Storage, Selector, Markup Italic, Diff Changed",
-        "Deprecated, Opening/Closing Embedded Language Tags",
-    ]
-
-    # Ensure the directory exists
-    qtile_config_dir = os.path.expanduser('~/.config/qtile/')
-    os.makedirs(qtile_config_dir, exist_ok=True)
-
-    # Path to the output file
-    output_file_path = os.path.join(qtile_config_dir, 'qtile_colors.py')
-
-    # Write the colors to the Python file
-    with open(output_file_path, 'w') as f:
-        f.write("colors = {\n")
-        for key, value in base16_colors.items():
-            description = descriptions.pop(0)
-            f.write(f'    "{key}": "{value}",  # {description}\n')
-        f.write("}\n")
-
-    # Ensure the directory exists
-    kitty_config_dir = os.path.expanduser('~/.config/kitty/themes/')
-    os.makedirs(kitty_config_dir, exist_ok=True)
-
-    # Path to the output file
-    output_file_path = os.path.join(kitty_config_dir, 'kittytheme.conf')
-
-    with open(output_file_path, 'w') as f:
-        f.write(f'background {base16_colors["base00"]}\n')
-        f.write(f'foreground {base16_colors["base0F"]}\n')
-        for index, (_, value) in enumerate(base16_colors.items()):
-            f.write(f'color{index} {value}\n')
-    # Create a PNG file with the extracted colors and labels
-    create_color_grid(colors, base16_colors)
-
-if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: extract_colors.py <image_path>")
-    else:
-        main(sys.argv[1])
-
-EXTRACTCOLORS
-
-else 
-	echo "File ~/.config/qtile/extract_colors.py already exists."
-fi
-
-# -------------------------------------------------------------------------------------------------
-echo -e "${YELLOW} Rofi Run menu START ${NC}"
+# Rofi Run menu START
 if [ ! -d ~/.config/rofi ]; then
 mkdir -p ~/.config/rofi
 
@@ -1152,11 +935,11 @@ else
 	echo "Rofi rofi-common file already exists."
 fi
 
-echo -e "${YELLOW} Rofi Run menu END ${NC}"
+
 
 # Rofi Wifi menu
 # https://github.com/ericmurphyxyz/rofi-wifi-menu/tree/master
-echo -e "${YELLOW} Rofi Wifi menu Start ${NC}"
+
 if [ ! -f ~/.config/rofi/rofi-wifi-menu.sh ]; then
 cat << "ROFIWIFI" > ~/.config/rofi/rofi-wifi-menu.sh
 #!/usr/bin/env bash
@@ -1206,24 +989,9 @@ else
 	echo "Rofi WiFi menu file already exists."
 fi
 
-echo -e "${YELLOW} Rofi Wifi menu END ${NC}"
+check_error "Rofi Run menu"
 
-# -------------------------------------------------------------------------------------------------
-
-#if [ -f /etc/NetworkManager/NetworkManager.conf ]; then
-#sudo sed -i 's/managed=false/managed=true/' /etc/NetworkManager/NetworkManager.conf
-#sudo systemctl restart NetworkManager
-
-#else 
-#	echo "NetworkManager.conf file does not exist."
-#fi
-
-# -------------------------------------------------------------------------------------------------
-
-
-
-# -------------------------------------------------------------------------------------------------
-echo -e "${YELLOW} Kitty config file START ${NC}"
+# Kitty config file START
 
 if [ ! -f ~/.config/kitty/kitty.conf ]; then
 mkdir -p ~/.config/kitty/themes
@@ -1565,16 +1333,14 @@ else
 fi
 
 
-echo -e "${YELLOW} Kitty config file END ${NC}"
+check_error "Kitty config file"
 # -------------------------------------------------------------------------------------------------
 
-# -------------------------------------------------------------------------------------------------
-echo -e "${YELLOW} Edit GRUB BOOT TIMEOUT START ${NC}"
+# Edit GRUB BOOT TIMEOUT START
 sudo sed -i 's+GRUB_TIMEOUT=5+GRUB_TIMEOUT=1+g' /etc/default/grub && sudo update-grub
-echo -e "${YELLOW} Edit GRUB BOOT TIMEOUT END ${NC}"
-# -------------------------------------------------------------------------------------------------
+check_error "GRUB BOOT TIMEOUT"
 
-echo -e "${YELLOW} Install selection choose what to install Start ${NC}"
+# Install selection choose what to install
 for PROGRAM in $PROGRAMS
 do
     case $PROGRAM in
@@ -1613,21 +1379,49 @@ do
             ;;
     esac
 done
-echo -e "${YELLOW} Install selection choose what to install End ${NC}"
+check_error "Install selection choose what to install"
 
 
 # Check for Nvidia graphics card and install drivers ----------------------------------------------
-#
-#if lspci | grep -i nvidia; then
-#    echo "Nvidia graphics card detected. Installing drivers..."
-#    sudo DEBIAN_FRONTEND=noninteractive apt install -y --install-recommends --install-suggests nvidia-driver
-#    echo 'nvidia-settings --assign CurrentMetaMode="nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }"' >> ~/.config/qtile/autostart.sh
-#else
-#    echo "No Nvidia graphics card detected."
-#fi
 
-# -------------------------------------------------------------------------------------------------
-echo -e "${YELLOW} Qtile Config file START ${NC}"
+if lspci | grep -i nvidia; then
+
+    echo "Installing required packages..."
+    sudo apt -y install linux-headers-$(uname -r) gcc make acpid dkms libglvnd-core-dev libglvnd0 libglvnd-dev
+    check_error "package installation"
+
+    echo "Blacklisting nouveau..."
+    BLACKLIST_CONF="/etc/modprobe.d/blacklist.conf"
+    echo "blacklist nouveau" | sudo tee -a $BLACKLIST_CONF
+    check_error "blacklisting nouveau"
+
+    echo "Removing old NVIDIA drivers..."
+    sudo apt remove -y nvidia-* && sudo apt autoremove -y $(dpkg -l nvidia-driver* | grep ii | awk '{print $2}')
+    check_error "removal of old NVIDIA drivers"
+
+    echo "Enabling i386 architecture and installing 32-bit libraries..."
+    sudo dpkg --add-architecture i386 && sudo apt update && sudo apt install -y libc6:i386
+    check_error "installation of i386 libraries"
+
+    echo "Updating GRUB configuration..."
+    GRUB_CONF="/etc/default/grub"
+    sudo sed -i '/^GRUB_CMDLINE_LINUX=/ s/"$/ rd.driver.blacklist=nouveau"/' $GRUB_CONF
+    check_error "updating GRUB configuration"
+    sudo update-grub
+    check_error "GRUB update"
+
+    echo "Downloading and installing NVIDIA driver..."
+    wget https://us.download.nvidia.com/XFree86/Linux-x86_64/550.135/NVIDIA-Linux-x86_64-550.135.run
+    check_error "downloading NVIDIA driver"
+
+    chmod +x NVIDIA-Linux-x86_64-550.135.run
+    sudo ./NVIDIA-Linux-x86_64-550.135.run
+    check_error "NVIDIA driver installation"
+
+    echo 'nvidia-settings --assign CurrentMetaMode="nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }"' >> ~/.config/qtile/autostart.sh
+fi
+
+# Qtile Config file
 
 if [ ! -f ~/.config/qtile/config.py ]; then
 
@@ -1975,8 +1769,7 @@ else
 	echo "Qtile config file already exists."
 fi
 
-# -------------------------------------------------------------------------------------------------
-echo -e "${YELLOW} Qtile Config file END ${NC}"
+check_error "Qtile Config file"
 # -------------------------------------------------------------------------------------------------
 
 # -------------------------------------------------------------------------------------------------
