@@ -1404,8 +1404,7 @@ if lspci | grep -i nvidia; then
     check_error "installation of i386 libraries"
 
     echo "Updating GRUB configuration..."
-    GRUB_CONF="/etc/default/grub"
-    sudo sed -i '/^GRUB_CMDLINE_LINUX=/ s/"$/ rd.driver.blacklist=nouveau"/' $GRUB_CONF
+    sudo sed -i '/^GRUB_CMDLINE_LINUX_DEFAULT=/ s/"$/ rd.driver.blacklist=nouveau"/' /etc/default/grub
     check_error "updating GRUB configuration"
     sudo update-grub
     check_error "GRUB update"
