@@ -132,7 +132,7 @@ else
     exit 1
 fi
 
-echo -e "${GREEN} Install selection choose what to install Start ${NC}"
+# Install selection choose what to install
 
 PROGRAMS=$(whiptail --title "The Install selection" --checklist --separate-output \
 "Choose what to install:" 20 78 15 \
@@ -200,15 +200,15 @@ check_error "TXT"
 # -------------------------------------------------------------------------------------------------
 
 clear
-echo -e "${YELLOW} Core System APT install ${NC}"
+# Core System APT install
 sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install xserver-xorg x11-utils xinit arandr autorandr picom fwupd mesa-utils htop wget curl git tmux numlockx kitty cups xsensors xbacklight brightnessctl unzip network-manager dunst libnotify-bin notify-osd xautolock xsecurelock pm-utils rofi imagemagick nitrogen nsxiv mpv flameshot speedcrunch mc thunar gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq fontconfig fontconfig-config fonts-liberation fonts-dejavu-core fonts-freefont-ttf fonts-noto-core libfontconfig1 fonts-arkpandora pipewire pipewire-pulse wireplumber pipewire-alsa libspa-0.2-bluetooth pavucontrol alsa-utils qpwgraph sddm-theme-maui ffmpeg
 sudo DEBIAN_FRONTEND=noninteractive apt -y install linux-headers-$(uname -r)
 sudo DEBIAN_FRONTEND=noninteractive apt -y install sddm --no-install-recommends
 
 clear
 check_error "Core System APT install"
-# -------------------------------------------------------------------------------------------------
-echo -e "${YELLOW} Audio Start - https://alsa.opensrc.org - https://wiki.debian.org/ALSA ${NC}"
+
+# Audio Start - https://alsa.opensrc.org - https://wiki.debian.org/ALSA
 # See hardware run: "pacmd list-sinks" or "lspci | grep -i audio" or... sudo dmesg  | grep 'snd\|firmware\|audio'
 # Run.: "pw-cli info" provides detailed information about the PipeWire nodes and devices, including ALSA devices.
 # Test file run: "aplay /usr/share/sounds/alsa/Front_Center.wav"
@@ -226,7 +226,9 @@ systemctl enable --user --now pipewire.socket pipewire-pulse.socket wireplumber.
 # systemctl --user enable pulseaudio
 
 # sudo alsactl init
-check_error "TXT"
+clear
+check_error "Audio Core System APT install"
+
 
 # CPU Microcode install
 export LC_ALL=C # All subsequent command output will be in English
@@ -249,7 +251,8 @@ else
 fi
 unset LC_ALL # unset the LC_ALL=C 
 
-check_error "TXT"
+clear
+check_error "CPU Microcode install"
 
 # Alias echo to ~/.bashrc
 echo 'alias ls="ls --color=auto --group-directories-first -v -lah"' >> ~/.bashrc
@@ -261,7 +264,8 @@ echo 'alias qtileconfig="nano ~/.config/qtile/config.py"' >> ~/.bashrc
 echo 'alias qtileconfig-test="python3 .config/qtile/config.py"' >> ~/.bashrc
 echo 'alias qtileconfig-test-venv="source .local/src/qtile_venv/bin/activate && python3 .config/qtile/config.py && deactivate"' >> ~/.bashrc
 
-check_error "TXT"
+clear
+check_error "Alias echo"
 
 
 # Set User folders via xdg-user-dirs-update & xdg-mime default.
@@ -274,17 +278,17 @@ xdg-mime default nsxiv.desktop image/jpeg
 xdg-mime default nsxiv.desktop image/png
 xdg-mime default thunar.desktop inode/directory
 
-check_error "TXT"
+check_error "Set User folders"
 
 # Qtile Core Dependencies apt install
 sudo DEBIAN_FRONTEND=noninteractive apt install -y feh python3-full python3-pip python3-venv pipx libxkbcommon-dev libxkbcommon-x11-dev libcairo2-dev pkg-config 
-check_error "TXT"
+check_error "Qtile Core Dependencies apt install"
 
 # PyWAL install via pipx for auto-generated color themes
 pipx install pywal16
 pipx ensurepath
 # wal --cols16 darken -q -i $HOME/Wallpapers
-check_error "TXT"
+check_error "pipx install"
 
 # Install Qtile from source via github and Pip
 cd ~
@@ -322,7 +326,7 @@ bin/pip install qtile/.
 deactivate
 
 cp ~/.local/src/qtile_venv/bin/qtile ~/.local/bin/
-check_error "TXT"
+check_error "qtile_venv"
 # ------------------------------------------------------------------------
 
 sudo mkdir -p /usr/share/xsessions/
@@ -337,7 +341,7 @@ QTILEDESKTOP'
 
 # Add .xsession
 touch ~/.xsession && echo "qtile start" > ~/.xsession
-check_error "TXT"
+check_error "Add Qtile .xsession"
 
 # Qtile Autostart.sh file
 mkdir -p ~/.config/qtile/
@@ -372,7 +376,7 @@ chmod +x ~/.config/qtile/autostart.sh
 else 
 	echo "File autostart.sh already exists."
 fi
-check_error "TXT"
+check_error "Qtile Autostart.sh file"
 
 # Qtile Colors.sh file
 if [ ! -f ~/.config/qtile/qtile_colors.py ]; then
@@ -401,12 +405,12 @@ else
 	echo "File qtile_colors.py already exists."
 fi
 
-check_error "TXT"
+check_error "Qtile Colors.sh file"
 
 # -------------------------------------------------------------------------------------------------
 # Add User NOPASSWD to shutdown now and reboot
 echo "$USER ALL=(ALL) NOPASSWD: /sbin/shutdown now, /sbin/reboot" | sudo tee /etc/sudoers.d/$USER && sudo visudo -c -f /etc/sudoers.d/$USER
-check_error "TXT"
+check_error "dd User NOPASSWD to shutdown now and reboot"
 
 # MPD Setup & config START
 
@@ -488,7 +492,7 @@ fi
 # mpd --stderr --no-daemon --verbose
 # aplay --list-pcm
 
-check_error "TXT"
+check_error "MPD Setup & config"
 
 # Nano config START
 if [ ! -f ~/.nanorc ]; then
@@ -500,13 +504,13 @@ if [ ! -f ~/.nanorc ]; then
 else 
 	echo "File .nanorc already exists."
 fi
-check_error "TXT"
+check_error "Nano config"
 
 #  Wallpapers START
 
 if [ ! -d ~/Wallpapers ]; then
 mkdir -p ~/Wallpapers
-echo -e "${GREEN} Download some wallpaper, Please wait..."
+#echo -e "${GREEN} Download some wallpaper, Please wait..."
 
 wget -O ~/Wallpapers/default_wallpaper.jpg https://github.com/ITmail-dk/qmade/blob/main/default_wallpaper.jpg?raw=true
 
@@ -514,7 +518,7 @@ else
 	echo "Wallpapers folder already exists."
 fi
 
-check_error "TXT"
+check_error "Wallpapers"
 
 # Nitrogen - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Download some wallpapers from https://unsplash.com/wallpapers
@@ -552,7 +556,7 @@ else
 	echo "Nitrogen config file already exists."
 fi
 
-check_error "TXT"
+check_error "Nitrogen config"
 
 # Neovim config Start
 
@@ -570,7 +574,7 @@ else
 	echo "Neovim config file already exists."
 fi
 
-check_error "TXT"
+check_error "Neovim config"
 
 # Kitty theme.conf Start
 
@@ -602,7 +606,7 @@ else
 	echo "kittytheme.conf file already exists."
 fi
 
-check_error "TXT"
+check_error "Kitty config"
 
 # Tmux config Start
 
@@ -618,7 +622,7 @@ else
 	echo "Tmux config file already exists."
 fi
 
-check_error "TXT"
+check_error "Tmux config"
 
 # -------------------------------------------------------------------------------------------------
 
@@ -636,7 +640,7 @@ check_error "TXT"
 
 
 # Themes START
-echo -e "${YELLOW} Nerd Fonts START - https://www.nerdfonts.com/font-downloads - https://www.nerdfonts.com/cheat-sheet - - - ${NC}"
+# Nerd Fonts - https://www.nerdfonts.com/font-downloads - https://www.nerdfonts.com/cheat-sheet
 if [ ! -d ~/.fonts ]; then
 mkdir -p ~/.fonts
 
@@ -663,7 +667,7 @@ unzip -q -n /tmp/DejaVuSansMono.zip -d ~/.fonts
 rm -f ~/.fonts/*.md
 rm -f ~/.fonts/*.txt
 
-check_error "TXT"
+check_error "Themes"
 # -------------------------------------------------------------------------------------------------
 
 # -------------------------------------------------------------------------------------------------
@@ -768,7 +772,7 @@ sudo sed -i 's/Adwaita/Nordzy-cursors/g' /usr/share/icons/default/index.theme
 
 sudo fc-cache -fv
 
-check_error "TXT"
+check_error "GTK Settings & Fonts"
 
 # -------------------------------------------------------------------------------------------------
 
@@ -813,7 +817,7 @@ fi
 #	echo "/etc/X11/Xsession.d/90_xrandr-set-max already exists."
 #fi
 
-check_error "xrandr-set-max"
+check_error "xrandr-set-max file"
 # -------------------------------------------------------------------------------------------------
 
 # -------------------------------------------------------------------------------------------------
@@ -991,7 +995,7 @@ fi
 
 check_error "Rofi Run menu"
 
-# Kitty config file START
+# Kitty config file
 
 if [ ! -f ~/.config/kitty/kitty.conf ]; then
 mkdir -p ~/.config/kitty/themes
@@ -1336,7 +1340,7 @@ fi
 check_error "Kitty config file"
 # -------------------------------------------------------------------------------------------------
 
-# Edit GRUB BOOT TIMEOUT START
+# Edit GRUB BOOT TIMEOUT
 sudo sed -i 's+GRUB_TIMEOUT=5+GRUB_TIMEOUT=1+g' /etc/default/grub && sudo update-grub
 check_error "GRUB BOOT TIMEOUT"
 
@@ -1404,7 +1408,8 @@ if lspci | grep -i nvidia; then
     check_error "installation of i386 libraries"
 
     echo "Updating GRUB configuration..."
-    sudo sed -i '/^GRUB_CMDLINE_LINUX_DEFAULT=/ s/"$/ rd.driver.blacklist=nouveau"/' /etc/default/grub
+    GRUB_CONF="/etc/default/grub"
+    sudo sed -i '/^GRUB_CMDLINE_LINUX_DEFAULT=/ s/"$/ rd.driver.blacklist=nouveau"/' $GRUB_CONF
     check_error "updating GRUB configuration"
     sudo update-grub
     check_error "GRUB update"
