@@ -184,7 +184,7 @@ else
         echo "contrib non-free is already present in /etc/apt/sources.list"
     fi
 fi
-check_error "TXT"
+check_error "Sources list"
 
 # APT Add - apt-transport-https
 if ! dpkg -s apt-transport-https >/dev/null 2>&1; then
@@ -196,7 +196,7 @@ fi
 
 clear
 sudo apt update
-check_error "TXT"
+check_error "APT Update"
 # -------------------------------------------------------------------------------------------------
 
 clear
@@ -288,7 +288,28 @@ check_error "Qtile Core Dependencies apt install"
 pipx install pywal16
 pipx ensurepath
 # wal --cols16 darken -q -i $HOME/Wallpapers
-check_error "pipx install"
+check_error "Pipx install"
+
+
+# auto-new-wallpaper-and-colors BIN
+sudo bash -c 'cat << "AUTONEWWALLPAPERANDCOLORSBIN" >> /usr/local/bin/auto-new-wallpaper-and-colors
+#!/usr/bin/env bash
+#export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$HOME/.local/bin
+
+wal --cols16 darken -q -i $HOME/Wallpapers
+
+notify-send -u low "Automatically new background and color theme" "Please wait while we find a new background image and some colors to match"
+
+qtile cmd-obj -o cmd -f reload_config
+kitty +kitten themes --reload-in=all Kittytheme
+
+notify-send -u low "Automatically new background and color theme" "The background image and colors has been updated."
+
+AUTONEWWALLPAPERANDCOLORSBIN'
+
+sudo chmod +x /usr/local/bin/auto-new-wallpaper-and-colors
+
+check_error "auto-new-wallpaper-and-colors bin"
 
 # Install Qtile from source via github and Pip
 cd ~
@@ -410,7 +431,7 @@ check_error "Qtile Colors.sh file"
 # -------------------------------------------------------------------------------------------------
 # Add User NOPASSWD to shutdown now and reboot
 echo "$USER ALL=(ALL) NOPASSWD: /sbin/shutdown now, /sbin/reboot" | sudo tee /etc/sudoers.d/$USER && sudo visudo -c -f /etc/sudoers.d/$USER
-check_error "dd User NOPASSWD to shutdown now and reboot"
+check_error "Sudo User NOPASSWD to shutdown now and reboot"
 
 # MPD Setup & config START
 
@@ -510,7 +531,7 @@ check_error "Nano config"
 
 if [ ! -d ~/Wallpapers ]; then
 mkdir -p ~/Wallpapers
-#echo -e "${GREEN} Download some wallpaper, Please wait..."
+# Download some wallpaper, Please wait..."
 
 wget -O ~/Wallpapers/default_wallpaper.jpg https://github.com/ITmail-dk/qmade/blob/main/default_wallpaper.jpg?raw=true
 
@@ -1494,7 +1515,7 @@ keys = [
     Key([mod], "r", lazy.spawn(runmenu), desc="Run Menu"),
     Key([mod, "shift"], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
     Key([mod, "control", "mod1"], "l", lazy.spawn(os.path.expanduser("xsecurelock")), desc="Computer Lockdown"),
-    Key([mod, "control", "mod1"], "t", lazy.spawn(os.path.expanduser("wal --cols16 darken -q -i $HOME/Wallpapers")), desc="Random Theme"),
+    Key([mod, "control", "mod1"], "t", lazy.spawn(os.path.expanduser("auto-new-wallpaper-and-colors")), desc="Random Color Theme from Wallpaper"),
     Key([mod, "control", "mod1"], "w", lazy.spawn(os.path.expanduser("~/.config/rofi/rofi-wifi-menu.sh")), desc="WiFi Manager"),
     Key([mod, "control", "mod1"], "n", lazy.spawn(os.path.expanduser("kitty -e sudo nmtui")), desc="Network Manager"),
 
