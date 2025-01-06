@@ -256,10 +256,12 @@ check_error "CPU Microcode install"
 
 # Alias echo to ~/.bashrc
 echo 'alias ls="ls --color=auto --group-directories-first -v -lah"' >> ~/.bashrc
+echo 'alias df="df -h"' >> ~/.bashrc
 echo 'alias upup="sudo apt update && sudo apt upgrade -y && sudo apt clean && sudo apt autoremove -y"' >> ~/.bashrc
 echo 'bind '"'"'"\C-f":"open "$(fzf)"\n"'"'" >> ~/.bashrc
-echo "bind 'set show-all-if-ambiguous on'" >> ~/.bashrc
-echo "bind 'TAB:menu-complete'" >> ~/.bashrc
+
+#echo "bind 'set show-all-if-ambiguous on'" >> ~/.bashrc
+#echo "bind 'TAB:menu-complete'" >> ~/.bashrc
 echo 'alias qtileconfig="nano ~/.config/qtile/config.py"' >> ~/.bashrc
 echo 'alias qtileconfig-test="python3 .config/qtile/config.py"' >> ~/.bashrc
 echo 'alias qtileconfig-test-venv="source .local/src/qtile_venv/bin/activate && python3 .config/qtile/config.py && deactivate"' >> ~/.bashrc
@@ -290,11 +292,69 @@ pipx ensurepath
 # wal --cols16 darken -q -i $HOME/Wallpapers
 check_error "Pipx install"
 
+mkdir -p ~/.cache/wal
+cat << "PYWALCOLORSJSON" > ~/.cache/wal/colors.json
+{
+    "checksum": "2e7aed21e3ddcc643b1a0b396fa6c986",
+    "wallpaper": "~/Wallpapers/default_wallpaper.png",
+    "alpha": "100",
+
+    "special": {
+        "background": "#1f212f",
+        "foreground": "#c7c7cb",
+        "cursor": "#c7c7cb"
+    },
+    "colors": {
+        "color0": "#1f212f",
+        "color1": "#647691",
+        "color2": "#738296",
+        "color3": "#7e8a9d",
+        "color4": "#968593",
+        "color5": "#8592a3",
+        "color6": "#8898a9",
+        "color7": "#989aa2",
+        "color8": "#66687d",
+        "color9": "#869EC2",
+        "color10": "#9AAEC9",
+        "color11": "#A8B9D2",
+        "color12": "#C9B2C5",
+        "color13": "#B2C3DA",
+        "color14": "#B6CBE2",
+        "color15": "#c7c7cb"
+    }
+}
+
+PYWALCOLORSJSON
+check_error "pywal colors json"
+
+mkdir -p ~/.config/kitty
+cat << "PYWALCOLORSKITTY" > ~/.config/kitty/current-theme.conf 
+background #1e3143
+foreground #cec7bc
+color0 #1e3143
+color1 #708191
+color2 #bcc2be
+color3 #9ea5a3
+color4 #717c7a
+color5 #a9a5a8
+color6 #788483
+color7 #c1c6c3
+color8 #254657
+color9 #496c80
+color10 #28415a
+color11 #b1aea6
+color12 #849aa3
+color13 #c6c0b6
+color14 #648896
+color15 #cec7bc
+
+PYWALCOLORSKITTY
+check_error "pywal colors kitty"
+
 
 # auto-new-wallpaper-and-colors BIN
 sudo bash -c 'cat << "AUTONEWWALLPAPERANDCOLORSBIN" >> /usr/local/bin/auto-new-wallpaper-and-colors
 #!/usr/bin/env bash
-#export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$HOME/.local/bin
 
 wal --cols16 darken -q -i $HOME/Wallpapers
 
