@@ -308,8 +308,14 @@ notify-send -u low "Automatically new background and color theme" "The backgroun
 AUTONEWWALLPAPERANDCOLORSBIN'
 
 sudo chmod +x /usr/local/bin/auto-new-wallpaper-and-colors
-
 check_error "auto-new-wallpaper-and-colors bin"
+
+
+#Midnight Commander
+mkdir -p $HOME/.config/mc
+echo "skin=dark" >> $HOME/.config/mc/ini
+check_error "Midnight Commander config"
+
 
 # Install Qtile from source via github and Pip
 cd ~
