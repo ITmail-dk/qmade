@@ -313,7 +313,7 @@ check_error "auto-new-wallpaper-and-colors bin"
 
 #Midnight Commander
 mkdir -p $HOME/.config/mc
-echo "skin=nicedark" >> $HOME/.config/mc/ini
+echo "skin=dark" >> $HOME/.config/mc/ini
 check_error "Midnight Commander config"
 
 
