@@ -432,7 +432,7 @@ else
 	echo "File qtile_colors.py already exists."
 fi
 
-check_error "Qtile Colors.sh file"
+check_error "Qtile Colors file"
 
 # -------------------------------------------------------------------------------------------------
 # Add User NOPASSWD to shutdown now and reboot
@@ -605,9 +605,9 @@ check_error "Neovim config"
 
 # Kitty theme.conf Start
 
-if [ ! -f $HOME/.config/kitty/themes/kittytheme.conf ]; then
-mkdir -p $HOME/.config/kitty/themes
-cat << "KITTYTHEMECONF" > $HOME/.config/kitty/themes/kittytheme.conf
+if [ ! -f $HOME/.cache/wal/colors-kitty.conf ]; then
+mkdir -p $HOME/.cache/wal
+cat << "KITTYTHEMECONF" > $HOME/.cache/wal/colors-kitty.conf
 background #1b0200
 foreground #ee712d
 color0 #1b0200
@@ -1355,7 +1355,7 @@ map kitty_mod+delete clear_terminal reset active
 map kitty_mod+f5 load_config_file
 map kitty_mod+f6 debug_config
 
-include ~/.config/kitty/themes/kittytheme.conf
+include ~/.cache/wal/colors-kitty.conf
 
 KITTYCONFIG
 
@@ -1493,7 +1493,10 @@ def guess_browser():
 
 # Custom code end ------------------------------------------------------
 
-# Colors use example active=colors["3"],
+#Pywal Colors
+#color = os.path.expanduser('~/.cache/wal/colors.json')
+
+# Colors use example active=color["3"],
 
 
 mod = "mod4"
