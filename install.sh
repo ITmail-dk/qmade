@@ -409,22 +409,22 @@ check_error "Qtile Autostart.sh file"
 if [ ! -f ~/.config/qtile/qtile_colors.py ]; then
 cat << "QTILECOLORS" > ~/.config/qtile/qtile_colors.py
 colors = {
-    "base00": "#1b0200",  # Default Background
-    "base01": "#240002",  # Lighter Background (Used for status bars, line number and folding marks)
-    "base02": "#d74d00",  # Selection Background
-    "base03": "#d74d00",  # Comments, Invisibles, Line Highlighting
-    "base04": "#9c2101",  # Dark Foreground (Used for status bars)
-    "base05": "#d74d00",  # Default Foreground, Caret, Delimiters, Operators
-    "base06": "#d74d00",  # Light Foreground (Not often used)
-    "base07": "#d74d00",  # Light Background (Not often used)
-    "base08": "#d74d00",  # Variables, XML Tags, Markup Link Text, Markup Lists, Diff Deleted
-    "base09": "#830508",  # Integers, Boolean, Constants, XML Attributes, Markup Link Url
-    "base0A": "#d74d00",  # Classes, Markup Bold, Search Text Background
-    "base0B": "#d74d00",  # Strings, Inherited Class, Markup Code, Diff Inserted
-    "base0C": "#9a292f",  # Support, Regular Expressions, Escape Characters, Markup Quotes
-    "base0D": "#e46324",  # Functions, Methods, Attribute IDs, Headings
-    "base0E": "#ea6f10",  # Keywords, Storage, Selector, Markup Italic, Diff Changed
-    "base0F": "#ee712d",  # Deprecated, Opening/Closing Embedded Language Tags
+    "Color0": "#1b0200",  # Default Background
+    "Color1": "#240002",  # Lighter Background (Used for status bars, line number and folding marks)
+    "Color2": "#d74d00",  # Selection Background
+    "Color3": "#d74d00",  # Comments, Invisibles, Line Highlighting
+    "Color4": "#9c2101",  # Dark Foreground (Used for status bars)
+    "Color5": "#d74d00",  # Default Foreground, Caret, Delimiters, Operators
+    "Color6": "#d74d00",  # Light Foreground (Not often used)
+    "Color7": "#d74d00",  # Light Background (Not often used)
+    "Color8": "#d74d00",  # Variables, XML Tags, Markup Link Text, Markup Lists, Diff Deleted
+    "Color9": "#830508",  # Integers, Boolean, Constants, XML Attributes, Markup Link Url
+    "ColorA": "#d74d00",  # Classes, Markup Bold, Search Text Background
+    "ColorB": "#d74d00",  # Strings, Inherited Class, Markup Code, Diff Inserted
+    "ColorC": "#9a292f",  # Support, Regular Expressions, Escape Characters, Markup Quotes
+    "ColorD": "#e46324",  # Functions, Methods, Attribute IDs, Headings
+    "ColorE": "#ea6f10",  # Keywords, Storage, Selector, Markup Italic, Diff Changed
+    "ColorF": "#ee712d",  # Deprecated, Opening/Closing Embedded Language Tags
 }
 QTILECOLORS
 
@@ -1460,7 +1460,7 @@ cat << "QTILECONFIG" > ~/.config/qtile/config.py
 # Qtile Config - Start
 # https://docs.qtile.org/en/latest/index.html
 # -',.-'-,.'-,'.-',.-',-.'-,.'-,.'-,.'-,'.-',.-'-
-#
+
 import os
 import subprocess
 import json
@@ -1468,8 +1468,6 @@ from libqtile import bar, layout, qtile, widget, hook
 from libqtile.config import Click, Drag, Group, Key, Match, Screen, ScratchPad, DropDown, re
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal # terminal = guess_terminal()
-#from qtile_colors import colors
-#from libqtile.dgroups import simple_key_binder
 
 
 # Custom code start ----------------------------------------------------
@@ -1694,8 +1692,8 @@ groups.append(ScratchPad("scratchpad", [
 def init_layout_theme():
     return {"margin":5,
             "border_width":1,
-            "border_focus": colors["base06"],
-            "border_normal": colors["base02"]
+            "border_focus": Color6,
+            "border_normal": Color2
             }
 
 layout_theme = init_layout_theme()
@@ -1730,7 +1728,7 @@ screens = [
             [
                 widget.CurrentLayoutIcon(scale=0.7, padding=10),
                 widget.Spacer(length=5),
-                widget.GroupBox(fontsize=18, highlight_method="text", this_current_screen_border="#f7f7f7", highlight_color=colors["base0B"], this_screen_border=colors["base04"], urgent_border=colors["base03"], active=colors["base05"], inactive=colors["base03"], rounded="False", borderwidth=0),                widget.Spacer(length=9),
+                widget.GroupBox(fontsize=18, highlight_method="text", this_current_screen_border="#f7f7f7", highlight_color=Color3, this_screen_border=Color4, urgent_border=Color3, active=Color5, inactive=Color3, rounded="False", borderwidth=0),                widget.Spacer(length=9),
                 widget.Prompt(),
                 widget.Spacer(),
                 widget.WindowName(width=bar.CALCULATED, max_chars=120),
@@ -1748,7 +1746,7 @@ screens = [
                 #widget.QuickExit(default_text="LOGOUT", countdown_format="     {}     "),
                 widget.Spacer(length=20),
             ], 30, # Define bar height
-            background=colors["base00"], opacity=0.95, # Bar background color can also take transparency with "hex color code" or .75
+            background=Color0, opacity=0.95, # Bar background color can also take transparency with "hex color code" or .75
             margin=[5, 5, 0, 5], # Space around bar as int or list of ints [N E S W]
             border_width=[0, 0, 0, 0],  # Width of border as int of list of ints [N E S W]
             border_color=["f7f7f7", "f7f7f7", "f7f7f7", "f7f7f7"]  # Border colour as str or list of str [N E S W]
