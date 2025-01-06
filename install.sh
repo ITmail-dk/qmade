@@ -539,7 +539,7 @@ if [ ! -d ~/Wallpapers ]; then
 mkdir -p ~/Wallpapers
 # Download some wallpaper, Please wait..."
 
-wget -O ~/Wallpapers/default_wallpaper.jpg https://github.com/ITmail-dk/qmade/blob/main/default_wallpaper.jpg?raw=true
+wget -O ~/Wallpapers/default_wallpaper.png https://github.com/ITmail-dk/qmade/blob/main/default_wallpaper.png?raw=true
 
 else 
 	echo "Wallpapers folder already exists."
@@ -555,7 +555,7 @@ mkdir -p ~/.config/nitrogen
 if [ ! -f ~/.config/nitrogen/bg-saved.cfg ]; then
 touch ~/.config/nitrogen/bg-saved.cfg
 echo "[xin_-1]" >> ~/.config/nitrogen/bg-saved.cfg
-echo "file=$HOME/Wallpapers/default-wallpaper.jpg" >> ~/.config/nitrogen/bg-saved.cfg
+echo "file=$HOME/Wallpapers/default-wallpaper.png" >> ~/.config/nitrogen/bg-saved.cfg
 echo "mode=5" >> ~/.config/nitrogen/bg-saved.cfg
 echo "bgcolor=#2E3440" >> ~/.config/nitrogen/bg-saved.cfg
 else 
@@ -1755,7 +1755,7 @@ screens = [
         # By default we handle these events delayed to already improve performance, however your system might still be struggling
         # This variable is set to None (no cap) by default, but you can set it to 60 to indicate that you limit it to 60 events per second
         # x11_drag_polling_rate = 60,
-        #wallpaper="~/Wallpapers/default-wallpaper.jpg",
+        #wallpaper="~/Wallpapers/default-wallpaper.png",
         #wallpaper_mode="fill"
     ),
 ]
