@@ -301,7 +301,7 @@ wal --cols16 darken -q -i $HOME/Wallpapers
 notify-send -u low "Automatically new background and color theme" "Please wait while we find a new background image and some colors to match"
 
 qtile cmd-obj -o cmd -f reload_config
-kitty +kitten themes --reload-in=all Kittytheme
+kitty +kitten themes --reload-in=all current-theme
 
 notify-send -u low "Automatically new background and color theme" "The background image and colors has been updated."
 
@@ -313,7 +313,7 @@ check_error "auto-new-wallpaper-and-colors bin"
 
 #Midnight Commander
 mkdir -p $HOME/.config/mc
-echo "skin=dark" >> $HOME/.config/mc/ini
+echo "skin=nicedark" >> $HOME/.config/mc/ini
 check_error "Midnight Commander config"
 
 
