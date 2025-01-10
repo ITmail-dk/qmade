@@ -196,7 +196,7 @@ fi
 
 clear
 sudo apt update
-check_error "APT Update"
+check_error "APT Sources list and APT Update"
 # -------------------------------------------------------------------------------------------------
 
 clear
@@ -434,7 +434,7 @@ check_error "Add Qtile .xsession"
 mkdir -p ~/.config/qtile/
 if [ ! -f ~/.config/qtile/autostart.sh ]; then
 cat << "QTILEAUTOSTART" > ~/.config/qtile/autostart.sh
-#!/bin/sh
+#!/usr/bin/env bash
 pgrep -x picom > /dev/null || picom -b &
 autorandr --change &&
 
@@ -443,7 +443,8 @@ autorandr --change &&
 if [ -f ~/.fehbg ]; then
     . ~/.fehbg
 else
-    feh --bg-scale $(find $HOME/Wallpapers -type f | shuf -n 1)
+    auto-new-wallpaper-and-colors
+    #feh --bg-scale $(find $HOME/Wallpapers -type f | shuf -n 1)
 fi
 
 wpctl set-volume @DEFAULT_AUDIO_SINK@ 10% &
@@ -465,34 +466,6 @@ else
 fi
 check_error "Qtile Autostart.sh file"
 
-# Qtile Colors.sh file
-if [ ! -f ~/.config/qtile/qtile_colors.py ]; then
-cat << "QTILECOLORS" > ~/.config/qtile/qtile_colors.py
-colors = {
-    "Color0": "#1b0200",  # Default Background
-    "Color1": "#240002",  # Lighter Background (Used for status bars, line number and folding marks)
-    "Color2": "#d74d00",  # Selection Background
-    "Color3": "#d74d00",  # Comments, Invisibles, Line Highlighting
-    "Color4": "#9c2101",  # Dark Foreground (Used for status bars)
-    "Color5": "#d74d00",  # Default Foreground, Caret, Delimiters, Operators
-    "Color6": "#d74d00",  # Light Foreground (Not often used)
-    "Color7": "#d74d00",  # Light Background (Not often used)
-    "Color8": "#d74d00",  # Variables, XML Tags, Markup Link Text, Markup Lists, Diff Deleted
-    "Color9": "#830508",  # Integers, Boolean, Constants, XML Attributes, Markup Link Url
-    "ColorA": "#d74d00",  # Classes, Markup Bold, Search Text Background
-    "ColorB": "#d74d00",  # Strings, Inherited Class, Markup Code, Diff Inserted
-    "ColorC": "#9a292f",  # Support, Regular Expressions, Escape Characters, Markup Quotes
-    "ColorD": "#e46324",  # Functions, Methods, Attribute IDs, Headings
-    "ColorE": "#ea6f10",  # Keywords, Storage, Selector, Markup Italic, Diff Changed
-    "ColorF": "#ee712d",  # Deprecated, Opening/Closing Embedded Language Tags
-}
-QTILECOLORS
-
-else 
-	echo "File qtile_colors.py already exists."
-fi
-
-check_error "Qtile Colors file"
 
 # -------------------------------------------------------------------------------------------------
 # Add User NOPASSWD to shutdown now and reboot
@@ -668,24 +641,24 @@ check_error "Neovim config"
 if [ ! -f $HOME/.cache/wal/colors-kitty.conf ]; then
 mkdir -p $HOME/.cache/wal
 cat << "KITTYTHEMECONF" > $HOME/.cache/wal/colors-kitty.conf
-background #1b0200
-foreground #ee712d
-color0 #1b0200
-color1 #240002
-color2 #d74d00
-color3 #d74d00
-color4 #9c2101
-color5 #d74d00
-color6 #d74d00
-color7 #d74d00
-color8 #d74d00
-color9 #830508
-color10 #d74d00
-color11 #d74d00
-color12 #9a292f
-color13 #e46324
-color14 #ea6f10
-color15 #ee712d
+background #1e3143
+foreground #cec7bc
+color0 #1e3143
+color1 #708191
+color2 #bcc2be
+color3 #9ea5a3
+color4 #717c7a
+color5 #a9a5a8
+color6 #788483
+color7 #c1c6c3
+color8 #254657
+color9 #496c80
+color10 #28415a
+color11 #b1aea6
+color12 #849aa3
+color13 #c6c0b6
+color14 #648896
+color15 #cec7bc
 
 KITTYTHEMECONF
 
@@ -868,7 +841,7 @@ check_error "GTK Settings & Fonts"
 if [ ! -f /usr/local/bin/xrandr-set-max ]; then
 # Define the content of the script
 xrandrsetmaxcontent=$(cat << "XRANDRSETMAX"
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Get the names of all connected displays
 displays=$(xrandr | awk '/ connected/{print $1}')
@@ -1599,7 +1572,7 @@ keys = [
     Key([mod], "e", lazy.spawn(fileexplorer), desc="File Explorer"),
     Key([mod], "r", lazy.spawn(runmenu), desc="Run Menu"),
     Key([mod, "shift"], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
-    Key([mod, "control", "mod1"], "l", lazy.spawn(os.path.expanduser("xsecurelock")), desc="Computer Lockdown"),
+    Key([mod, "mod1"] "l", lazy.spawn(os.path.expanduser("xsecurelock")), desc="Computer Lockdown"),
     Key([mod, "control", "mod1"], "t", lazy.spawn(os.path.expanduser("auto-new-wallpaper-and-colors")), desc="Random Color Theme from Wallpaper"),
     Key([mod, "control", "mod1"], "w", lazy.spawn(os.path.expanduser("~/.config/rofi/rofi-wifi-menu.sh")), desc="WiFi Manager"),
     Key([mod, "control", "mod1"], "n", lazy.spawn(os.path.expanduser("kitty -e sudo nmtui")), desc="Network Manager"),
