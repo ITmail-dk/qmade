@@ -1433,7 +1433,7 @@ do
             sudo DEBIAN_FRONTEND=noninteractive apt install -y nfs-common
             ;;
         "9")
-            sudo DEBIAN_FRONTEND=noninteractive apt install -y ceph-common
+            sudo DEBIAN_FRONTEND=noninteractive apt install -y ceph-common && echo "# CEPH" | sudo tee -a /etc/fstab && echo "#:/  /mnt/cephfs ceph    name=clientNAME,noatime,_netdev    0       0" | sudo tee -a /etc/fstab
             ;;
         "10")
             cd /tmp/ && wget -O vscode_amd64.deb 'https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64' && sudo DEBIAN_FRONTEND=noninteractive apt install -y /tmp/vscode_amd64.deb && rm vscode_amd64.deb
