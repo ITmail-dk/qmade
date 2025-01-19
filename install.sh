@@ -259,6 +259,7 @@ echo 'alias ls="ls --color=auto --group-directories-first -v -lah"' >> ~/.bashrc
 echo 'alias df="df -h"' >> ~/.bashrc
 echo 'alias upup="sudo apt update && sudo apt upgrade -y && sudo apt clean && sudo apt autoremove -y"' >> ~/.bashrc
 echo 'bind '"'"'"\C-f":"open "$(fzf)"\n"'"'" >> ~/.bashrc
+echo 'alias lsman="compgen -c | fzf | xargs man"' >> ~/.bashrc
 
 #echo "bind 'set show-all-if-ambiguous on'" >> ~/.bashrc
 #echo "bind 'TAB:menu-complete'" >> ~/.bashrc
