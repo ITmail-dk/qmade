@@ -21,7 +21,7 @@ Default Modkey is the Windows key (**MOD4**) and **MOD1** is Alt Left.
 
 **MOD4 + B** = Opens a browser.
 
-**MOD4 + Control + MOD1** = Autogenerate a new background image and color theme,  
+**MOD4 + Control + MOD1 + T** = Autogenerate a new background image and color theme,  
 from the Wallpaper folder in your home directory.
 
 For a quick reference to the keybindings used in Qmade,  
