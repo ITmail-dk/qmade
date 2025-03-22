@@ -325,8 +325,6 @@ cat << "PYWALCOLORSJSON" > ~/.cache/wal/colors.json
     }
 }
 
-
-
 PYWALCOLORSJSON
 check_error "pywal colors json"
 
@@ -389,6 +387,10 @@ color15      {color15}
 PYWALCOLORSTEMPALETKITTY
 
 check_error "pywal colors kitty"
+
+# Set xdg-desktop-portal prefer dark mode.
+gsettings set org.gnome.desktop.interface color-scheme prefer-dark
+check_error "gsettings set color-scheme"
 
 
 # auto-new-wallpaper-and-colors BIN
