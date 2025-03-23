@@ -944,7 +944,8 @@ configuration {
 }
 
 /* The Theme */
-@theme "~/.config/rofi/rofi-colors.rasi"
+#@theme "~/.config/rofi/rofi-colors.rasi"
+@import "~/.cache/wal/colors-rofi-dark"
 
 // Theme location is "/usr/share/rofi/themes/name.rasi"
 //@theme "/usr/share/rofi/themes/Arc-Dark.rasi"
