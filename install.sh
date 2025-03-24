@@ -287,6 +287,14 @@ xdg-mime default thunar.desktop inode/directory
 
 check_error "Set User folders"
 
+sudo rm /usr/share/sddm/faces/.face.icon
+sudo wget -O /usr/share/sddm/faces/.face.icon https://github.com/ITmail-dk/qmade/blob/main/.face.icon?raw=true
+sudo wget -O ~/.face.icon https://github.com/ITmail-dk/qmade/blob/main/.face.icon?raw=true
+
+setfacl -m u:sddm:x ~/
+setfacl -m u:sddm:r ~/.face.icon
+check_error "Set User .face.icon file"
+
 # Qtile Core Dependencies apt install
 sudo DEBIAN_FRONTEND=noninteractive apt install -y feh python3-full python3-pip python3-venv pipx libxkbcommon-dev libxkbcommon-x11-dev libcairo2-dev pkg-config 
 check_error "Qtile Core Dependencies apt install"
@@ -790,8 +798,8 @@ sudo git clone https://github.com/EliverLara/Nordic /tmp/EliverLara-Nordic
 sudo cp -r /tmp/EliverLara-Nordic /usr/share/themes/
 
 sudo rm /usr/share/sddm/themes/debian-theme
-sudo mkdir -p /usr/share/sddm/themes/debian-theme/
-sudo cp -r /tmp/EliverLara-Nordic/kde/sddm/Nordic-darker/* /usr/share/sddm/themes/debian-theme/
+#sudo mkdir -p /usr/share/sddm/themes/debian-theme/
+#sudo cp -r /tmp/EliverLara-Nordic/kde/sddm/Nordic-darker/* /usr/share/sddm/themes/debian-theme/
 
 sudo mkdir -p /usr/share/sddm/themes/Nordic-darker/
 sudo cp -r /tmp/EliverLara-Nordic/kde/sddm/Nordic-darker/* /usr/share/sddm/themes/Nordic-darker/
