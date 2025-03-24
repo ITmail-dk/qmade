@@ -289,13 +289,13 @@ check_error "Set User folders"
 
 sudo rm /usr/share/sddm/faces/.face.icon
 sudo wget -O /usr/share/sddm/faces/.face.icon https://github.com/ITmail-dk/qmade/blob/main/.face.icon?raw=true
-sudo wget -O ~/.face.icon https://github.com/ITmail-dk/qmade/blob/main/.face.icon?raw=true
+wget -O ~/.face.icon https://github.com/ITmail-dk/qmade/blob/main/.face.icon?raw=true
 
 setfacl -m u:sddm:x ~/
 setfacl -m u:sddm:r ~/.face.icon
 
-setfacl -m u:sddm:x /usr/share/sddm/faces/
-setfacl -m u:sddm:r /usr/share/sddm/faces/.face.icon
+sudo setfacl -m u:sddm:x /usr/share/sddm/faces/
+sudo setfacl -m u:sddm:r /usr/share/sddm/faces/.face.icon
 
 check_error "Set User .face.icon file"
 
