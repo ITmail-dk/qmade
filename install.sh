@@ -321,6 +321,15 @@ SDDMCONFIG'
 
 check_error "Setup SDDM"
 
+# Midnight-Commander ini file
+mkdir -p ~/.config/mc
+cat << "MCINI" > ~/.config/mc/ini
+[Midnight-Commander]
+skin=nicedark
+
+MCINI
+check_error "Setup Midnight-Commander ini file"
+
 # Qtile Core Dependencies apt install
 sudo DEBIAN_FRONTEND=noninteractive apt install -y feh python3-full python3-pip python3-venv pipx libxkbcommon-dev libxkbcommon-x11-dev libcairo2-dev pkg-config 
 check_error "Qtile Core Dependencies apt install"
