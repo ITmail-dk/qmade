@@ -293,6 +293,10 @@ sudo wget -O ~/.face.icon https://github.com/ITmail-dk/qmade/blob/main/.face.ico
 
 setfacl -m u:sddm:x ~/
 setfacl -m u:sddm:r ~/.face.icon
+
+setfacl -m u:sddm:x /usr/share/sddm/faces/
+setfacl -m u:sddm:r /usr/share/sddm/faces/.face.icon
+
 check_error "Set User .face.icon file"
 
 # Qtile Core Dependencies apt install
