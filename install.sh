@@ -206,6 +206,9 @@ sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install xserver-xorg
 sudo DEBIAN_FRONTEND=noninteractive apt -y install linux-headers-$(uname -r)
 sudo DEBIAN_FRONTEND=noninteractive apt -y install sddm --no-install-recommends
 
+# Dependencies so the Nordic login theme works
+sudo apt install -y --no-install-recommends plasma-workspace plasma-framework && sudo rm /usr/share/xsessions/plasma.desktop
+
 clear
 check_error "Core System APT install"
 
