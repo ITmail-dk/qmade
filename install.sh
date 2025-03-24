@@ -968,31 +968,32 @@ check_error "Tmux config"
 
 # Themes START
 # Nerd Fonts - https://www.nerdfonts.com/font-downloads - https://www.nerdfonts.com/cheat-sheet
-if [ ! -d ~/.fonts ]; then
-mkdir -p ~/.fonts
+if [ ! -d /usr/share/fonts ]; then
+mkdir -p /usr/share/fonts
 
 else 
-	echo ".fonts already exists."
+	echo "fonts folder already exists."
 fi
 
 # DejaVu Sans Mono font
-wget -P /tmp/ https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/DejaVuSansMono.zip
-unzip -q -n /tmp/DejaVuSansMono.zip -d ~/.fonts
+wget -P /tmp/ https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/DejaVuSansMono.zip
+unzip -q -n /tmp/DejaVuSansMono.zip -d /usr/share/fonts
 
 # Space Mono
-wget -P /tmp/ https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/SpaceMono.zip
-unzip -q -n /tmp/SpaceMono.zip -d ~/.fonts
+wget -P /tmp/ https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/SpaceMono.zip
+unzip -q -n /tmp/SpaceMono.zip -d /usr/share/fonts
 
 # Roboto Mono
-#wget -P /tmp/ https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/RobotoMono.zip
-#unzip -q -n /tmp/RobotoMono.zip -d ~/.fonts
+#wget -P /tmp/ https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/RobotoMono.zip
+#unzip -q -n /tmp/RobotoMono.zip -d /usr/share/fonts
 
 # Fira Mono
-wget -P /tmp/ https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/FiraMono.zip
-unzip -q -n /tmp/FiraMono.zip -d ~/.fonts
+wget -P /tmp/ https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/FiraMono.zip
+unzip -q -n /tmp/FiraMono.zip -d /usr/share/fonts
 
-rm -f ~/.fonts/*.md
-rm -f ~/.fonts/*.txt
+rm -f /usr/share/fonts/*.md
+rm -f /usr/share/fonts/*.txt
+rm -f /usr/share/fonts/LICENSE
 
 check_error "Themes Nerd Fonts"
 # -------------------------------------------------------------------------------------------------
