@@ -204,7 +204,7 @@ check_error "APT Sources list and APT Update"
 
 clear
 # Core System APT install
-sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install xserver-xorg x11-utils xinit arandr autorandr picom fwupd mesa-utils htop wget curl git tmux numlockx kitty cups xsensors xbacklight brightnessctl unzip network-manager dnsutils dunst libnotify-bin notify-osd xautolock xsecurelock pm-utils rofi imagemagick nitrogen nsxiv mpv flameshot speedcrunch mc thunar gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq fontconfig fontconfig-config fonts-liberation fonts-dejavu-core fonts-freefont-ttf fonts-noto-core libfontconfig1 fonts-arkpandora pipewire pipewire-pulse wireplumber pipewire-alsa libspa-0.2-bluetooth pavucontrol alsa-utils qpwgraph sddm-theme-debian-maui ffmpeg
+sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install xserver-xorg x11-utils xinit arandr autorandr picom fwupd mesa-utils htop wget curl git tmux numlockx kitty cups xsensors xbacklight brightnessctl unzip network-manager dnsutils dunst libnotify-bin notify-osd xautolock xsecurelock pm-utils rofi imagemagick nitrogen nsxiv mpv flameshot speedcrunch mc thunar gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq font-manager fontconfig fontconfig-config fonts-recommended fonts-liberation fonts-dejavu-core fonts-dejavu-extra fonts-freefont-ttf fonts-noto-core libfontconfig1 fonts-arkpandora pipewire pipewire-pulse wireplumber pipewire-alsa libspa-0.2-bluetooth pavucontrol alsa-utils qpwgraph sddm-theme-debian-maui ffmpeg
 sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install linux-headers-$(uname -r)
 sudo DEBIAN_FRONTEND=noninteractive apt -y install sddm --no-install-recommends
 
@@ -616,6 +616,7 @@ check_error "pywal colors rofi"
 
 # Set xdg-desktop-portal prefer dark mode.
 gsettings set org.gnome.desktop.interface color-scheme prefer-dark
+
 check_error "gsettings set color-scheme"
 
 
@@ -968,16 +969,16 @@ check_error "Tmux config"
 
 # Themes START
 # Nerd Fonts - https://www.nerdfonts.com/font-downloads - https://www.nerdfonts.com/cheat-sheet
-if [ ! -d /usr/share/fonts ]; then
-mkdir -p /usr/share/fonts
+if [ ! -d ~/.local/share/fonts ]; then
+mkdir -p ~/.local/share/fonts
 
 else 
 	echo "fonts folder already exists."
 fi
 
 # DejaVu Sans Mono font
-wget -P /tmp/ https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/DejaVuSansMono.zip
-unzip -q -n /tmp/DejaVuSansMono.zip -d ~/.local/share/fonts
+#wget -P /tmp/ https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/DejaVuSansMono.zip
+#unzip -q -n /tmp/DejaVuSansMono.zip -d ~/.local/share/fonts
 
 # Space Mono
 wget -P /tmp/ https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/SpaceMono.zip
@@ -988,15 +989,14 @@ unzip -q -n /tmp/SpaceMono.zip -d ~/.local/share/fonts
 #unzip -q -n /tmp/RobotoMono.zip -d ~/.local/share/fonts
 
 # Fira Mono
-wget -P /tmp/ https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/FiraMono.zip
-unzip -q -n /tmp/FiraMono.zip -d ~/.local/share/fonts
+#wget -P /tmp/ https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/FiraMono.zip
+#unzip -q -n /tmp/FiraMono.zip -d ~/.local/share/fonts
 
 rm -f ~/.local/share/fonts/*.md
 rm -f ~/.local/share/fonts/*.txt
 rm -f ~/.local/share/fonts/LICENSE
 
 check_error "Themes Nerd Fonts"
-# -------------------------------------------------------------------------------------------------
 
 # -------------------------------------------------------------------------------------------------
 
@@ -1012,7 +1012,7 @@ sudo rm -rf /tmp/EliverLara-Nordic
 sudo git clone https://github.com/EliverLara/Nordic /tmp/EliverLara-Nordic
 sudo cp -r /tmp/EliverLara-Nordic /usr/share/themes/
 
-sudo rm /usr/share/sddm/themes/debian-theme
+#sudo rm /usr/share/sddm/themes/debian-theme
 #sudo mkdir -p /usr/share/sddm/themes/debian-theme/
 #sudo cp -r /tmp/EliverLara-Nordic/kde/sddm/Nordic-darker/* /usr/share/sddm/themes/debian-theme/
 
@@ -1241,6 +1241,25 @@ fi
 
 check_error "Rofi Run menu"
 
+
+if [ ! -f ~/.config/xfce4/helpers.rc ]; then
+mkdir -p ~/.config/xfce4
+#touch ~/.config/xfce4/helpers.rc
+cat << "XFCE4HELPER" > ~/.config/xfce4/helpers.rc
+FileManager=Thunar
+TerminalEmulator=kitty
+WebBrowser=google-chrome
+MailReader=
+
+XFCE4HELPER
+
+else 
+	echo "xfce4 helper config file already exists."
+fi
+
+check_error "xfce4 helpers.rc"
+
+# # # # # # # # # # #
 # Kitty config file
 
 if [ ! -f ~/.config/kitty/kitty.conf ]; then
