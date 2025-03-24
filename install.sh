@@ -288,6 +288,9 @@ xdg-mime default thunar.desktop inode/directory
 check_error "Set User folders"
 
 sudo rm /usr/share/sddm/faces/.face.icon
+sudo rm /usr/share/sddm/faces/root.face.icon
+
+sudo wget -O /usr/share/sddm/faces/root.face.icon https://github.com/ITmail-dk/qmade/blob/main/root.face.icon?raw=true
 sudo wget -O /usr/share/sddm/faces/.face.icon https://github.com/ITmail-dk/qmade/blob/main/.face.icon?raw=true
 wget -O ~/.face.icon https://github.com/ITmail-dk/qmade/blob/main/.face.icon?raw=true
 
@@ -296,8 +299,25 @@ setfacl -m u:sddm:r ~/.face.icon
 
 sudo setfacl -m u:sddm:x /usr/share/sddm/faces/
 sudo setfacl -m u:sddm:r /usr/share/sddm/faces/.face.icon
+sudo setfacl -m u:sddm:r /usr/share/sddm/faces/root.face.icon
 
 check_error "Set User .face.icon file"
+
+sudo mkdir -p /etc/sddm.conf.d
+sudo bash -c 'cat << "SDDMCONFIG" >> /etc/sddm.conf.d/default.conf
+[Theme]
+# Set Current theme "name"
+Current=Nordic-darker
+
+[Wayland]
+EnableHiDPI=true
+
+[X11]
+EnableHiDPI=true
+
+SDDMCONFIG'
+
+check_error "Setup SDDM"
 
 # Qtile Core Dependencies apt install
 sudo DEBIAN_FRONTEND=noninteractive apt install -y feh python3-full python3-pip python3-venv pipx libxkbcommon-dev libxkbcommon-x11-dev libcairo2-dev pkg-config 
