@@ -980,21 +980,21 @@ wget -P /tmp/ https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/D
 unzip -q -n /tmp/DejaVuSansMono.zip -d ~/.fonts
 
 # Space Mono
-#wget -P /tmp/ https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/SpaceMono.zip
-#unzip -q -n /tmp/SpaceMono.zip -d ~/.fonts
+wget -P /tmp/ https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/SpaceMono.zip
+unzip -q -n /tmp/SpaceMono.zip -d ~/.fonts
 
 # Roboto Mono
 #wget -P /tmp/ https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/RobotoMono.zip
 #unzip -q -n /tmp/RobotoMono.zip -d ~/.fonts
 
 # Fira Mono
-#wget -P /tmp/ https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/FiraMono.zip
-#unzip -q -n /tmp/FiraMono.zip -d ~/.fonts
+wget -P /tmp/ https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/FiraMono.zip
+unzip -q -n /tmp/FiraMono.zip -d ~/.fonts
 
 rm -f ~/.fonts/*.md
 rm -f ~/.fonts/*.txt
 
-check_error "Themes"
+check_error "Themes Nerd Fonts"
 # -------------------------------------------------------------------------------------------------
 
 # -------------------------------------------------------------------------------------------------
