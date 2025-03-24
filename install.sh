@@ -92,6 +92,7 @@ fi
 
 
 # Copy Default APT Sources List
+echo -e "${RED} ${NC}"
 echo -e "${RED} "
 echo -e "${RED}-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-"
 echo -e "${RED} "
@@ -115,6 +116,7 @@ fi
 check_error "APT install whiptail"
 clear
 
+echo -e "${RED} ${NC}"
 echo -e "${RED} "
 echo -e "${RED}-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-"
 echo -e "${RED} "
