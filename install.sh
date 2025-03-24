@@ -977,23 +977,23 @@ fi
 
 # DejaVu Sans Mono font
 wget -P /tmp/ https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/DejaVuSansMono.zip
-unzip -q -n /tmp/DejaVuSansMono.zip -d /usr/share/fonts
+unzip -q -n /tmp/DejaVuSansMono.zip -d ~/.local/share/fonts
 
 # Space Mono
 wget -P /tmp/ https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/SpaceMono.zip
-unzip -q -n /tmp/SpaceMono.zip -d /usr/share/fonts
+unzip -q -n /tmp/SpaceMono.zip -d ~/.local/share/fonts
 
 # Roboto Mono
 #wget -P /tmp/ https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/RobotoMono.zip
-#unzip -q -n /tmp/RobotoMono.zip -d /usr/share/fonts
+#unzip -q -n /tmp/RobotoMono.zip -d ~/.local/share/fonts
 
 # Fira Mono
 wget -P /tmp/ https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/FiraMono.zip
-unzip -q -n /tmp/FiraMono.zip -d /usr/share/fonts
+unzip -q -n /tmp/FiraMono.zip -d ~/.local/share/fonts
 
-rm -f /usr/share/fonts/*.md
-rm -f /usr/share/fonts/*.txt
-rm -f /usr/share/fonts/LICENSE
+rm -f ~/.local/share/fonts/*.md
+rm -f ~/.local/share/fonts/*.txt
+rm -f ~/.local/share/fonts/LICENSE
 
 check_error "Themes Nerd Fonts"
 # -------------------------------------------------------------------------------------------------
