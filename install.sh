@@ -435,6 +435,185 @@ PYWALCOLORSTEMPALETKITTY
 
 check_error "pywal colors kitty"
 
+cat << "PYWALCOLORSTEMPALETROFI" > ~/.config/wal/templates/colors-rofi-dark.rasi
+* {{
+    active-background: {color2};
+    active-foreground: @foreground;
+    normal-background: @background;
+    normal-foreground: @foreground;
+    urgent-background: {color1};
+    urgent-foreground: @foreground;
+
+    alternate-active-background: @background;
+    alternate-active-foreground: @foreground;
+    alternate-normal-background: @background;
+    alternate-normal-foreground: @foreground;
+    alternate-urgent-background: @background;
+    alternate-urgent-foreground: @foreground;
+
+    selected-active-background: {color1};
+    selected-active-foreground: @foreground;
+    selected-normal-background: {color2};
+    selected-normal-foreground: @foreground;
+    selected-urgent-background: {color3};
+    selected-urgent-foreground: @foreground;
+
+    background-color: @background;
+    background: {background};
+    foreground: {foreground};
+    border-color: @background;
+    spacing: 2;
+}}
+
+#window {{
+    width: 30%;
+    background-color: @background;
+    border: 0;
+    padding: 2.5ch;
+}}
+
+#mainbox {{
+    border: 0;
+    padding: 0;
+    background-color: @background;
+    children: [inputbar, listview];
+}}
+
+#message {{
+    border: 2px 0px 0px;
+    border-color: @border-color;
+    padding: 1px;
+}}
+
+#textbox {{
+    text-color: @foreground;
+}}
+
+#inputbar {{
+    children:   [ prompt,textbox-prompt-colon,entry,case-indicator ];
+}}
+
+#textbox-prompt-colon {{
+    expand: false;
+    str: ":";
+    margin: 0px 0.3em 0em 0em;
+    text-color: @normal-foreground;
+}}
+
+#listview {{
+    fixed-height: 0;
+    border: 2px 0px 0px;
+    border-color: @border-color;
+    spacing: 2px;
+    scrollbar: true;
+    padding: 2px 0px 0px;
+}}
+
+#element {{
+    border: 0;
+    padding: 8 0;
+}}
+
+#element-text {{
+    background-color: inherit;
+    text-color:       inherit;
+}}
+
+#element-icon {{
+    size: 30;
+}}
+
+#element.normal.normal {{
+    background-color: @normal-background;
+    text-color: @normal-foreground;
+}}
+
+#element.normal.urgent {{
+    background-color: @urgent-background;
+    text-color: @urgent-foreground;
+}}
+
+#element.normal.active {{
+    background-color: @active-background;
+    text-color: @active-foreground;
+}}
+
+#element.selected.normal {{
+    background-color: @selected-normal-background;
+    text-color: @selected-normal-foreground;
+}}
+
+#element.selected.urgent {{
+    background-color: @selected-urgent-background;
+    text-color: @selected-urgent-foreground;
+}}
+
+#element.selected.active {{
+    background-color: @selected-active-background;
+    text-color: @selected-active-foreground;
+}}
+
+#element.alternate.normal {{
+    background-color: @alternate-normal-background;
+    text-color: @alternate-normal-foreground;
+}}
+
+#element.alternate.urgent {{
+    background-color: @alternate-urgent-background;
+    text-color: @alternate-urgent-foreground;
+}}
+
+#element.alternate.active {{
+    background-color: @alternate-active-background;
+    text-color: @alternate-active-foreground;
+}}
+
+#scrollbar {{
+    width: 4px;
+    border: 0;
+    handle-width: 8px;
+    padding: 0;
+}}
+
+#sidebar {{
+    border: 2px 0px 0px;
+    border-color: @border-color;
+}}
+
+#button {{
+    text-color: @normal-foreground;
+}}
+
+#button.selected {{
+    background-color: @selected-normal-background;
+    text-color: @selected-normal-foreground;
+}}
+
+#inputbar {{
+    spacing: 0;
+    text-color: @normal-foreground;
+    padding: 1px;
+}}
+
+#case-indicator {{
+    spacing: 0;
+    text-color: @normal-foreground;
+}}
+
+#entry {{
+    spacing: 0;
+    text-color: @normal-foreground;
+}}
+
+#prompt {{
+    spacing: 0;
+    text-color: @normal-foreground;
+}}
+
+PYWALCOLORSTEMPALETROFI
+
+check_error "pywal colors rofi"
+
 # Set xdg-desktop-portal prefer dark mode.
 gsettings set org.gnome.desktop.interface color-scheme prefer-dark
 check_error "gsettings set color-scheme"
@@ -994,7 +1173,7 @@ configuration {
   modi: "window,run,drun";
 }
 
-/* The Theme - @theme "~/.config/rofi/rofi-colors.rasi" */
+/* The Theme */
 @import "~/.cache/wal/colors-rofi-dark.rasi"
 
 // Theme location is "/usr/share/rofi/themes/name.rasi"
@@ -1003,95 +1182,8 @@ configuration {
 ROFICONFIG
 
 else 
-	echo "Rofi rofi-colors file already exists."
-fi
-
-if [ ! -f ~/.config/rofi/rofi-colors.rasi ]; then
-#touch ~/.config/rofi/config.rasi
-cat << "ROFITHEMECONFIG" > ~/.config/rofi/rofi-colors.rasi
-* {
-  bg: #10171c;
-  bg-alt: #344959;
-
-  fg: #EBEBEB;
-  fg-alt: #768ca3;
-
-  background-color: @bg;
-  
-  border: 0;
-  margin: 0;
-  padding: 0;
-  spacing: 0;
-}
-
-@import "rofi-common.rasi"
-
-ROFITHEMECONFIG
-
-else 
 	echo "Rofi config file already exists."
 fi
-
-if [ ! -f ~/.config/rofi/rofi-common.rasi ]; then
-cat << "ROFITHEMECOMMONCONFIG" > ~/.config/rofi/rofi-common.rasi
-window {
-  width: 30%;
-}
-
-element {
-  padding: 8 0;
-  text-color: @fg-alt;
-}
-
-element selected {
-  text-color: @fg;
-}
-
-element-text {
-  background-color: inherit;
-  text-color: inherit;
-  vertical-align: 0.5;
-}
-
-element-icon {
-  size: 30;
-}
-
-entry {
-  background-color: @bg-alt;
-  padding: 12;
-  text-color: @fg;
-}
-
-inputbar {
-  children: [prompt, entry];
-}
-
-listview {
-  padding: 8 12;
-  background-color: @bg;
-  columns: 1;
-  lines: 8;
-}
-
-mainbox {
-  background-color: @bg;
-  children: [inputbar, listview];
-}
-
-prompt {
-  background-color: @bg-alt;
-  enabled: true;
-  padding: 12 0 0 12;
-  text-color: @fg;
-}
-
-ROFITHEMECOMMONCONFIG
-
-else 
-	echo "Rofi rofi-common file already exists."
-fi
-
 
 
 # Rofi Wifi menu
