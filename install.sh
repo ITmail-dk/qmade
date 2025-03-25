@@ -149,7 +149,7 @@ PROGRAMS=$(whiptail --title "The Install selection" --checklist --separate-outpu
 "8" "Install NFS Storage Client" OFF \
 "9" "Install Ceph Storage Client" OFF \
 "10" "Install VS Code Editor" OFF \
-"11" "Install Neovim Text Editor" OFF 3>&1 1>&2 2>&3)
+"11" "Install WINE to run .exe files" OFF 3>&1 1>&2 2>&3)
 
 # See the actual installation below - Install selection choose what to install End
 
@@ -1688,7 +1688,7 @@ do
             cd /tmp/ && wget -O vscode_amd64.deb 'https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64' && sudo DEBIAN_FRONTEND=noninteractive apt install -y /tmp/vscode_amd64.deb && rm vscode_amd64.deb
             ;;
         "11")
-            sudo DEBIAN_FRONTEND=noninteractive apt install -y neovim
+            sudo dpkg --add-architecture i386 && wget -O - https://dl.winehq.org/wine-builds/winehq.key | sudo gpg --dearmor -o /etc/apt/keyrings/winehq-archive.key - && sudo wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/debian/dists/bookworm/winehq-bookworm.sources && sudo apt update && sudo apt install -y --install-recommends winehq-stable
             ;;
     esac
 done
