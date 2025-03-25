@@ -1,4 +1,4 @@
-# Qmade - Dev testing start.
+# Qmade - Now testing in daily use.
 Qtile Martin Andersen Desktop Environment, Qmade for short.!
 
 ## Remember to install Debian without the desktop environment.
