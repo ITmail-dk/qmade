@@ -1241,6 +1241,50 @@ fi
 
 check_error "Rofi Run menu"
 
+if [ ! -f /location/powermenu.sh ]; then
+mkdir -p  ~/.config/rofi
+cat << "ROFIPOWERMENU" > ~/.config/rofi/powermenu.sh
+
+#!/usr/bin/env bash
+chosen=$(printf "  Power Off\n  Restart\n  Lock" | rofi -dmenu -i -theme-str '@import "powermenu.rasi"')
+
+case "$chosen" in
+	"  System Shutdown") sudo shutdown now ;;
+	"  Lockdown Mode") xsecurelock ;;
+	"  Reboot") sudo reboot ;;
+	*) exit 1 ;;
+esac
+
+ROFIPOWERMENU
+
+else 
+	echo "powermenu.sh file already exists."
+fi
+
+chmod +x ~/.config/rofi/powermenu.sh
+
+check_error "Rofi Powermenu"
+
+if [ ! -f ~/.config/rofi/powermenu.rasi ]; then
+mkdir -p  ~/.config/rofi
+cat << "ROFIPOWERMENURASI" > ~/.config/rofi/powermenu.rasi
+
+inputbar {
+  children: [entry];
+}
+
+listview {
+	lines: 3;
+}
+
+ROFIPOWERMENURASI
+
+else 
+	echo "powermenu.rasi file already exists."
+fi
+
+check_error "Rofi Powermenu rasi"
+
 
 if [ ! -f ~/.config/xfce4/helpers.rc ]; then
 mkdir -p ~/.config/xfce4
@@ -1781,6 +1825,7 @@ keys = [
     Key([mod, "mod1"], "l", lazy.spawn(os.path.expanduser("xsecurelock")), desc="Computer Lockdown"),
     Key([mod, "control", "mod1"], "t", lazy.spawn(os.path.expanduser("auto-new-wallpaper-and-colors")), desc="Random Color Theme from Wallpaper"),
     Key([mod, "control", "mod1"], "w", lazy.spawn(os.path.expanduser("~/.config/rofi/rofi-wifi-menu.sh")), desc="WiFi Manager"),
+    Key([mod, "control", "mod1"], "q", lazy.spawn(os.path.expanduser("~/.config/rofi/powermenu.sh")), desc="Power Menu"),
     Key([mod, "control", "mod1"], "n", lazy.spawn(os.path.expanduser("kitty -e sudo nmtui")), desc="Network Manager"),
 
     # Default
