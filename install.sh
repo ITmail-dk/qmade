@@ -1244,9 +1244,8 @@ check_error "Rofi Run menu"
 if [ ! -f /location/powermenu.sh ]; then
 mkdir -p  ~/.config/rofi
 cat << "ROFIPOWERMENU" > ~/.config/rofi/powermenu.sh
-
 #!/usr/bin/env bash
-chosen=$(printf "  Power Off\n  Restart\n  Lock" | rofi -dmenu -i -theme-str '@import "powermenu.rasi"')
+chosen=$(printf "  System Shutdown\n  Lockdown Mode\n  Reboot" | rofi -dmenu -i -theme-str '@import "powermenu.rasi"')
 
 case "$chosen" in
 	"  System Shutdown") sudo shutdown now ;;
