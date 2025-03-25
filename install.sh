@@ -141,15 +141,15 @@ PROGRAMS=$(whiptail --title "The Install selection" --checklist --separate-outpu
 "Choose what to install:" 20 78 15 \
 "1" "Do you want to install Libre Office" OFF \
 "2" "Is this a laptop we are installing on!" OFF \
-"3" "Install XRDP Server" OFF \
-"4" "Install XfreeRDP Client" OFF \
+"3" "Install XRDP Server" ON \
+"4" "Install XfreeRDP Client" ON \
 "5" "Install Google Chrome Webbrowser" ON \
 "6" "Install Firefox Webbrowser" OFF \
-"7" "Install SMB/CIFS Storage Client" ON \
+"7" "Install SMB/CIFS Storage Client" OFF \
 "8" "Install NFS Storage Client" OFF \
 "9" "Install Ceph Storage Client" OFF \
 "10" "Install VS Code Editor" OFF \
-"11" "Install Neovim Text Editor" ON 3>&1 1>&2 2>&3)
+"11" "Install Neovim Text Editor" OFF 3>&1 1>&2 2>&3)
 
 # See the actual installation below - Install selection choose what to install End
 
@@ -204,7 +204,7 @@ check_error "APT Sources list and APT Update"
 
 clear
 # Core System APT install
-sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install xserver-xorg x11-utils xinit arandr autorandr picom fwupd mesa-utils htop wget curl git tmux numlockx kitty cups xsensors xbacklight brightnessctl unzip network-manager dnsutils dunst libnotify-bin notify-osd xautolock xsecurelock pm-utils rofi imagemagick nitrogen nsxiv mpv flameshot speedcrunch mc thunar gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq font-manager fontconfig fontconfig-config fonts-recommended fonts-liberation fonts-dejavu-core fonts-dejavu-extra fonts-freefont-ttf fonts-noto-core libfontconfig1 fonts-arkpandora pipewire pipewire-pulse wireplumber pipewire-alsa libspa-0.2-bluetooth pavucontrol alsa-utils qpwgraph sddm-theme-debian-maui ffmpeg
+sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install xserver-xorg x11-utils xinit arandr autorandr picom fwupd mesa-utils htop wget curl git tmux numlockx kitty neovim cups xsensors xbacklight brightnessctl unzip network-manager dnsutils dunst libnotify-bin notify-osd xautolock xsecurelock pm-utils rofi imagemagick nitrogen nsxiv mpv flameshot speedcrunch mc thunar gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq font-manager fontconfig fontconfig-config fonts-recommended fonts-liberation fonts-dejavu-core fonts-dejavu-extra fonts-freefont-ttf fonts-noto-core libfontconfig1 fonts-arkpandora pipewire pipewire-pulse wireplumber pipewire-alsa libspa-0.2-bluetooth pavucontrol alsa-utils qpwgraph sddm-theme-debian-maui ffmpeg
 sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install linux-headers-$(uname -r)
 sudo DEBIAN_FRONTEND=noninteractive apt -y install sddm --no-install-recommends
 
