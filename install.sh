@@ -1680,15 +1680,16 @@ if lspci | grep -i nvidia; then
     check_error "GRUB update"
 
     echo "Downloading and installing NVIDIA driver..."
-    wget https://us.download.nvidia.com/XFree86/Linux-x86_64/550.135/NVIDIA-Linux-x86_64-550.135.run
+    wget https://us.download.nvidia.com/XFree86/Linux-x86_64/570.133.07/NVIDIA-Linux-x86_64-570.133.07.run
     check_error "downloading NVIDIA driver"
 
-    chmod +x NVIDIA-Linux-x86_64-550.135.run
-    sudo ./NVIDIA-Linux-x86_64-550.135.run
-    check_error "NVIDIA driver installation"
-
+    chmod +x NVIDIA-Linux-x86_64-570.133.07.run
+    sudo ./NVIDIA-Linux-x86_64-570.133.07.run --no-questions --run-nvidia-xconfig
+    
     echo 'nvidia-settings --assign CurrentMetaMode="nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }"' >> ~/.config/qtile/autostart.sh
 fi
+
+check_error "NVIDIA driver installation"
 
 # Qtile Config file
 
