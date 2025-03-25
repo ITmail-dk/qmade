@@ -2109,7 +2109,7 @@ check_error "Qtile Config file"
 
 # Install closing screen ##### ##### ##### ##### ##### ##### ##### ##### ##### ####
 clear
-if (whiptail --title "Installation Complete" --yesno "Qmade Installation is complete. \nDo you want to restart the computer ?\n\nSome practical information. \nWindows key + Enter opens a terminal \nWindows key + B opens a web browser \nWindows key + W closes the active window" 15 60); then
+if (whiptail --title "Installation Complete" --yesno "Qmade Installation is complete. \nDo you want to restart the computer ?\n\nSome practical information. \nWindows key + Enter opens a terminal \nWindows key + B opens a web browser \nWindows key + W closes the active window \nWindows key + ALT + CTRL + Q Powermenu" 15 60); then
     cd ~
     clear
     echo -e "${RED} "
