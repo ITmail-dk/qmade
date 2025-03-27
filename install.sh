@@ -145,9 +145,9 @@ PROGRAMS=$(whiptail --title "The Install selection" --checklist --separate-outpu
 "4" "Install XfreeRDP Client" ON \
 "5" "Install Google Chrome Webbrowser" ON \
 "6" "Install Firefox Webbrowser" OFF \
-"7" "Install SMB/CIFS Storage Client" OFF \
-"8" "Install NFS Storage Client" OFF \
-"9" "Install Ceph Storage Client" OFF \
+"7" "Install SMB/CIFS and NFS Storage Client" OFF \
+"8" "Install Ceph Storage Client" OFF \
+"9" "Install Steam Gaming Plaform Client" OFF \
 "10" "Install VS Code Editor" OFF \
 "11" "Install WINE to run .exe files" OFF 3>&1 1>&2 2>&3)
 
@@ -1677,13 +1677,13 @@ do
             sudo DEBIAN_FRONTEND=noninteractive apt install -y firefox-esr
             ;;
         "7")
-            sudo DEBIAN_FRONTEND=noninteractive apt install -y smbclient
+            sudo DEBIAN_FRONTEND=noninteractive apt install -y smbclient nfs-common
             ;;
         "8")
-            sudo DEBIAN_FRONTEND=noninteractive apt install -y nfs-common
+            sudo DEBIAN_FRONTEND=noninteractive apt install -y ceph-common && echo "# CEPH" | sudo tee -a /etc/fstab && echo "#:/  /mnt/cephfs ceph    name=clientNAME,noatime,_netdev    0       0" | sudo tee -a /etc/fstab
             ;;
         "9")
-            sudo DEBIAN_FRONTEND=noninteractive apt install -y ceph-common && echo "# CEPH" | sudo tee -a /etc/fstab && echo "#:/  /mnt/cephfs ceph    name=clientNAME,noatime,_netdev    0       0" | sudo tee -a /etc/fstab
+            sudo dpkg --add-architecture i386 && sudo apt update && sudo DEBIAN_FRONTEND=noninteractive apt install -y steam-installer
             ;;
         "10")
             cd /tmp/ && wget -O vscode_amd64.deb 'https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64' && sudo DEBIAN_FRONTEND=noninteractive apt install -y /tmp/vscode_amd64.deb && rm vscode_amd64.deb
