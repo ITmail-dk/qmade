@@ -335,9 +335,11 @@ sudo DEBIAN_FRONTEND=noninteractive apt install -y feh python3-full python3-pip 
 check_error "Qtile Core Dependencies apt install"
 
 # PyWAL install via pipx for auto-generated color themes
-pipx install pywal16
+#pipx install pywal16
+pipx install "pywal16[all]"
 pipx ensurepath
 # wal --cols16 darken -q -i $HOME/Wallpapers
+# wal --cols16 darken -q -i $HOME/Wallpapers --backend modern_colorthief
 check_error "Pipx install"
 
 mkdir -p ~/.cache/wal
@@ -624,7 +626,7 @@ check_error "gsettings set color-scheme"
 sudo bash -c 'cat << "AUTONEWWALLPAPERANDCOLORSBIN" >> /usr/local/bin/auto-new-wallpaper-and-colors
 #!/usr/bin/env bash
 
-wal --cols16 darken -q -i $HOME/Wallpapers
+wal --cols16 darken -q -i $HOME/Wallpapers --backend modern_colorthief
 
 notify-send -u low "Automatically new background and color theme" "Please wait while we find a new background image and some colors to match"
 
@@ -1822,7 +1824,7 @@ keys = [
     Key([mod], "r", lazy.spawn(runmenu), desc="Run Menu"),
     Key([mod, "shift"], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
     Key([mod, "mod1"], "l", lazy.spawn(os.path.expanduser("xsecurelock")), desc="Computer Lockdown"),
-    Key([mod, "control", "mod1"], "t", lazy.spawn(os.path.expanduser("auto-new-wallpaper-and-colors")), desc="Random Color Theme from Wallpaper"),
+    Key([mod, "control", "mod1"], "t", lazy.spawn(os.path.expanduser("auto-new-wallpaper-and-colors")), desc="Random Color Theme from Wallpapers"),
     Key([mod, "control", "mod1"], "w", lazy.spawn(os.path.expanduser("~/.config/rofi/rofi-wifi-menu.sh")), desc="WiFi Manager"),
     Key([mod, "control", "mod1"], "q", lazy.spawn(os.path.expanduser("~/.config/rofi/powermenu.sh")), desc="Power Menu"),
     Key([mod, "control", "mod1"], "n", lazy.spawn(os.path.expanduser("kitty -e sudo nmtui")), desc="Network Manager"),
