@@ -1826,7 +1826,7 @@ keys = [
     Key([mod, "mod1"], "l", lazy.spawn(os.path.expanduser("xsecurelock")), desc="Computer Lockdown"),
     Key([mod, "control", "mod1"], "t", lazy.spawn(os.path.expanduser("auto-new-wallpaper-and-colors")), desc="Random Color Theme from Wallpapers"),
     Key([mod, "control", "mod1"], "w", lazy.spawn(os.path.expanduser("~/.config/rofi/rofi-wifi-menu.sh")), desc="WiFi Manager"),
-    Key([mod, "control", "mod1"], "q", lazy.spawn(os.path.expanduser("~/.config/rofi/powermenu.sh")), desc="Power Menu"),
+    Key([mod, "control", "mod1"], "p", lazy.spawn(os.path.expanduser("~/.config/rofi/powermenu.sh")), desc="Power Menu"),
     Key([mod, "control", "mod1"], "n", lazy.spawn(os.path.expanduser("kitty -e sudo nmtui")), desc="Network Manager"),
 
     # Default
@@ -2111,7 +2111,7 @@ check_error "Qtile Config file"
 
 # Install closing screen ##### ##### ##### ##### ##### ##### ##### ##### ##### ####
 clear
-if (whiptail --title "Installation Complete" --yesno "Qmade Installation is complete. \nDo you want to restart the computer ?\n\nSome practical information. \nWindows key + Enter opens a terminal \nWindows key + B opens a web browser \nWindows key + W closes the active window \nWindows key + ALT + CTRL + Q Powermenu" 15 60); then
+if (whiptail --title "Installation Complete" --yesno "Qmade Installation is complete. \nDo you want to restart the computer ?\n\nSome practical information. \nWindows key + Enter opens a terminal \nWindows key + B opens a web browser \nWindows key + W closes the active window \nWindows key + ALT + CTRL + P Powermenu" 15 60); then
     cd ~
     clear
     echo -e "${RED} "
