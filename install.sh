@@ -346,7 +346,7 @@ mkdir -p ~/.cache/wal
 cat << "PYWALCOLORSJSON" > ~/.cache/wal/colors.json
 {
     "checksum": "2e7aed21e3ddcc643b1a0b396fa6c986",
-    "wallpaper": "~/Wallpapers/default_wallpaper.png",
+    "wallpaper": "~/Wallpapers/default_wallpaper.jpg",
     "alpha": "100",
 
     "special": {
@@ -842,7 +842,7 @@ if [ ! -d ~/Wallpapers ]; then
 mkdir -p ~/Wallpapers
 # Download some wallpaper, Please wait..."
 
-wget -O ~/Wallpapers/default_wallpaper.png https://github.com/ITmail-dk/qmade/blob/main/default_wallpaper.png?raw=true
+wget -O ~/Wallpapers/default_wallpaper.jpg https://github.com/ITmail-dk/qmade/blob/main/wallpapers/default_wallpaper.jpg?raw=true
 
 else 
 	echo "Wallpapers folder already exists."
