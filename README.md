@@ -23,7 +23,7 @@ Default Modkey is the Windows key (**MOD4**) and **MOD1** is Alt Left.
 
 **MOD4 + SHIFT + A** = Audio Control Panel in a ScratchPads.
 
-**MOD4 + Control + MOD1 + Q** = Power Menu for shutdown, reboot and lock screen.
+**MOD4 + Control + MOD1 + P** = Power Menu for shutdown, reboot and lock screen.
 
 **MOD4 + Control + MOD1 + T** = Autogenerate a new background image and color theme,  
 from the Wallpaper folder in your home directory.
