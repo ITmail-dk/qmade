@@ -1,6 +1,8 @@
 # Qmade - Now testing in daily use.
 Qtile Martin Andersen Desktop Environment, Qmade for short.!
 
+![Screenshots of the Desktop](screenshots/screenshot01.jpg)
+
 ## Remember to install Debian without the desktop environment.
 After installation Debian, Reboot the computer and login with your username and password.
 Start the installation as regular users with SUDO rights, after you login to your freshly installed machine.
