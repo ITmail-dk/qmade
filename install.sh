@@ -149,7 +149,8 @@ PROGRAMS=$(whiptail --title "The Install selection" --checklist --separate-outpu
 "8" "Install Ceph Storage Client" OFF \
 "9" "Install Steam Gaming Plaform Client" OFF \
 "10" "Install VS Code Editor" OFF \
-"11" "Install WINE to run .exe files" OFF 3>&1 1>&2 2>&3)
+"11" "Install WINE to run .exe files" OFF \
+"12" "Install Docker & Docker Compose" OFF 3>&1 1>&2 2>&3)
 
 # See the actual installation below - Install selection choose what to install End
 
@@ -205,6 +206,7 @@ check_error "APT Sources list and APT Update"
 clear
 # Core System APT install
 sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install xserver-xorg x11-utils xinit arandr autorandr picom fwupd mesa-utils htop wget curl git tmux numlockx kitty neovim cups xsensors xbacklight brightnessctl unzip network-manager dnsutils dunst libnotify-bin notify-osd xautolock xsecurelock pm-utils rofi imagemagick nitrogen nsxiv mpv flameshot speedcrunch mc thunar gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq font-manager fontconfig fontconfig-config fonts-recommended fonts-liberation fonts-dejavu-core fonts-dejavu-extra fonts-freefont-ttf fonts-noto-core libfontconfig1 fonts-arkpandora pipewire pipewire-pulse wireplumber pipewire-alsa libspa-0.2-bluetooth pavucontrol alsa-utils qpwgraph sddm-theme-debian-maui ffmpeg
+sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install solaar
 sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install linux-headers-$(uname -r)
 sudo DEBIAN_FRONTEND=noninteractive apt -y install sddm --no-install-recommends
 
@@ -1690,6 +1692,9 @@ do
             ;;
         "11")
             sudo dpkg --add-architecture i386 && wget -O - https://dl.winehq.org/wine-builds/winehq.key | sudo gpg --dearmor -o /etc/apt/keyrings/winehq-archive.key - && sudo wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/debian/dists/bookworm/winehq-bookworm.sources && sudo apt update && sudo apt install -y --install-recommends winehq-stable
+            ;;
+        "12")
+            curl -sSL https://get.docker.com/ | sh && sudo usermod -a -G docker $USER
             ;;
     esac
 done
