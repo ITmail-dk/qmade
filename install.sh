@@ -1990,7 +1990,7 @@ def init_layout_theme():
 layout_theme = init_layout_theme()
 
 layouts = [
-    layout.MonadTall(**layout_theme),
+    layout.MonadTall(ratio=0.65, **layout_theme),
     layout.Max(**layout_theme),
     #layout.Bsp(**layout_theme),
     #layout.Columns(**layout_theme),
