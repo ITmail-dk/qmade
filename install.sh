@@ -685,7 +685,9 @@ bin/pip install qtile/.
 deactivate
 
 cp ~/.local/src/qtile_venv/bin/qtile ~/.local/bin/
+
 check_error "qtile_venv"
+
 # ------------------------------------------------------------------------
 
 sudo mkdir -p /usr/share/xsessions/
@@ -853,14 +855,13 @@ fi
 check_error "Wallpapers"
 
 # Nitrogen - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# Download some wallpapers from https://unsplash.com/wallpapers
 
 mkdir -p ~/.config/nitrogen
 
 if [ ! -f ~/.config/nitrogen/bg-saved.cfg ]; then
 touch ~/.config/nitrogen/bg-saved.cfg
 echo "[xin_-1]" >> ~/.config/nitrogen/bg-saved.cfg
-echo "file=$HOME/Wallpapers/default-wallpaper.png" >> ~/.config/nitrogen/bg-saved.cfg
+echo "file=$HOME/Wallpapers/default-wallpaper.jpg" >> ~/.config/nitrogen/bg-saved.cfg
 echo "mode=5" >> ~/.config/nitrogen/bg-saved.cfg
 echo "bgcolor=#2E3440" >> ~/.config/nitrogen/bg-saved.cfg
 else 
