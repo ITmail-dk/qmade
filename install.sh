@@ -679,7 +679,7 @@ fi
 git clone https://github.com/qtile/qtile.git
 
 source bin/activate
-pip install dbus-next psutil wheel
+pip install dbus-next psutil wheel pyxdg
 pip install -r qtile/requirements.txt
 bin/pip install qtile/.
 deactivate
@@ -2024,9 +2024,9 @@ screens = [
                 widget.Spacer(),
                 widget.WindowName(width=bar.CALCULATED, max_chars=120),
                 widget.Spacer(),
-                widget.Systray(fmt="󱊖  {}", icon_size=20),
+                widget.Systray(fmt="󱊖  {}", icon_size=16),
                 # NB Wayland is incompatible with Systray, consider using StatusNotifier
-                # widget.StatusNotifier(),
+                # widget.StatusNotifier(icon_size=16),
                 #widget.Wallpaper(directory="~/Wallpapers/", label="", random_selection="True"),
                 #widget.NetGraph(type='line', line_width=1),
                 #widget.Net(prefix='M'),
