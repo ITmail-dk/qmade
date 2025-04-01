@@ -1707,7 +1707,8 @@ check_error "Install selection choose what to install"
 if lspci | grep -i nvidia; then
 
     echo "Installing required packages..."
-    sudo apt -y install linux-headers-$(uname -r) gcc make acpid dkms libglvnd-core-dev libglvnd0 libglvnd-dev
+    sudo apt -y install linux-headers-$(uname -r)
+    sudo apt -y install gcc make acpid dkms libglvnd-core-dev libglvnd0 libglvnd-dev
     check_error "package installation"
 
     echo "Blacklisting nouveau..."
@@ -1730,12 +1731,13 @@ if lspci | grep -i nvidia; then
     sudo update-grub
     check_error "GRUB update"
 
-    echo "Downloading and installing NVIDIA driver..."
-    wget https://us.download.nvidia.com/XFree86/Linux-x86_64/570.133.07/NVIDIA-Linux-x86_64-570.133.07.run
+    NVIDIAGETVERSION=570.133.07
+    echo "Downloading and installing NVIDIA $NVIDIAGETVERSION driver..."
+    wget https://us.download.nvidia.com/XFree86/Linux-x86_64/$NVIDIAGETVERSION/NVIDIA-Linux-x86_64-$NVIDIAGETVERSION.run
     check_error "downloading NVIDIA driver"
 
-    chmod +x NVIDIA-Linux-x86_64-570.133.07.run
-    sudo ./NVIDIA-Linux-x86_64-570.133.07.run --no-questions --run-nvidia-xconfig
+    chmod +x NVIDIA-Linux-x86_64-$NVIDIAGETVERSION.run
+    sudo ./NVIDIA-Linux-x86_64-$NVIDIAGETVERSION.run --no-questions --run-nvidia-xconfig
     
     echo 'nvidia-settings --assign CurrentMetaMode="nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }"' >> ~/.config/qtile/autostart.sh
 fi
