@@ -1731,7 +1731,8 @@ if lspci | grep -i nvidia; then
     sudo update-grub
     check_error "GRUB update"
 
-    NVIDIAGETVERSION=570.133.07
+    #NVIDIAGETVERSION=570.133.07
+    NVIDIAGETVERSION="$(curl -s "https://www.nvidia.com/en-us/drivers/unix/" | grep "Latest Production Branch Version:" | awk -F'"> ' '{print $2}' | cut -d'<' -f1 | awk 'NR==1')"
     echo "Downloading and installing NVIDIA $NVIDIAGETVERSION driver..."
     wget https://us.download.nvidia.com/XFree86/Linux-x86_64/$NVIDIAGETVERSION/NVIDIA-Linux-x86_64-$NVIDIAGETVERSION.run
     check_error "downloading NVIDIA driver"
