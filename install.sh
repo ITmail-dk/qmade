@@ -2077,8 +2077,12 @@ floating_layout = layout.Floating(**layout_theme,
         Match(wm_class="ssh-askpass"),  # ssh-askpass
         Match(title="branchdialog"),  # gitk
         Match(title="pinentry"),  # GPG key password entry
-    ]
+    ],
+    no_reposition_rules=[
+        Match(wm_class="pavucontrol"),
+    ],
 )
+
 auto_fullscreen = True
 focus_on_window_activation = "smart"
 reconfigure_screens = True
