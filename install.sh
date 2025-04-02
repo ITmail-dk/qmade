@@ -831,7 +831,7 @@ check_error "MPD Setup & config"
 # Nano config START
 if [ ! -f ~/.nanorc ]; then
     cp /etc/nanorc ~/.nanorc
-    sed -i 's/^# set linenumbers/set linenumbers/' ~/.nanorc
+    #sed -i 's/^# set linenumbers/set linenumbers/' ~/.nanorc
     sed -i 's/^# set minibar/set minibar/' ~/.nanorc
     sed -i 's/^# set softwrap/set softwrap/' ~/.nanorc
     sed -i 's/^# set atblanks/set atblanks/' ~/.nanorc
@@ -2042,8 +2042,8 @@ screens = [
             ], 30, # Define bar height
             background=Color0, opacity=0.95, # Bar background color can also take transparency with "hex color code" or .75
             margin=[5, 5, 0, 5], # Space around bar as int or list of ints [N E S W]
-            border_width=[0, 0, 0, 0],  # Width of border as int of list of ints [N E S W]
-            border_color=["f7f7f7", "f7f7f7", "f7f7f7", "f7f7f7"]  # Border colour as str or list of str [N E S W]
+            border_width=[0, 0, 0, 0], # Width of border as int of list of ints [N E S W]
+            border_color=[Color2, Color2, Color2, Color2] # Border colour as str or list of str [N E S W]
         ),
         # You can uncomment this variable if you see that on X11 floating resize/moving is laggy
         # By default we handle these events delayed to already improve performance, however your system might still be struggling
