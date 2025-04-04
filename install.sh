@@ -1930,8 +1930,11 @@ for vt in range(1, 8):
 # nf-fa-volume_high  nf-fa-volume_low  nf-fa-volume_xmark 
 # nf-md-pac_man 󰮯 nf-md-ghost 󰊠 nf-fa-circle  nf-cod-circle_large  nf-cod-circle_filled  nf-md-circle_small 󰧟 nf-md-circle_medium 󰧞 
 
+# Group Match example: 
+# Group("1", label="", layout="monadtall", matches=[Match(wm_class=re.compile(r"^(Google\-chrome)$"))]),
+
 groups = [
-    Group("1", label="", layout="monadtall", matches=[Match(wm_class=re.compile(r"^(Google\-chrome)$"))]),
+    Group("1", label="", layout="monadtall"),
     Group("2", label="", layout="monadtall"),
     Group("3", label="", layout="monadtall"),
     Group("4", label="", layout="monadtall"),
@@ -1939,8 +1942,8 @@ groups = [
     Group("6", label="", layout="monadtall"),
     Group("7", label="", layout="monadtall"),
     Group("8", label="", layout="monadtall"),
-    Group("9", label="", layout="monadtall", matches=[Match(wm_class=re.compile(r"^(Firefox\-esr)$"))]),
-    Group("0", label="", layout="bsp"),
+    Group("9", label="", layout="monadtall"),
+    Group("0", label="", layout="monadtall"),
 ]
 
 for i in groups:
