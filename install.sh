@@ -205,7 +205,7 @@ check_error "APT Sources list and APT Update"
 
 clear
 # Core System APT install
-sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install xserver-xorg x11-utils xinit arandr autorandr picom fwupd mesa-utils htop wget curl git tmux numlockx kitty neovim cups xsensors xbacklight brightnessctl unzip network-manager dnsutils dunst libnotify-bin notify-osd xautolock xsecurelock pm-utils rofi imagemagick nitrogen nsxiv mpv flameshot speedcrunch mc thunar gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq font-manager fontconfig fontconfig-config fonts-recommended fonts-liberation fonts-dejavu-core fonts-dejavu-extra fonts-freefont-ttf fonts-noto-core libfontconfig1 fonts-arkpandora pipewire pipewire-pulse wireplumber pipewire-alsa libspa-0.2-bluetooth pavucontrol alsa-utils qpwgraph sddm-theme-debian-maui ffmpeg
+sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install xserver-xorg x11-utils xinit arandr autorandr picom fwupd mesa-utils htop wget curl git tmux numlockx kitty neovim cups xsensors xbacklight brightnessctl unzip network-manager dnsutils dunst libnotify-bin notify-osd xautolock xsecurelock pm-utils rofi imagemagick nitrogen nsxiv mpv flameshot speedcrunch mc thunar gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq font-manager fontconfig fontconfig-config fonts-recommended fonts-liberation fonts-freefont-ttf fonts-noto-core libfontconfig1 fonts-arkpandora pipewire pipewire-pulse wireplumber pipewire-alsa libspa-0.2-bluetooth pavucontrol alsa-utils qpwgraph sddm-theme-debian-maui ffmpeg
 sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install solaar
 sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install linux-headers-$(uname -r)
 sudo DEBIAN_FRONTEND=noninteractive apt -y install sddm --no-install-recommends
@@ -974,32 +974,27 @@ check_error "Tmux config"
 
 # Themes START
 # Nerd Fonts - https://www.nerdfonts.com/font-downloads - https://www.nerdfonts.com/cheat-sheet
-if [ ! -d ~/.local/share/fonts ]; then
-mkdir -p ~/.local/share/fonts
+if [ ! -d /usr/share/fonts ]; then
+sudo mkdir -p /usr/share/fonts
 
 else 
 	echo "fonts folder already exists."
 fi
 
-# DejaVu Sans Mono font
-#wget -P /tmp/ https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/DejaVuSansMono.zip
-#unzip -q -n /tmp/DejaVuSansMono.zip -d ~/.local/share/fonts
+#JetBrainsMono
+curl -OL "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip"
+sudo unzip "$font_name.zip" -d "/usr/share/fonts/"
+rm $font_name.zip
 
-# Space Mono
-wget -P /tmp/ https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/SpaceMono.zip
-unzip -q -n /tmp/SpaceMono.zip -d ~/.local/share/fonts
+#RobotoMono
+curl -OL "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/RobotoMono.zip"
+sudo unzip "$font_name.zip" -d "/usr/share/fonts/"
+rm RobotoMono.zip
 
-# Roboto Mono
-#wget -P /tmp/ https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/RobotoMono.zip
-#unzip -q -n /tmp/RobotoMono.zip -d ~/.local/share/fonts
 
-# Fira Mono
-#wget -P /tmp/ https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/FiraMono.zip
-#unzip -q -n /tmp/FiraMono.zip -d ~/.local/share/fonts
-
-rm -f ~/.local/share/fonts/*.md
-rm -f ~/.local/share/fonts/*.txt
-rm -f ~/.local/share/fonts/LICENSE
+sudo rm -f /usr/share/fonts/*.md
+sudo rm -f /usr/share/fonts/*.txt
+sudo rm -f /usr/share/fonts/LICENSE
 
 check_error "Themes Nerd Fonts"
 
@@ -1324,12 +1319,12 @@ cat << "KITTYCONFIG" > ~/.config/kitty/kitty.conf
 
 background_opacity 0.98
 
-font_family      monospace
+font_family      JetBrainsMono Nerd Font
 bold_font        auto
 italic_font      auto
 bold_italic_font auto
 
-font_size 12
+font_size 13
 force_ltr no
 
 adjust_line_height  0
@@ -2008,7 +2003,7 @@ layouts = [
 ]
 
 widget_defaults = dict(
-    font="DejaVu Sans Mono, sans",
+    font="JetBrainsMono Nerd Font",
     fontsize=14,
     padding=5,
 )
