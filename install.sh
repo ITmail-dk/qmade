@@ -726,6 +726,8 @@ dunst &
 numlockx on &
 mpd &
 xrdb ~/.Xresources &
+xset r rate 200 35 &
+xset b off &
 #nitrogen --restore &
 
 # lock computer automatically after X time of minutes.
@@ -974,6 +976,7 @@ check_error "Tmux config"
 
 # Themes START
 # Nerd Fonts - https://www.nerdfonts.com/font-downloads - https://www.nerdfonts.com/cheat-sheet
+# RUN "fc-list" to list the fonts install on the system.
 if [ ! -d /usr/share/fonts ]; then
 sudo mkdir -p /usr/share/fonts
 
@@ -981,16 +984,21 @@ else
 	echo "fonts folder already exists."
 fi
 
-#JetBrainsMono
+#JetBrainsMono (The default front in the configuration)
 curl -OL "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip"
-sudo unzip "$font_name.zip" -d "/usr/share/fonts/"
-rm $font_name.zip
+sudo unzip -n "JetBrainsMono.zip" -d "/usr/share/fonts/JetBrainsMono/"
+rm JetBrainsMono.zip
+sudo rm -f /usr/share/fonts/JetBrainsMono/*.md
+sudo rm -f /usr/share/fonts/JetBrainsMono/*.txt
+sudo rm -f /usr/share/fonts/JetBrainsMono/LICENSE
 
 #RobotoMono
 curl -OL "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/RobotoMono.zip"
-sudo unzip "$font_name.zip" -d "/usr/share/fonts/"
+sudo unzip -n "RobotoMono.zip" -d "/usr/share/fonts/RobotoMono/"
 rm RobotoMono.zip
-
+sudo rm -f /usr/share/fonts/RobotoMono/*.md
+sudo rm -f /usr/share/fonts/RobotoMono/*.txt
+sudo rm -f /usr/share/fonts/RobotoMono/LICENSE
 
 sudo rm -f /usr/share/fonts/*.md
 sudo rm -f /usr/share/fonts/*.txt
@@ -1068,7 +1076,7 @@ sudo bash -c 'cat << "GTK3SETTINGS" >> /etc/gtk-3.0/settings.ini
 gtk-theme-name=EliverLara-Nordic
 gtk-fallback-icon-theme=default
 gtk-toolbar-style=GTK_TOOLBAR_BOTH
-gtk-font-name=DejaVu Sans Mono 10
+gtk-font-name=JetBrainsMono Nerd Font 10
 gtk-application-prefer-dark-theme=1
 gtk-cursor-theme-name=Nordzy-cursors
 gtk-cursor-theme-size=0
@@ -1089,7 +1097,7 @@ sudo bash -c 'cat << "GTK4SETTINGS" >> /etc/gtk-4.0/settings.ini
 gtk-theme-name=EliverLara-Nordic
 gtk-fallback-icon-theme=default
 gtk-toolbar-style=GTK_TOOLBAR_BOTH
-gtk-font-name=DejaVu Sans Mono 10
+gtk-font-name=JetBrainsMono Nerd Font 10
 gtk-application-prefer-dark-theme=1
 gtk-cursor-theme-name=Nordzy-cursors
 gtk-cursor-theme-size=0
