@@ -1927,7 +1927,7 @@ for vt in range(1, 8):
 # nf-dev-prolog  nf-fa-apple  nf-fa-earlybirds  nf-fa-egg  nf-fa-grav  nf-fa-linux  nf-fa-snapchat 
 # nf-fa-steam  nf-fa-terminal  nf-fa-wifi  nf-fae-pi  nf-md-recycle 󰑌 nf-md-symbol 󱔁 nf-fa-mug_hot 
 # nf-fa-thermometer_2  nf-md-battery_medium 󱊢 nf-md-battery_charging 󰂄
-# nf-fa-volume_high  nf-fa-volume_low  nf-fa-volume_xmark 
+# nf-fa-volume_high   nf-fa-volume_low  nf-fa-volume_xmark 
 # nf-md-pac_man 󰮯 nf-md-ghost 󰊠 nf-fa-circle  nf-cod-circle_large  nf-cod-circle_filled  nf-md-circle_small 󰧟 nf-md-circle_medium 󰧞 
 
 # Group Match example: 
