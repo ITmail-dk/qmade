@@ -1332,10 +1332,9 @@ fi
 
 check_error "Rofi Powermenu rasi"
 
-
+# Add xfce4 file helpers
 if [ ! -f ~/.config/xfce4/helpers.rc ]; then
 mkdir -p ~/.config/xfce4
-#touch ~/.config/xfce4/helpers.rc
 cat << "XFCE4HELPER" > ~/.config/xfce4/helpers.rc
 FileManager=Thunar
 TerminalEmulator=kitty
@@ -1350,8 +1349,23 @@ fi
 
 check_error "xfce4 helpers.rc"
 
+# Add kitty to open nvim and vim.
+if [ -f /usr/share/applications/nvim.desktop ]; then
+sudo sed -i 's/Exec=nvim %F/Exec=kitty -e nvim %F/' /usr/share/applications/nvim.desktop 
+else 
+	echo "no nvim.desktop file"
+fi
+
+if [ -f /usr/share/applications/vim.desktop ]; then
+sudo sed -i 's/Exec=vim %F/Exec=kitty -e vim %F/' /usr/share/applications/vim.desktop 
+else 
+	echo "no vim.desktop file"
+fi
+
+check_error "Add kitty to open nvim and vim"
+
 # # # # # # # # # # #
-# Kitty config file
+# Kitty config file.
 
 if [ ! -f ~/.config/kitty/kitty.conf ]; then
 mkdir -p ~/.config/kitty/themes
