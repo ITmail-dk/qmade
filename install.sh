@@ -1,14 +1,18 @@
 #!/usr/bin/env bash
-# Qtile Martin Andersen Desktop Environment, Qmade for short.! install - ITmail.dk
+
+# The Qtile Martin Andersen Desktop Environment, Qmade for short.!
+# Meant to be run in the Shell on a Debian installation without any desktop environment, just after a clean install.
 
 # bash -c "$(wget -O- https://raw.githubusercontent.com/ITmail-dk/qmade/main/install.sh)"
+# or you can run the separate commands... 
 # sudo apt install -y git && git clone https://github.com/ITmail-dk/qmade && cd qmade && . install.sh
 
 # Resource links to source
 # https://qtile.org
 
-# Rofi - Run menu
-# https://github.com/ericmurphyxyz/rofi-wifi-menu
+# Rofi - Application launcher
+# https://github.com/davatorium/rofi
+# User scripts - https://github.com/davatorium/rofi/wiki/User-scripts
 
 # autorandr
 # Autorandr “fingerprints” displays connected to the system and associate them
@@ -35,7 +39,7 @@
 # LazyVim - Can be used after Neovim >= 0.9.0 - https://github.com/LazyVim/LazyVim
 # https://github.com/folke/lazy.nvim
 
-
+# The default font in the configuration is Jet Brains Mono.
 
 # Start the install *_:*:_*:*:_*_*:*:_*::*_*::*_*:_*::*_*:*:_:*:*_*:*:_*:*_:*:#
 
@@ -126,7 +130,8 @@ echo -e "${RED} "
 echo -e "${RED}-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-"
 echo -e "${RED} ${NC}"
 
-# Installation start screen
+
+# Installation start screen and selection in whiptail
 FULLUSERNAME=$(awk -v user="$USER" -F":" 'user==$1{print $5}' /etc/passwd | rev | cut -c 4- | rev)
 
 if (whiptail --title "Installation of the Martin Qtile Desktop" --yesno "Hi $FULLUSERNAME do you want to start \nthe installation of Qtile Martin Andersen Desktop Environment, Qmade for short.! \n \nRemember you user must have sudo \naccess to run the installation." 13 50); then
@@ -136,7 +141,6 @@ else
 fi
 
 # Install selection choose what to install
-
 PROGRAMS=$(whiptail --title "The Install selection" --checklist --separate-output \
 "Choose what to install:" 20 78 15 \
 "1" "Do you want to install Libre Office" OFF \
@@ -152,7 +156,7 @@ PROGRAMS=$(whiptail --title "The Install selection" --checklist --separate-outpu
 "11" "Install WINE to run .exe files" OFF \
 "12" "Install Docker & Docker Compose" OFF 3>&1 1>&2 2>&3)
 
-# See the actual installation below - Install selection choose what to install End
+# See the actual installation under... End install selection choose what to install.
 
 PROGRAMS_EXIT_STATUS=$?
 clear
@@ -1654,57 +1658,8 @@ fi
 
 
 check_error "Kitty config file"
+
 # -------------------------------------------------------------------------------------------------
-
-# Edit GRUB BOOT TIMEOUT
-sudo sed -i 's+GRUB_TIMEOUT=5+GRUB_TIMEOUT=1+g' /etc/default/grub && sudo update-grub
-check_error "GRUB BOOT TIMEOUT"
-
-# End install selection choose what to install
-for PROGRAM in $PROGRAMS
-do
-    case $PROGRAM in
-        "1")
-            sudo DEBIAN_FRONTEND=noninteractive apt install -y libreoffice
-            ;;
-        "2")
-            sudo DEBIAN_FRONTEND=noninteractive apt install -y tlp tlp-rdw bluetooth bluez bluez-cups bluez-obexd bluez-meshd pulseaudio-module-bluetooth bluez-firmware blueman acpi
-            ;;
-        "3")
-            sudo DEBIAN_FRONTEND=noninteractive apt install -y xrdp && sudo systemctl restart xrdp.service
-            ;;
-        "4")
-            sudo DEBIAN_FRONTEND=noninteractive apt install -y freerdp2-x11 libfreerdp-client2-2 libfreerdp2-2 libwinpr2-2
-            ;;
-        "5")
-            cd /tmp/ && wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && sudo DEBIAN_FRONTEND=noninteractive apt install -y /tmp/google-chrome-stable_current_amd64.deb && rm google-chrome-stable_current_amd64.deb
-            ;;
-        "6")
-            sudo DEBIAN_FRONTEND=noninteractive apt install -y firefox-esr
-            ;;
-        "7")
-            sudo DEBIAN_FRONTEND=noninteractive apt install -y smbclient nfs-common
-            ;;
-        "8")
-            sudo DEBIAN_FRONTEND=noninteractive apt install -y ceph-common && echo "# CEPH" | sudo tee -a /etc/fstab && echo "#:/  /mnt/cephfs ceph    name=clientNAME,noatime,_netdev    0       0" | sudo tee -a /etc/fstab
-            ;;
-        "9")
-            sudo dpkg --add-architecture i386 && sudo apt update && sudo DEBIAN_FRONTEND=noninteractive apt install -y steam-installer
-            ;;
-        "10")
-            cd /tmp/ && wget -O vscode_amd64.deb 'https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64' && sudo DEBIAN_FRONTEND=noninteractive apt install -y /tmp/vscode_amd64.deb && rm vscode_amd64.deb
-            ;;
-        "11")
-            sudo dpkg --add-architecture i386 && wget -O - https://dl.winehq.org/wine-builds/winehq.key | sudo gpg --dearmor -o /etc/apt/keyrings/winehq-archive.key - && sudo wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/debian/dists/bookworm/winehq-bookworm.sources && sudo apt update && sudo apt install -y --install-recommends winehq-stable
-            ;;
-        "12")
-            curl -sSL https://get.docker.com/ | sh && sudo usermod -a -G docker $USER
-            ;;
-    esac
-done
-check_error "Install selection choose what to install"
-
-
 # Check for Nvidia graphics card and install drivers ----------------------------------------------
 
 if lspci | grep -i nvidia; then
@@ -2124,11 +2079,64 @@ else
 fi
 
 check_error "Qtile Config file"
-# -------------------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------
 
-# -------------------------------------------------------------------------------------------------
+# Edit GRUB BOOT TIMEOUT
+sudo sed -i 's+GRUB_TIMEOUT=5+GRUB_TIMEOUT=1+g' /etc/default/grub && sudo update-grub
+check_error "GRUB BOOT TIMEOUT"
 
-# Install closing screen ##### ##### ##### ##### ##### ##### ##### ##### ##### ####
+# ---------------------------------------------------------------------------------------
+
+# End install selection choose what to install #
+for PROGRAM in $PROGRAMS
+do
+    case $PROGRAM in
+        "1")
+            sudo DEBIAN_FRONTEND=noninteractive apt install -y libreoffice
+            ;;
+        "2")
+            sudo DEBIAN_FRONTEND=noninteractive apt install -y tlp tlp-rdw bluetooth bluez bluez-cups bluez-obexd bluez-meshd pulseaudio-module-bluetooth bluez-firmware blueman acpi
+            ;;
+        "3")
+            sudo DEBIAN_FRONTEND=noninteractive apt install -y xrdp && sudo systemctl restart xrdp.service
+            ;;
+        "4")
+            sudo DEBIAN_FRONTEND=noninteractive apt install -y freerdp2-x11 libfreerdp-client2-2 libfreerdp2-2 libwinpr2-2
+            ;;
+        "5")
+            cd /tmp/ && wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && sudo DEBIAN_FRONTEND=noninteractive apt install -y /tmp/google-chrome-stable_current_amd64.deb && rm google-chrome-stable_current_amd64.deb
+            ;;
+        "6")
+            sudo DEBIAN_FRONTEND=noninteractive apt install -y firefox-esr
+            ;;
+        "7")
+            sudo DEBIAN_FRONTEND=noninteractive apt install -y smbclient nfs-common
+            ;;
+        "8")
+            sudo DEBIAN_FRONTEND=noninteractive apt install -y ceph-common && echo "# CEPH" | sudo tee -a /etc/fstab && echo "#:/  /mnt/cephfs ceph    name=clientNAME,noatime,_netdev    0       0" | sudo tee -a /etc/fstab
+            ;;
+        "9")
+            sudo dpkg --add-architecture i386 && sudo apt update && sudo DEBIAN_FRONTEND=noninteractive apt install -y steam-installer
+            ;;
+        "10")
+            cd /tmp/ && wget -O vscode_amd64.deb 'https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64' && sudo DEBIAN_FRONTEND=noninteractive apt install -y /tmp/vscode_amd64.deb && rm vscode_amd64.deb
+            ;;
+        "11")
+            sudo dpkg --add-architecture i386 && wget -O - https://dl.winehq.org/wine-builds/winehq.key | sudo gpg --dearmor -o /etc/apt/keyrings/winehq-archive.key - && sudo wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/debian/dists/bookworm/winehq-bookworm.sources && sudo apt update && sudo apt install -y --install-recommends winehq-stable
+            ;;
+        "12")
+            curl -sSL https://get.docker.com/ | sh && sudo usermod -a -G docker $USER
+            ;;
+    esac
+done
+
+
+check_error "Install selection choose what to install"
+
+# ---------------------------------------------------------------------------------------
+
+# Install closing screen # ##### ##### ##### ##### ##### ##### ##### ##### ##### ##
+
 clear
 if (whiptail --title "Installation Complete" --yesno "Qmade Installation is complete. \nDo you want to restart the computer ?\n\nSome practical information. \nWindows key + Enter opens a terminal \nWindows key + B opens a web browser \nWindows key + W closes the active window \nWindows key + ALT + CTRL + P Powermenu" 15 60); then
     cd ~
