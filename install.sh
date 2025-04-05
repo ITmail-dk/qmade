@@ -1010,6 +1010,42 @@ sudo rm -f /usr/share/fonts/LICENSE
 
 check_error "Themes Nerd Fonts"
 
+
+if [ ! -f /etc/fonts/local.conf ]; then
+sudo mkdir -p  /etc/fonts
+sudo bash -c 'cat << "FONTSLOCALCONFIG" >> /etc/fonts/local.conf
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE fontconfig SYSTEM "fonts.dtd">
+<fontconfig>
+    <match>
+        <edit mode="prepend" name="family"><string>Noto Sans</string></edit>
+    </match>
+    <match target="pattern">
+        <test qual="any" name="family"><string>serif</string></test>
+        <edit name="family" mode="assign" binding="same"><string>Noto Serif</string></edit>
+    </match>
+    <match target="pattern">
+        <test qual="any" name="family"><string>sans-serif</string></test>
+        <edit name="family" mode="assign" binding="same"><string>Noto Sans</string></edit>
+    </match>
+    <match target="pattern">
+        <test qual="any" name="family"><string>monospace</string></test>
+        <edit name="family" mode="assign" binding="same"><string>Noto Mono</string></edit>
+    </match>
+   <match target="pattern">
+      <test qual="any" name="family"><string>Source Code Pro</string></test>
+      <edit name="antialias" mode="assign"><bool>false</bool></edit>
+   </match>
+</fontconfig>
+
+FONTSLOCALCONFIG'
+
+else 
+	echo "fonts local.conf file already exists."
+fi
+
+check_error "Themes Fonts local.conf"
+
 # -------------------------------------------------------------------------------------------------
 
 # ls -d /usr/share/themes/*
