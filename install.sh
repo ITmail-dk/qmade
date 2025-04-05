@@ -39,7 +39,7 @@
 # LazyVim - Can be used after Neovim >= 0.9.0 - https://github.com/LazyVim/LazyVim
 # https://github.com/folke/lazy.nvim
 
-# The default font in the configuration is Jet Brains Mono.
+# The default font in the configuration is Noto & Jet Brains Mono.
 
 # Start the install *_:*:_*:*:_*_*:*:_*::*_*::*_*:_*::*_*:*:_:*:*_*:*:_*:*_:*:#
 
@@ -1010,7 +1010,7 @@ sudo rm -f /usr/share/fonts/LICENSE
 
 check_error "Themes Nerd Fonts"
 
-
+# Set the default font family to Noto in the /etc/fonts/local.conf file.
 if [ ! -f /etc/fonts/local.conf ]; then
 sudo mkdir -p  /etc/fonts
 sudo bash -c 'cat << "FONTSLOCALCONFIG" >> /etc/fonts/local.conf
