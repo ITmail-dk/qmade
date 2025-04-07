@@ -2144,15 +2144,13 @@ check_error "Qtile Config file"
 FASTFETCH_VERSION=2.40.3
 wget https://github.com/fastfetch-cli/fastfetch/releases/download/$FASTFETCH_VERSION/fastfetch-linux-amd64.deb && sudo dpkg -i fastfetch-linux-amd64.deb && rm fastfetch-linux-amd64.deb
 
-
-
 check_error "FastFetch install"
 
 # ---------------------------------------------------------------------------------------
 # Edit GRUB BOOT TIMEOUT
 sudo sed -i 's+GRUB_TIMEOUT=5+GRUB_TIMEOUT=1+g' /etc/default/grub && sudo update-grub
-check_error "GRUB BOOT TIMEOUT"
 
+check_error "GRUB BOOT TIMEOUT"
 # ---------------------------------------------------------------------------------------
 
 # End install selection choose what to install #
