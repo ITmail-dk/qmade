@@ -266,18 +266,29 @@ unset LC_ALL # unset the LC_ALL=C
 clear
 check_error "CPU Microcode install"
 
-# Alias echo to ~/.bashrc
-echo 'alias ls="ls --color=auto --group-directories-first -v -lah"' >> ~/.bashrc
-echo 'alias df="df -h"' >> ~/.bashrc
-echo 'alias upup="sudo apt update && sudo apt upgrade -y && sudo apt clean && sudo apt autoremove -y"' >> ~/.bashrc
-echo 'bind '"'"'"\C-f":"open "$(fzf)"\n"'"'" >> ~/.bashrc
-echo 'alias lsman="compgen -c | fzf | xargs man"' >> ~/.bashrc
+# Alias echo to ~/.bashrc or ~/.bash_aliases
+BASHALIASFILE=~/.bashrc
 
-#echo "bind 'set show-all-if-ambiguous on'" >> ~/.bashrc
-#echo "bind 'TAB:menu-complete'" >> ~/.bashrc
-echo 'alias qtileconfig="nano ~/.config/qtile/config.py"' >> ~/.bashrc
-echo 'alias qtileconfig-test="python3 .config/qtile/config.py"' >> ~/.bashrc
-echo 'alias qtileconfig-test-venv="source .local/src/qtile_venv/bin/activate && python3 .config/qtile/config.py && deactivate"' >> ~/.bashrc
+echo 'alias ls="ls --color=auto --group-directories-first -v -lah"' >> $BASHALIASFILE
+echo 'alias ll="ls --color=auto --group-directories-first -v -lah"' >> $BASHALIASFILE
+
+echo 'alias df="df -h"' >> $BASHALIASFILE
+
+echo 'alias neofetch="fastfetch"' >> $BASHALIASFILE
+
+echo 'alias upup="sudo apt update && sudo apt upgrade -y && sudo apt clean && sudo apt autoremove -y"' >> $BASHALIASFILE
+
+echo 'bind '"'"'"\C-f":"open "$(fzf)"\n"'"'" >> $BASHALIASFILE
+echo 'alias lsman="compgen -c | fzf | xargs man"' >> $BASHALIASFILE
+
+#echo "bind 'set show-all-if-ambiguous on'" >> $BASHALIASFILE
+#echo "bind 'TAB:menu-complete'" >> $BASHALIASFILEc
+
+echo 'alias qtileconfig="nano ~/.config/qtile/config.py"' >> $BASHALIASFILE
+echo 'alias qtileconfig-test="python3 .config/qtile/config.py"' >> $BASHALIASFILE
+echo 'alias qtileconfig-test-venv="source .local/src/qtile_venv/bin/activate && python3 .config/qtile/config.py && deactivate"' >> $BASHALIASFILE
+
+echo 'alias vi="nvim"' >> $BASHALIASFILE
 
 clear
 check_error "Alias echo"
@@ -2129,8 +2140,18 @@ else
 fi
 
 check_error "Qtile Config file"
-# ---------------------------------------------------------------------------------------
 
+
+# ---------------------------------------------------------------------------------------
+# FastFetch Install.
+FASTFETCH_VERSION=2.40.3
+wget https://github.com/fastfetch-cli/fastfetch/releases/download/$FASTFETCH_VERSION/fastfetch-linux-amd64.deb && sudo dpkg -i fastfetch-linux-amd64.deb && rm fastfetch-linux-amd64.deb
+
+
+
+check_error "FastFetch install"
+
+# ---------------------------------------------------------------------------------------
 # Edit GRUB BOOT TIMEOUT
 sudo sed -i 's+GRUB_TIMEOUT=5+GRUB_TIMEOUT=1+g' /etc/default/grub && sudo update-grub
 check_error "GRUB BOOT TIMEOUT"
