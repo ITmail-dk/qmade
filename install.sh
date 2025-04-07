@@ -281,9 +281,6 @@ echo 'alias upup="sudo apt update && sudo apt upgrade -y && sudo apt clean && su
 echo 'bind '"'"'"\C-f":"open "$(fzf)"\n"'"'" >> $BASHALIASFILE
 echo 'alias lsman="compgen -c | fzf | xargs man"' >> $BASHALIASFILE
 
-#echo "bind 'set show-all-if-ambiguous on'" >> $BASHALIASFILE
-#echo "bind 'TAB:menu-complete'" >> $BASHALIASFILEc
-
 echo 'alias qtileconfig="nano ~/.config/qtile/config.py"' >> $BASHALIASFILE
 echo 'alias qtileconfig-test="python3 .config/qtile/config.py"' >> $BASHALIASFILE
 echo 'alias qtileconfig-test-venv="source .local/src/qtile_venv/bin/activate && python3 .config/qtile/config.py && deactivate"' >> $BASHALIASFILE
