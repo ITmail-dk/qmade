@@ -3,7 +3,8 @@ Qtile Martin Andersen Desktop Environment, Qmade for short.!
 
 ![Screenshots of the Desktop](screenshots/screenshot_01.jpg)
 
-## Remember to install Debian 12 without a desktop environment.
+## Remember to install Debian without a desktop environment.
+Install a fresh copy of Debian Linux - Stable or Unstable via the Netinst AMD64 installer ISO.
 After installation Debian, Reboot the computer and login with your username and password.
 Start the installation as regular users with SUDO rights, after you login to your freshly installed machine.
 
