@@ -741,7 +741,7 @@ mkdir -p ~/.config/qtile/
 if [ ! -f ~/.config/qtile/autostart.sh ]; then
 cat << "QTILEAUTOSTART" > ~/.config/qtile/autostart.sh
 #!/usr/bin/env bash
-pgrep -x picom > /dev/null || picom -b &
+pgrep -x picom > /dev/null || picom --backend xrender &
 autorandr --change &&
 
 # This here if statement sets your background image, with feh... 
