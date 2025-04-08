@@ -174,6 +174,15 @@ echo -e "${RED} "
 echo -e "${RED}-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-"
 echo -e "${RED} ${NC}"
 
+# Sudoers ------------------------------------------------------------------------------------------------------------------------------------
+# Add User NOPASSWD to shutdown now and reboot
+echo "$USER ALL=(ALL) NOPASSWD: /sbin/shutdown now, /sbin/reboot" | sudo tee -a /etc/sudoers.d/$USER && sudo visudo -c -f /etc/sudoers.d/$USER
+check_error "Sudo User NOPASSWD to shutdown now and reboot"
+
+# Set sudo password timeout
+echo "Defaults timestamp_timeout=25" | sudo tee -a /etc/sudoers.d/$USER && sudo visudo -c -f /etc/sudoers.d/$USER
+check_error "Set sudo password timeout"
+# -----------------------------------------------------------------------------------------------------------------------------------------
 
 # APT Add - contrib non-free" to the sources list
 if [ -f /etc/apt/sources.list ]; then
@@ -757,17 +766,6 @@ fi
 check_error "Qtile Autostart.sh file"
 
 
-# -----------------------------------------------------------------------------------------------------------------------------------------
-# Add User NOPASSWD to shutdown now and reboot
-echo "$USER ALL=(ALL) NOPASSWD: /sbin/shutdown now, /sbin/reboot" | sudo tee -a /etc/sudoers.d/$USER && sudo visudo -c -f /etc/sudoers.d/$USER
-check_error "Sudo User NOPASSWD to shutdown now and reboot"
-
-# Set sudo password timeout
-echo "Defaults timestamp_timeout=25" | sudo tee -a /etc/sudoers.d/$USER && sudo visudo -c -f /etc/sudoers.d/$USER
-check_error "Set sudo password timeout"
-
-
-# -----------------------------------------------------------------------------------------------------------------------------------------
 # MPD Setup & config START
 
 mkdir -p ~/.config/mpd/playlists
