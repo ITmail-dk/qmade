@@ -226,16 +226,6 @@ sudo DEBIAN_FRONTEND=noninteractive apt -y install sddm --no-install-recommends
 check_error "Core System APT install"
 
 
-# APT install under Unstable and Testing
-if [[ "$VERSION_CODENAME" == "trixie" ]]; then
-	echo "Your version of Debian is not compatible with This package"
-else
-	sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install xautolock solaar speedcrunch fonts-arkpandora
-
-fi
-check_error "APT install under Unstable and Testing"
-
-
 # Dependencies so the Nordic login theme works
 sudo apt install -y --no-install-recommends plasma-workspace plasma-framework
 check_error "APT install under plasma-workspace plasma-framework"
@@ -772,9 +762,6 @@ xset r rate 200 35 &
 xset b off &
 #nitrogen --restore &
 
-# lock computer automatically after X time of minutes.
-xautolock -time 120 -locker "xsecurelock" -detectsleep -secure &
-
 QTILEAUTOSTART
 
 chmod +x ~/.config/qtile/autostart.sh
@@ -783,6 +770,17 @@ else
 	echo "File autostart.sh already exists."
 fi
 check_error "Qtile Autostart.sh file"
+
+
+# APT install under Unstable and Testing
+if [[ "$VERSION_CODENAME" == "trixie" ]]; then
+	echo "Your version of Debian is not compatible with This package"
+else
+	sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install xautolock solaar speedcrunch fonts-arkpandora
+    echo "# Lock the computer automatically after X time of minutes, using xautolock and xsecurelock." | tee -a ~/.config/qtile/autostart.sh
+    echo 'xautolock -time 120 -locker "xsecurelock" -detectsleep -secure &' | tee -a ~/.config/qtile/autostart.sh
+fi
+check_error "APT install under Unstable and Testing"
 
 
 # MPD Setup & config START
