@@ -85,7 +85,7 @@ check_error() {
   fi
 }
 
-clear
+#clear #Clear the screen
 
 if [ -f /etc/debian_version ]; then
     echo "Preparation before starting the installation..."
@@ -164,7 +164,7 @@ if [ $PROGRAMS_EXIT_STATUS != 0 ]; then
 fi
 
 
-clear
+#clear #Clear the screen
 echo -e "${RED} "
 echo -e "${RED}-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-"
 echo -e "${RED} "
@@ -211,12 +211,12 @@ else
     echo "apt-transport-https is already installed."
 fi
 
-clear
+#clear #Clear the screen
 sudo apt update
 check_error "APT Sources list and APT Update"
 # -------------------------------------------------------------------------------------------------
 
-clear
+#clear #Clear the screen
 # Core System APT install
 sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install xserver-xorg x11-utils xinit arandr autorandr picom fwupd colord mesa-utils htop wget curl git tmux numlockx kitty neovim xdg-utils cups cups-common xsensors xbacklight brightnessctl unzip network-manager dnsutils dunst libnotify-bin notify-osd xsecurelock pm-utils rofi imagemagick nitrogen nsxiv mpv flameshot mc thunar gvfs gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq font-manager fontconfig fontconfig-config fonts-recommended fonts-liberation fonts-freefont-ttf fonts-noto-core libfontconfig1 pipewire pipewire-pulse wireplumber pipewire-alsa libspa-0.2-bluetooth pavucontrol alsa-utils qpwgraph sddm-theme-debian-maui ffmpeg cmake
 sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install linux-headers-$(uname -r)
@@ -228,7 +228,7 @@ sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install xautolock so
 # Dependencies so the Nordic login theme works
 sudo apt install -y --no-install-recommends plasma-workspace plasma-framework && sudo rm /usr/share/xsessions/plasma.desktop
 
-clear
+#clear #Clear the screen
 check_error "Core System APT install"
 
 # Audio Start - https://alsa.opensrc.org - https://wiki.debian.org/ALSA
@@ -249,7 +249,7 @@ systemctl enable --user --now pipewire.socket pipewire-pulse.socket wireplumber.
 # systemctl --user enable pulseaudio
 
 # sudo alsactl init
-clear
+#clear #Clear the screen
 check_error "Audio Core System APT install"
 
 
@@ -274,7 +274,7 @@ else
 fi
 unset LC_ALL # unset the LC_ALL=C 
 
-clear
+#clear #Clear the screen
 check_error "CPU Microcode install"
 
 # Alias echo to ~/.bashrc or ~/.bash_aliases
@@ -298,7 +298,7 @@ echo 'alias qtileconfig-test-venv="source .local/src/qtile_venv/bin/activate && 
 
 echo 'alias vi="nvim"' >> $BASHALIASFILE
 
-clear
+#clear #Clear the screen
 check_error "Alias echo"
 
 
@@ -2209,10 +2209,10 @@ check_error "Install selection choose what to install"
 
 # Install closing screen # ##### ##### ##### ##### ##### ##### ##### ##### ##### ##
 
-clear
+#clear #Clear the screen
 if (whiptail --title "Installation Complete" --yesno "Qmade Installation is complete. \nDo you want to restart the computer ?\n\nSome practical information. \nWindows key + Enter opens a terminal \nWindows key + B opens a web browser \nWindows key + W closes the active window \nWindows key + ALT + CTRL + P Powermenu" 15 60); then
     cd ~
-    clear
+    #clear #Clear the screen
     echo -e "${RED} "
     echo -e "${RED}-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-"
     echo -e "${RED} "
@@ -2226,7 +2226,7 @@ if (whiptail --title "Installation Complete" --yesno "Qmade Installation is comp
     echo -e "${GREEN} ${NC}"
 else
     cd ~
-    clear
+    #clear #Clear the screen
     echo -e "${GREEN} -'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-"
     echo -e "${GREEN} "
     echo -e "${GREEN}    You chose not to restart the computer, Installation complete."
