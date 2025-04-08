@@ -96,7 +96,9 @@ fi
 
 # Check if it's a Debian system install.
 if [ -f /etc/debian_version ]; then
-    echo "Preparation before starting the installation..."
+    . /etc/os-release #Get the VERSION_CODENAME
+    echo "Preparation before starting the installation on Debian $VERSION_CODENAME"
+
 else
     echo "This installation should only be run on a Debian Linux System."
     exit 1
@@ -221,15 +223,32 @@ check_error "APT Sources list and APT Update"
 sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install xserver-xorg x11-utils xinit arandr autorandr picom fwupd colord mesa-utils htop wget curl git tmux numlockx kitty neovim xdg-utils cups cups-common xsensors xbacklight brightnessctl unzip network-manager dnsutils dunst libnotify-bin notify-osd xsecurelock pm-utils rofi imagemagick nitrogen nsxiv mpv flameshot mc thunar gvfs gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq font-manager fontconfig fontconfig-config fonts-recommended fonts-liberation fonts-freefont-ttf fonts-noto-core libfontconfig1 pipewire pipewire-pulse wireplumber pipewire-alsa libspa-0.2-bluetooth pavucontrol alsa-utils qpwgraph sddm-theme-debian-maui ffmpeg cmake
 sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install linux-headers-$(uname -r)
 sudo DEBIAN_FRONTEND=noninteractive apt -y install sddm --no-install-recommends
+check_error "Core System APT install"
 
-# APT install under Unstable and Testing .
-sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install xautolock solaar speedcrunch fonts-arkpandora
+
+# APT install under Unstable and Testing
+if [[ "$VERSION_CODENAME" == "trixie" ]]; then
+	echo "Your version of Debian is not compatible with This package"
+else
+	sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install xautolock solaar speedcrunch fonts-arkpandora
+
+fi
+check_error "APT install under Unstable and Testing"
+
 
 # Dependencies so the Nordic login theme works
-sudo apt install -y --no-install-recommends plasma-workspace plasma-framework && sudo rm /usr/share/xsessions/plasma.desktop
+sudo apt install -y --no-install-recommends plasma-workspace plasma-framework
+check_error "APT install under plasma-workspace plasma-framework"
+
+
+if [ -f /usr/share/xsessions/plasma.desktop ]; then
+    sudo rm /usr/share/xsessions/plasma.desktop
+fi
+check_error "Remove plasma.desktop"
+
 
 #clear #Clear the screen
-check_error "Core System APT install"
+
 
 # Audio Start - https://alsa.opensrc.org - https://wiki.debian.org/ALSA
 # See hardware run: "pacmd list-sinks" or "lspci | grep -i audio" or... sudo dmesg  | grep 'snd\|firmware\|audio'
@@ -2173,7 +2192,11 @@ do
             sudo DEBIAN_FRONTEND=noninteractive apt install -y xrdp && sudo systemctl restart xrdp.service
             ;;
         "4")
-            sudo DEBIAN_FRONTEND=noninteractive apt install -y freerdp2-x11 libfreerdp-client2-2 libfreerdp2-2 libwinpr2-2 remmina
+            if [[ "$VERSION_CODENAME" == "trixie" ]]; then
+                echo "Your version of Debian is not compatible with This package"
+            else
+                sudo DEBIAN_FRONTEND=noninteractive apt install -y freerdp2-x11 libfreerdp-client2-2 libfreerdp2-2 libwinpr2-2 remmina
+            fi
             ;;
         "5")
             cd /tmp/ && wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && sudo DEBIAN_FRONTEND=noninteractive apt install -y /tmp/google-chrome-stable_current_amd64.deb && rm google-chrome-stable_current_amd64.deb
@@ -2197,7 +2220,11 @@ do
             sudo dpkg --add-architecture i386 && wget -O - https://dl.winehq.org/wine-builds/winehq.key | sudo gpg --dearmor -o /etc/apt/keyrings/winehq-archive.key - && sudo wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/debian/dists/bookworm/winehq-bookworm.sources && sudo apt update && sudo apt install -y --install-recommends winehq-stable
             ;;
         "12")
-            curl -sSL https://get.docker.com/ | sh && sudo usermod -a -G docker $USER
+            if [[ "$VERSION_CODENAME" == "trixie" ]]; then
+                echo "Your version of Debian is not compatible with This package"
+            else
+                curl -sSL https://get.docker.com/ | sh && sudo usermod -a -G docker $USER
+            fi
             ;;
     esac
 done
