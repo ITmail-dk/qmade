@@ -143,18 +143,18 @@ fi
 # Install selection choose what to install
 PROGRAMS=$(whiptail --title "The Install selection" --checklist --separate-output \
 "Choose what to install:" 20 78 15 \
-"1" "Do you want to install Libre Office" OFF \
+"1" "Do you want to install Libre Office" ON \
 "2" "Is this a laptop we are installing on!" OFF \
-"3" "Install XRDP Server" ON \
+"3" "Install XRDP Server" OFF \
 "4" "Install XfreeRDP & Remmina Client" ON \
 "5" "Install Google Chrome Webbrowser" ON \
-"6" "Install Firefox Webbrowser" OFF \
-"7" "Install SMB/CIFS and NFS Storage Client" OFF \
-"8" "Install Ceph Storage Client" OFF \
+"6" "Install Firefox Webbrowser" ON \
+"7" "Install SMB/CIFS and NFS Storage Client" ON \
+"8" "Install Ceph Storage Client" ON \
 "9" "Install Steam Gaming Plaform Client" OFF \
 "10" "Install VS Code Editor" OFF \
-"11" "Install WINE to run .exe files" OFF \
-"12" "Install Docker & Docker Compose" OFF 3>&1 1>&2 2>&3)
+"11" "Install WINE to run .exe files" ON \
+"12" "Install Docker & Docker Compose" ON 3>&1 1>&2 2>&3)
 
 # See the actual installation under... End install selection choose what to install.
 
