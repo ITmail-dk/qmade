@@ -146,7 +146,7 @@ PROGRAMS=$(whiptail --title "The Install selection" --checklist --separate-outpu
 "1" "Do you want to install Libre Office" OFF \
 "2" "Is this a laptop we are installing on!" OFF \
 "3" "Install XRDP Server" ON \
-"4" "Install XfreeRDP Client" ON \
+"4" "Install XfreeRDP & Remmina Client" ON \
 "5" "Install Google Chrome Webbrowser" ON \
 "6" "Install Firefox Webbrowser" OFF \
 "7" "Install SMB/CIFS and NFS Storage Client" OFF \
@@ -2167,7 +2167,7 @@ do
             sudo DEBIAN_FRONTEND=noninteractive apt install -y xrdp && sudo systemctl restart xrdp.service
             ;;
         "4")
-            sudo DEBIAN_FRONTEND=noninteractive apt install -y freerdp2-x11 libfreerdp-client2-2 libfreerdp2-2 libwinpr2-2
+            sudo DEBIAN_FRONTEND=noninteractive apt install -y freerdp2-x11 libfreerdp-client2-2 libfreerdp2-2 libwinpr2-2 remmina
             ;;
         "5")
             cd /tmp/ && wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && sudo DEBIAN_FRONTEND=noninteractive apt install -y /tmp/google-chrome-stable_current_amd64.deb && rm google-chrome-stable_current_amd64.deb
