@@ -1,8 +1,6 @@
 # Qmade - Now testing in daily use.
 Qtile Martin Andersen Desktop Environment, Qmade for short.!
 
-![Screenshots of the Desktop](screenshots/screenshot_01.jpg)
-
 ## Remember to install Debian without a desktop environment.
 Install a fresh copy of Debian Linux - Stable or Unstable via the Netinst AMD64 installer ISO.
 After installation Debian, Reboot the computer and login with your username and password.
@@ -16,6 +14,7 @@ Run this one command to start Qmade install and you're good to go.:
 
     sudo apt install -y git && git clone https://github.com/ITmail-dk/qmade && cd qmade && . install.sh
 
+![Screenshots of the Desktop](screenshots/screenshot_01.jpg)
 
 ## Keybindings
 Default Modkey is the Windows key (**MOD4**) and **MOD1** is Alt Left.
