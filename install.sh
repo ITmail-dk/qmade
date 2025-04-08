@@ -142,7 +142,7 @@ fi
 
 # Install selection choose what to install
 PROGRAMS=$(whiptail --title "The Install selection" --checklist --separate-output \
-"Choose what to install:" 20 78 18 \
+"Choose what to install:" 20 78 15 \
 "1" "Do you want to install Libre Office" ON \
 "2" "Is this a laptop we are installing on!" OFF \
 "3" "Install XRDP Server" OFF \
