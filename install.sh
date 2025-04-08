@@ -94,31 +94,14 @@ else
     exit 1
 fi
 
-
-# Copy Default APT Sources List
-echo -e "${RED} ${NC}"
-echo -e "${RED} "
-echo -e "${RED}-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-"
-echo -e "${RED} "
-echo -e "${RED}      Enter your user password, to start the install"
-echo -e "${RED}                   or CTRL + C to cancel"
-echo -e "${RED} "
-echo -e "${RED}-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-"
-echo -e "${RED} ${NC}"
-
-sudo cp /usr/share/doc/apt/examples/sources.list /etc/apt/sources.list
-check_error "Copy Default APT Sources list"
-clear
-
-if ! dpkg -s whiptail >/dev/null 2>&1; then
-    sudo apt update
-    sudo DEBIAN_FRONTEND=noninteractive apt install -y whiptail
+# Check if it's a Debian system install.
+if [ -f /etc/debian_version ]; then
+    echo "Preparation before starting the installation..."
 else
-    echo -e "${YELLOW} Preparation before starting the installation... done ;-) ${NC}"
+    echo "This installation should only be run on a Debian Linux System."
+    exit 1
 fi
 
-check_error "APT install whiptail"
-clear
 
 echo -e "${RED} ${NC}"
 echo -e "${RED} "
@@ -126,9 +109,24 @@ echo -e "${RED}-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-"
 echo -e "${RED} "
 echo -e "${RED}      Preparation before starting the installation..."
 echo -e "${RED}      Enter your user password, to continue if necessary"
+echo -e "${RED}                   or CTRL + C to cancel"
 echo -e "${RED} "
 echo -e "${RED}-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-"
 echo -e "${RED} ${NC}"
+
+# Check and Copy Default APT Sources List
+if [ ! -f /etc/apt/sources.list ]; then
+    sudo cp /usr/share/doc/apt/examples/sources.list /etc/apt/sources.list
+fi
+check_error "Copy Default APT Sources list"
+
+if ! dpkg -s whiptail >/dev/null 2>&1; then
+    sudo apt update
+    sudo DEBIAN_FRONTEND=noninteractive apt install -y whiptail
+else
+    echo -e "${YELLOW} Preparation before starting the installation... done ;-) ${NC}"
+fi
+check_error "APT install whiptail"
 
 
 # Installation start screen and selection in whiptail
@@ -157,9 +155,8 @@ PROGRAMS=$(whiptail --title "The Install selection" --checklist --separate-outpu
 "12" "Install Docker & Docker Compose" ON 3>&1 1>&2 2>&3)
 
 # See the actual installation under... End install selection choose what to install.
-
 PROGRAMS_EXIT_STATUS=$?
-clear
+
 
 if [ $PROGRAMS_EXIT_STATUS != 0 ]; then
   echo -e "${RED} Installation Cancel - You have now stopped the installation. ${NC}"
@@ -179,19 +176,22 @@ echo -e "${RED} ${NC}"
 
 
 # APT Add - contrib non-free" to the sources list
-if [ -f /etc/apt/sources.list.d/debian.sources ]; then
-    if ! grep -q "Components:.* contrib non-free non-free-firmware" /etc/apt/sources.list.d/debian.sources; then
-        sudo sed -i 's/^Components:* main/& contrib non-free non-free-firmware/g' /etc/apt/sources.list.d/debian.sources
-    else
-        echo "contrib non-free non-free-firmware is already present in /etc/apt/sources.list.d/debian.sources"
-    fi
-else
+if [ -f /etc/apt/sources.list ]; then
     if ! grep -q "deb .* contrib non-free" /etc/apt/sources.list; then
         sudo sed -i 's/^deb.* main/& contrib non-free/g' /etc/apt/sources.list
     else
         echo "contrib non-free is already present in /etc/apt/sources.list"
     fi
 fi
+
+if [ -f /etc/apt/sources.list.d/debian.sources ]; then
+    if ! grep -q "Components:.* contrib non-free non-free-firmware" /etc/apt/sources.list.d/debian.sources; then
+        sudo sed -i 's/^Components:* main/& contrib non-free non-free-firmware/g' /etc/apt/sources.list.d/debian.sources
+    else
+        echo "contrib non-free non-free-firmware is already present in /etc/apt/sources.list.d/debian.sources"
+    fi
+fi
+
 check_error "Sources list"
 
 # APT Add - apt-transport-https
