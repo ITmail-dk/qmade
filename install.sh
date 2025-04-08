@@ -743,8 +743,8 @@ Keywords=wm;tiling
 QTILEDESKTOP'
 
 # Add .xsession
-touch ~/.xsession && echo "qtile start" > ~/.xsession
-check_error "Add Qtile .xsession"
+#touch ~/.xsession && echo "qtile start" > ~/.xsession
+#check_error "Add Qtile .xsession"
 
 # Qtile Autostart.sh file
 mkdir -p ~/.config/qtile/
