@@ -741,7 +741,8 @@ mkdir -p ~/.config/qtile/
 if [ ! -f ~/.config/qtile/autostart.sh ]; then
 cat << "QTILEAUTOSTART" > ~/.config/qtile/autostart.sh
 #!/usr/bin/env bash
-pgrep -x picom > /dev/null || picom --backend xrender & # glx or xrender
+# Picom - https://manpages.ubuntu.com/manpages/plucky/man1/picom.1.html
+pgrep -x picom > /dev/null || picom --backend xrender --vsync & # Picom use... --backend glx or xrender, --vsync --no-vsync,
 autorandr --change &&
 
 # This here if statement sets your background image, with feh... 
@@ -2082,7 +2083,7 @@ screens = [
                 #widget.QuickExit(default_text="LOGOUT", countdown_format="     {}     "),
                 widget.Spacer(length=20),
             ], 30, # Define bar height
-            background=Color0, opacity=0.95, # Bar background color can also take transparency with "hex color code" or .75
+            background=Color0, opacity=0.94, # Bar background color can also take transparency with "hex color code" or 0.XX
             margin=[5, 5, 0, 5], # Space around bar as int or list of ints [N E S W]
             border_width=[0, 0, 0, 0], # Width of border as int of list of ints [N E S W]
             border_color=[Color2, Color2, Color2, Color2] # Border colour as str or list of str [N E S W]
