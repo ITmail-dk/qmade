@@ -1457,7 +1457,7 @@ touch_scroll_multiplier 1.0
 
 mouse_hide_wait 3.0
 
-mouse_map right click paste_from_clipboard
+#mouse_map right click paste_from_clipboard
 
 url_color #0087bd
 url_style curly
@@ -1468,7 +1468,7 @@ url_prefixes http https file ftp gemini irc gopher mailto news git
 
 detect_urls yes
 
-url_excluded_characters 
+#url_excluded_characters 
 
 copy_on_select yes
 
