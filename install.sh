@@ -1558,7 +1558,7 @@ hide_window_decorations no
 
 resize_debounce_time 0.1
 
-resize_draw_strategy static
+#resize_draw_strategy static
 
 resize_in_steps no
 
