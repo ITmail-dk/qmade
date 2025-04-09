@@ -741,7 +741,7 @@ mkdir -p ~/.config/qtile/
 if [ ! -f ~/.config/qtile/autostart.sh ]; then
 cat << "QTILEAUTOSTART" > ~/.config/qtile/autostart.sh
 #!/usr/bin/env bash
-pgrep -x picom > /dev/null || picom --backend xrender &
+pgrep -x picom > /dev/null || picom --backend xrender & # glx or xrender
 autorandr --change &&
 
 # This here if statement sets your background image, with feh... 
@@ -1848,7 +1848,7 @@ Color15 = colordict["colors"]["color15"]
 
 
 mod = "mod4"
-terminal = guess_terminal()
+terminal = "kitty -o background_opacity=0.95"
 browser = guess_browser()
 fileexplorer = "thunar"
 runmenu = 'rofi -modi "drun,run,window,filebrowser" -show drun' # Switch between -modi... Default key CTRL+TAB
