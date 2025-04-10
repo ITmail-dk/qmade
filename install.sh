@@ -2236,7 +2236,7 @@ check_error "Install selection choose what to install"
 # Install closing screen # ##### ##### ##### ##### ##### ##### ##### ##### ##### ##
 
 #clear #Clear the screen
-if (whiptail --title "Installation Complete" --yesno "Qmade Installation is complete. \nDo you want to restart the computer ?\n\nSome practical information. \nWindows key + Enter opens a terminal \nWindows key + B opens a web browser \nWindows key + W closes the active window \nWindows key + ALT + CTRL + P Powermenu" 15 60); then
+if (whiptail --title "Installation Complete" --yesno "Qmade Installation is complete. \nDo you want to restart the computer ?\n\nSome practical information. \nWindows key + Enter opens a terminal \nWindows key + B opens a web browser \nWindows key + W closes the active window \nWindows key + ALT + CTRL + P Powermenu \nWindows key + SHIFT + A = Audio Control Panel" 15 60); then
     cd ~
     #clear #Clear the screen
     echo -e "${RED} "
