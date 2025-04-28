@@ -1355,7 +1355,7 @@ inputbar {
 }
 
 listview {
-	lines: 3;
+	lines: 5;
 }
 
 ROFIPOWERMENURASI
