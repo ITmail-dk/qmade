@@ -19,15 +19,15 @@ Run this one command to start Qmade install and you're good to go.:
 ## Keybindings
 Default Modkey is the Windows key (**MOD4**) and **MOD1** is Alt Left.
 
-**MOD4 + Enter** = Opens a Terminal.
+**WIN + Enter** = Opens a Terminal.
 
-**MOD4 + B** = Opens a browser.
+**WIN + B** = Opens a browser.
 
-**MOD4 + SHIFT + A** = Audio Control Panel in a ScratchPads.
+**WIN + SHIFT + A** = Audio Control Panel in a ScratchPads.
 
-**MOD4 + Control + MOD1 + P** = Power Menu for shutdown, reboot and lock screen.
+**WIN + Control + Alt + P** = Power Menu for shutdown, reboot and lock screen.
 
-**MOD4 + Control + MOD1 + T** = Autogenerate a new background image and color theme,  
+**WIN + Control + Alt + T** = Autogenerate a new background image and color theme,  
 from the Wallpaper folder in your home directory.
 
 For a quick reference to the keybindings used in Qmade,  
