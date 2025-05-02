@@ -2,7 +2,7 @@
 Qtile Martin Andersen Desktop Environment, Qmade for short.!
 
 ## Remember to install Debian without a desktop environment.
-Install a fresh copy of Debian Linux - Stable or Unstable via the Netinst AMD64 installer ISO.
+Install a fresh copy of Debian Linux - Stable via the Netinst AMD64 installer ISO.
 After installation Debian, Reboot the computer and login with your username and password.
 Start the installation as regular users with SUDO rights, after you login to your freshly installed machine.
 
@@ -35,3 +35,23 @@ check out the image files in the `keybinding-images` directory.
 Or the Qtile config file under KEYS in "~/.config/qtile/config.py" to see them all.
 
 ![Image of mod4 keybindings](keybinding-images/keybinding_mod4.png)
+
+## Information:
+- Window Manager: Qtile
+- Compositor: X11, Picom
+- Bar / Panel:  Qtile Bar
+- Terminal: Kitty
+- Shell: Bash
+- Editor: Neovim
+- File Manager: Thunar + Midnight Commander
+- Notification Manager: Dunst
+- Application Launcher: Rofi
+- Login Manager: SDDM (Nordic-darker)
+- Audio Server: PipeWire, WirePlumber
+- Theme: EliverLara Nordic
+- Colors: PyWal 16 (Keybinding: CTRL + WIN + ALT + T = New Random Color Theme from Wallpapers)
+- Font: Noto & Jet Brains Mono + Roboto Mono (Nerd Fonts)
+
+
+## Roadmap:
+- Compositor: Wayland + XWayland
