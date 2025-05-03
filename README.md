@@ -47,6 +47,8 @@ check out the Qtile config file under Keybindings in "~/.config/qtile/config.py"
 - Login Manager: SDDM (Nordic-darker)
 - Audio Server: PipeWire, WirePlumber
 - Theme: EliverLara Nordic
+- Icons: Nordzy-icon
+- Cursor: Nordzy
 - Colors: PyWal 16 (Keybinding: CTRL + WIN + ALT + T = New Random Color Theme from Wallpapers)
 - Font: Noto & Jet Brains Mono + Roboto Mono (Nerd Fonts)
 
