@@ -31,10 +31,8 @@ Default Modkey is the Windows key (**MOD4**) and **MOD1** is Alt Left.
 from the Wallpaper folder in your home directory.
 
 For a quick reference to the keybindings used in Qmade,  
-check out the image files in the `keybinding-images` directory.
-Or the Qtile config file under KEYS in "~/.config/qtile/config.py" to see them all.
+check out the Qtile config file under Keybindings in "~/.config/qtile/config.py" to see them all.
 
-![Image of mod4 keybindings](keybinding-images/keybinding_mod4.png)
 
 ## Information:
 - Window Manager: Qtile
