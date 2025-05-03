@@ -660,9 +660,10 @@ check_error "gsettings set color-scheme"
 sudo bash -c 'cat << "AUTONEWWALLPAPERANDCOLORSBIN" >> /usr/local/bin/auto-new-wallpaper-and-colors
 #!/usr/bin/env bash
 
-wal --cols16 darken -q -i $HOME/Wallpapers --backend modern_colorthief
+wal --cols16 darken -q -i $HOME/Wallpapers --backend haishoku
+# Backends: colorz, colorthief, fast_colorthief, okthief, schemer2, haishoku, modern_colorthief, wal
 
-notify-send -u low "Automatically new background and color theme" "Please wait while we find a new background image and some colors to match"
+notify-send -u low "Automatically new background and color theme" "Please wait while i find a new background image and some colors to match"
 
 qtile cmd-obj -o cmd -f reload_config
 kitty +kitten themes --reload-in=all current-theme
