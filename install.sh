@@ -41,30 +41,7 @@
 
 # The default font in the configuration is Noto & Jet Brains Mono.
 
-# Start the install *_:*:_*:*:_*_*:*:_*::*_*::*_*:_*::*_*:*:_:*:*_*:*:_*:*_:*:#
-
-# Whiptail colors
-export NEWT_COLORS='
-root=white,gray
-window=white,lightgray
-border=black,lightgray
-shadow=white,black
-button=white,blue
-actbutton=black,red
-compactbutton=black,
-title=black,
-roottext=black,magenta
-textbox=black,lightgray
-acttextbox=gray,white
-entry=lightgray,gray
-disentry=gray,lightgray
-checkbox=black,lightgray
-actcheckbox=white,blue
-emptyscale=,black
-fullscale=,red
-listbox=black,lightgray
-actlistbox=lightgray,gray
-actsellistbox=white,blue'
+# Installation Start *_:*:_*:*:_*_*:*:_*::*_*::*_*:_*::*_*:*:_:*:*_*:*:_*:*_:*:#
 
 # Set Echo colors
 # for c in {0..255}; do tput setaf $c; tput setaf $c | cat -v; echo =$c; done
@@ -131,40 +108,6 @@ fi
 check_error "APT install whiptail"
 
 
-# Installation start screen and selection in whiptail
-FULLUSERNAME=$(awk -v user="$USER" -F":" 'user==$1{print $5}' /etc/passwd | tr -d ',')
-
-if (whiptail --title "Installation of the Martin Qtile Desktop" --yesno "Hi $FULLUSERNAME do you want to start \nthe installation of Qtile Martin Andersen Desktop Environment, Qmade for short.! \n \nRemember you user must have sudo \naccess to run the installation." 13 50); then
-    echo -e "${GREEN} Okay, let's start the installation"
-else
-    exit 1
-fi
-
-# Install selection choose what to install
-PROGRAMS=$(whiptail --title "The Install selection" --checklist --separate-output \
-"Choose what to install:" 20 78 15 \
-"1" "Do you want to install Libre Office" ON \
-"2" "Is this a laptop we are installing on!" OFF \
-"3" "Install XRDP Server" OFF \
-"4" "Install XfreeRDP & Remmina Client" ON \
-"5" "Install Google Chrome Webbrowser" ON \
-"6" "Install Firefox Webbrowser" ON \
-"7" "Install SMB/CIFS and NFS Storage Client" ON \
-"8" "Install Ceph Storage Client" ON \
-"9" "Install Steam Gaming Plaform Client" OFF \
-"10" "Install VS Code Editor" OFF \
-"11" "Install WINE to run .exe files" ON \
-"12" "Install Docker & Docker Compose" ON 3>&1 1>&2 2>&3)
-
-# See the actual installation under... End install selection choose what to install.
-PROGRAMS_EXIT_STATUS=$?
-
-
-if [ $PROGRAMS_EXIT_STATUS != 0 ]; then
-  echo -e "${RED} Installation Cancel - You have now stopped the installation. ${NC}"
-  exit 1
-fi
-
 
 clear #Clear the screen
 echo -e "${RED} "
@@ -213,8 +156,8 @@ else
     echo "apt-transport-https is already installed."
 fi
 
-clear #Clear the screen
 sudo apt update
+clear #Clear the screen
 check_error "APT Sources list and APT Update"
 # -------------------------------------------------------------------------------------------------
 
@@ -226,18 +169,51 @@ sudo DEBIAN_FRONTEND=noninteractive apt -y install sddm --no-install-recommends
 check_error "Core System APT install"
 
 
+# APT install extra packages
+
+sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install remmina libreoffice
+clear #Clear the screen
+check_error "APT install extra packages"
+
 # Dependencies so the Nordic login theme works
 sudo apt install -y --no-install-recommends plasma-workspace plasma-framework
+clear #Clear the screen
 check_error "APT install under plasma-workspace plasma-framework"
-
 
 if [ -f /usr/share/xsessions/plasma.desktop ]; then
     sudo rm /usr/share/xsessions/plasma.desktop
 fi
+clear #Clear the screen
 check_error "Remove plasma.desktop"
 
-
+# Google Chrome install.
+cd /tmp/ && wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && sudo DEBIAN_FRONTEND=noninteractive apt install -y /tmp/google-chrome-stable_current_amd64.deb && rm google-chrome-stable_current_amd64.deb
 clear #Clear the screen
+check_error "Google Chrome install"
+
+
+# Network Share Components
+sudo DEBIAN_FRONTEND=noninteractive apt install -y ceph-common smbclient nfs-common && echo "# CEPH" | sudo tee -a /etc/fstab && echo "#:/  /mnt/cephfs ceph    name=clientNAME,noatime,_netdev    0       0" | sudo tee -a /etc/fstab
+clear #Clear the screen
+check_error "Network Share Components"
+
+# Check if the CPU is a QEMU Virtual CPU using lscpu
+if lscpu | grep -iq "QEMU"; then
+    echo "QEMU Virtual CPU detected. Installing xrdp and restarting service..."
+    sudo apt update
+    sudo DEBIAN_FRONTEND=noninteractive apt install -y xrdp
+    sudo systemctl restart xrdp.service
+fi
+clear #Clear the screen
+check_error "Check if the CPU is a QEMU Virtual CPU and install xrdp"
+
+# Check for Bluetooth hardware using lsusb
+if lsusb | grep -iq bluetooth; then
+    echo "Bluetooth detected, Installing required packages..."
+    sudo DEBIAN_FRONTEND=noninteractive apt install -y bluetooth bluez bluez-cups bluez-obexd bluez-meshd pulseaudio-module-bluetooth bluez-firmware blueman
+fi
+clear #Clear the screen
+check_error "Check for Bluetooth hardware and install"
 
 
 # Audio Start - https://alsa.opensrc.org - https://wiki.debian.org/ALSA
@@ -776,15 +752,26 @@ else
 fi
 check_error "Qtile Autostart.sh file"
 
+# Synaptics devices
+egrep -i 'synaptics|synap' /proc/bus/input/devices && sudo DEBIAN_FRONTEND=noninteractive apt install xserver-xorg-input-synaptics && \
+cat << EOF | tee -a ~/.config/qtile/autostart.sh
+# Synaptics - Touchpad left click and right click.
+synclient TapButton1=1 TapButton2=3 &
+EOF
+
+check_error "Add Synaptics Autostart.sh file"
+
 
 # APT install under Unstable and Testing
 if [[ "$VERSION_CODENAME" == "trixie" ]]; then
 	echo "Your version of Debian is not compatible with This package"
 else
+    sudo DEBIAN_FRONTEND=noninteractive apt install -y freerdp2-x11 libfreerdp-client2-2 libfreerdp2-2 libwinpr2-2
 	sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install xautolock solaar speedcrunch fonts-arkpandora
     echo "# Lock the computer automatically after X time of minutes, using xautolock and xsecurelock." | tee -a ~/.config/qtile/autostart.sh
     echo 'xautolock -time 120 -locker "xsecurelock" -detectsleep -secure &' | tee -a ~/.config/qtile/autostart.sh
 fi
+
 check_error "APT install under Unstable and Testing"
 
 
@@ -2182,92 +2169,9 @@ sudo sed -i 's+GRUB_TIMEOUT=5+GRUB_TIMEOUT=1+g' /etc/default/grub && sudo update
 
 check_error "GRUB BOOT TIMEOUT"
 # ---------------------------------------------------------------------------------------
+# Install Done ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##
 
-# End install selection choose what to install #
-for PROGRAM in $PROGRAMS
-do
-    case $PROGRAM in
-        "1")
-            sudo DEBIAN_FRONTEND=noninteractive apt install -y libreoffice
-            ;;
-        "2")
-            sudo DEBIAN_FRONTEND=noninteractive apt install -y tlp tlp-rdw bluetooth bluez bluez-cups bluez-obexd bluez-meshd pulseaudio-module-bluetooth bluez-firmware blueman acpi
-            ;;
-        "3")
-            sudo DEBIAN_FRONTEND=noninteractive apt install -y xrdp && sudo systemctl restart xrdp.service
-            ;;
-        "4")
-            if [[ "$VERSION_CODENAME" == "trixie" ]]; then
-                echo "Your version of Debian is not compatible with This package"
-            else
-                sudo DEBIAN_FRONTEND=noninteractive apt install -y freerdp2-x11 libfreerdp-client2-2 libfreerdp2-2 libwinpr2-2 remmina
-            fi
-            ;;
-        "5")
-            cd /tmp/ && wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && sudo DEBIAN_FRONTEND=noninteractive apt install -y /tmp/google-chrome-stable_current_amd64.deb && rm google-chrome-stable_current_amd64.deb
-            ;;
-        "6")
-            sudo DEBIAN_FRONTEND=noninteractive apt install -y firefox-esr
-            ;;
-        "7")
-            sudo DEBIAN_FRONTEND=noninteractive apt install -y smbclient nfs-common
-            ;;
-        "8")
-            sudo DEBIAN_FRONTEND=noninteractive apt install -y ceph-common && echo "# CEPH" | sudo tee -a /etc/fstab && echo "#:/  /mnt/cephfs ceph    name=clientNAME,noatime,_netdev    0       0" | sudo tee -a /etc/fstab
-            ;;
-        "9")
-            sudo dpkg --add-architecture i386 && sudo apt update && sudo DEBIAN_FRONTEND=noninteractive apt install -y steam-installer
-            ;;
-        "10")
-            cd /tmp/ && wget -O vscode_amd64.deb 'https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64' && sudo DEBIAN_FRONTEND=noninteractive apt install -y /tmp/vscode_amd64.deb && rm vscode_amd64.deb
-            ;;
-        "11")
-            sudo dpkg --add-architecture i386 && wget -O - https://dl.winehq.org/wine-builds/winehq.key | sudo gpg --dearmor -o /etc/apt/keyrings/winehq-archive.key - && sudo wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/debian/dists/bookworm/winehq-bookworm.sources && sudo apt update && sudo apt install -y --install-recommends winehq-stable
-            ;;
-        "12")
-            if [[ "$VERSION_CODENAME" == "trixie" ]]; then
-                echo "Your version of Debian is not compatible with This package"
-            else
-                curl -sSL https://get.docker.com/ | sh && sudo usermod -a -G docker $USER
-            fi
-            ;;
-    esac
-done
-
-
-check_error "Install selection choose what to install"
-
-# ---------------------------------------------------------------------------------------
-
-# Install closing screen # ##### ##### ##### ##### ##### ##### ##### ##### ##### ##
-
-clear #Clear the screen
-if (whiptail --title "Installation Complete" --yesno "Qmade Installation is complete. \nDo you want to restart the computer ?\n\nSome practical information. \nWindows key + Enter opens a terminal \nWindows key + B opens a web browser \nWindows key + W closes the active window \nWindows key + ALT + CTRL + P Powermenu \nWindows key + SHIFT + A = Audio Control Panel" 15 60); then
-    cd ~
-    clear #Clear the screen
-    echo -e "${RED} "
-    echo -e "${RED}-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-"
-    echo -e "${RED} "
-    echo -e "${RED}      Enter your user password, to continue if necessary"
-    echo -e "${RED} "
-    echo -e "${RED}-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-"
-    echo -e "${RED} ${NC}"
-    sudo reboot
-    echo -e "${GREEN}See you later alligator..."
-    echo -e "${GREEN} "
-    echo -e "${GREEN} ${NC}"
-else
-    cd ~
-    clear #Clear the screen
-    echo -e "${GREEN} -'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-"
-    echo -e "${GREEN} "
-    echo -e "${GREEN}    You chose not to restart the computer, Installation complete."
-    echo -e "${GREEN}                Run startx to get to the login screen"
-    echo -e "${GREEN} "
-    echo -e "${GREEN} -'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'- ${NC}"
-fi
-
-# Install Done ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##
+sudo reboot
 
 # Test Qtile config file.
 # python3 ~/.config/qtile/config.py
