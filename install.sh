@@ -262,8 +262,8 @@ unset LC_ALL # unset the LC_ALL=C
 clear #Clear the screen
 check_error "CPU Microcode install"
 
-# Alias echo to ~/.bashrc or ~/.bash_aliases
-BASHALIASFILE=~/.bashrc
+# Alias echo to $HOME/.bashrc or $HOME/.bash_aliases
+BASHALIASFILE=$HOME/.bashrc
 
 echo 'alias ls="ls --color=auto --group-directories-first -v -lah"' >> $BASHALIASFILE
 echo 'alias ll="ls --color=auto --group-directories-first -v -lah"' >> $BASHALIASFILE
@@ -277,7 +277,7 @@ echo 'alias upup="sudo apt update && sudo apt upgrade -y && sudo apt clean && su
 echo 'bind '"'"'"\C-f":"open "$(fzf)"\n"'"'" >> $BASHALIASFILE
 echo 'alias lsman="compgen -c | fzf | xargs man"' >> $BASHALIASFILE
 
-echo 'alias qtileconfig="nano ~/.config/qtile/config.py"' >> $BASHALIASFILE
+echo 'alias qtileconfig="nano $HOME/.config/qtile/config.py"' >> $BASHALIASFILE
 echo 'alias qtileconfig-test="python3 .config/qtile/config.py"' >> $BASHALIASFILE
 echo 'alias qtileconfig-test-venv="source .local/src/qtile_venv/bin/activate && python3 .config/qtile/config.py && deactivate"' >> $BASHALIASFILE
 
@@ -304,10 +304,10 @@ sudo rm /usr/share/sddm/faces/root.face.icon
 
 sudo wget -O /usr/share/sddm/faces/root.face.icon https://github.com/ITmail-dk/qmade/blob/main/root.face.icon?raw=true
 sudo wget -O /usr/share/sddm/faces/.face.icon https://github.com/ITmail-dk/qmade/blob/main/.face.icon?raw=true
-wget -O ~/.face.icon https://github.com/ITmail-dk/qmade/blob/main/.face.icon?raw=true
+wget -O $HOME/.face.icon https://github.com/ITmail-dk/qmade/blob/main/.face.icon?raw=true
 
-setfacl -m u:sddm:x ~/
-setfacl -m u:sddm:r ~/.face.icon
+setfacl -m u:sddm:x $HOME/
+setfacl -m u:sddm:r $HOME/.face.icon
 
 sudo setfacl -m u:sddm:x /usr/share/sddm/faces/
 sudo setfacl -m u:sddm:r /usr/share/sddm/faces/.face.icon
@@ -332,8 +332,8 @@ SDDMCONFIG'
 check_error "Setup SDDM"
 
 # Midnight-Commander ini file
-mkdir -p ~/.config/mc
-cat << "MCINI" > ~/.config/mc/ini
+mkdir -p $HOME/.config/mc
+cat << "MCINI" > $HOME/.config/mc/ini
 [Midnight-Commander]
 skin=nicedark
 
@@ -352,11 +352,11 @@ pipx ensurepath
 # wal --cols16 darken -q -i $HOME/Wallpapers --backend modern_colorthief
 check_error "Pipx install"
 
-mkdir -p ~/.cache/wal
-cat << "PYWALCOLORSJSON" > ~/.cache/wal/colors.json
+mkdir -p $HOME/.cache/wal
+cat << "PYWALCOLORSJSON" > $HOME/.cache/wal/colors.json
 {
     "checksum": "2e7aed21e3ddcc643b1a0b396fa6c986",
-    "wallpaper": "~/Wallpapers/default_wallpaper.jpg",
+    "wallpaper": "$HOME/Wallpapers/default_wallpaper.jpg",
     "alpha": "100",
 
     "special": {
@@ -387,8 +387,8 @@ cat << "PYWALCOLORSJSON" > ~/.cache/wal/colors.json
 PYWALCOLORSJSON
 check_error "pywal colors json"
 
-mkdir -p ~/.config/kitty
-cat << "PYWALCOLORSKITTY" > ~/.config/kitty/current-theme.conf 
+mkdir -p $HOME/.config/kitty
+cat << "PYWALCOLORSKITTY" > $HOME/.config/kitty/current-theme.conf 
 background #1e3143
 foreground #cec7bc
 color0 #1e3143
@@ -410,8 +410,8 @@ color15 #cec7bc
 
 PYWALCOLORSKITTY
 
-mkdir -p ~/.config/wal/templates/
-cat << "PYWALCOLORSTEMPALETKITTY" > ~/.config/wal/templates/colors-kitty.conf
+mkdir -p $HOME/.config/wal/templates/
+cat << "PYWALCOLORSTEMPALETKITTY" > $HOME/.config/wal/templates/colors-kitty.conf
 foreground         {foreground}
 background         {background}
 background_opacity 0.98
@@ -447,7 +447,7 @@ PYWALCOLORSTEMPALETKITTY
 
 check_error "pywal colors kitty"
 
-cat << "PYWALCOLORSTEMPALETROFI" > ~/.config/wal/templates/colors-rofi-dark.rasi
+cat << "PYWALCOLORSTEMPALETROFI" > $HOME/.config/wal/templates/colors-rofi-dark.rasi
 * {{
     active-background: {color2};
     active-foreground: @foreground;
@@ -659,9 +659,9 @@ check_error "Midnight Commander config"
 
 
 # Install Qtile from source via github and Pip
-cd ~
-mkdir -p ~/.local/bin
-mkdir -p ~/.local/src && cd ~/.local/src
+cd $HOME
+mkdir -p $HOME/.local/bin
+mkdir -p $HOME/.local/src && cd $HOME/.local/src
 
 # Git src install ----------------------------------------------------------
 #if [ -d qtile ]; then
@@ -672,7 +672,7 @@ mkdir -p ~/.local/src && cd ~/.local/src
 #cd qtile
 
 #pip install dbus-next psutil wheel --break-system-packages
-#pip install -r ~/.local/src/qtile/requirements.txt --break-system-packages
+#pip install -r $HOME/.local/src/qtile/requirements.txt --break-system-packages
 
 #pip install . --break-system-packages --no-warn-script-location
 
@@ -693,7 +693,7 @@ pip install -r qtile/requirements.txt
 bin/pip install qtile/.
 deactivate
 
-cp ~/.local/src/qtile_venv/bin/qtile ~/.local/bin/
+cp $HOME/.local/src/qtile_venv/bin/qtile $HOME/.local/bin/
 
 check_error "qtile_venv"
 
@@ -710,13 +710,13 @@ Keywords=wm;tiling
 QTILEDESKTOP'
 
 # Add to user .xsession
-touch ~/.xsession && echo "qtile start" > ~/.xsession
+touch $HOME/.xsession && echo "qtile start" > $HOME/.xsession
 check_error "Add Qtile .xsession"
 
 # Qtile Autostart.sh file
-mkdir -p ~/.config/qtile/
-if [ ! -f ~/.config/qtile/autostart.sh ]; then
-cat << "QTILEAUTOSTART" > ~/.config/qtile/autostart.sh
+mkdir -p $HOME/.config/qtile/
+if [ ! -f $HOME/.config/qtile/autostart.sh ]; then
+cat << "QTILEAUTOSTART" > $HOME/.config/qtile/autostart.sh
 #!/usr/bin/env bash
 # Picom - https://manpages.ubuntu.com/manpages/plucky/man1/picom.1.html
 pgrep -x picom > /dev/null || picom --backend xrender --vsync & # Picom use... --backend glx or xrender, --vsync --no-vsync,
@@ -727,8 +727,8 @@ autorandr --change &&
 
 # This here if statement sets your background image, with feh... 
 # and is also used for the auto-generation of the background image and colors.
-if [ -f ~/.fehbg ]; then
-    . ~/.fehbg
+if [ -f $HOME/.fehbg ]; then
+    . $HOME/.fehbg
 else
     auto-new-wallpaper-and-colors
     #feh --bg-scale $(find $HOME/Wallpapers -type f | shuf -n 1)
@@ -738,14 +738,14 @@ wpctl set-volume @DEFAULT_AUDIO_SINK@ 10% &
 dunst &
 numlockx on &
 mpd &
-xrdb ~/.Xresources &
+xrdb $HOME/.Xresources &
 xset r rate 200 35 &
 xset b off &
 #nitrogen --restore &
 
 QTILEAUTOSTART
 
-chmod +x ~/.config/qtile/autostart.sh
+chmod +x $HOME/.config/qtile/autostart.sh
 
 else 
 	echo "File autostart.sh already exists."
@@ -754,7 +754,7 @@ check_error "Qtile Autostart.sh file"
 
 # Synaptics devices
 egrep -i 'synaptics|synap' /proc/bus/input/devices && sudo DEBIAN_FRONTEND=noninteractive apt install xserver-xorg-input-synaptics && \
-cat << EOF | tee -a ~/.config/qtile/autostart.sh
+cat << EOF | tee -a $HOME/.config/qtile/autostart.sh
 # Synaptics - Touchpad left click and right click.
 synclient TapButton1=1 TapButton2=3 &
 EOF
@@ -768,8 +768,8 @@ if [[ "$VERSION_CODENAME" == "trixie" ]]; then
 else
     sudo DEBIAN_FRONTEND=noninteractive apt install -y freerdp2-x11 libfreerdp-client2-2 libfreerdp2-2 libwinpr2-2
 	sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install xautolock solaar speedcrunch fonts-arkpandora
-    echo "# Lock the computer automatically after X time of minutes, using xautolock and xsecurelock." | tee -a ~/.config/qtile/autostart.sh
-    echo 'xautolock -time 120 -locker "xsecurelock" -detectsleep -secure &' | tee -a ~/.config/qtile/autostart.sh
+    echo "# Lock the computer automatically after X time of minutes, using xautolock and xsecurelock." | tee -a $HOME/.config/qtile/autostart.sh
+    echo 'xautolock -time 120 -locker "xsecurelock" -detectsleep -secure &' | tee -a $HOME/.config/qtile/autostart.sh
 fi
 
 check_error "APT install under Unstable and Testing"
@@ -777,23 +777,23 @@ check_error "APT install under Unstable and Testing"
 
 # MPD Setup & config START
 
-mkdir -p ~/.config/mpd/playlists
-mkdir -p ~/.local/state/mpd
-if [ ! -f ~/.config/mpd/mpd.conf ]; then
-touch ~/.config/mpd/database
-cat << MPDCONFIG > ~/.config/mpd/mpd.conf
-# ~/.config/mpd/mpd.conf or /etc/mpd.conf
+mkdir -p $HOME/.config/mpd/playlists
+mkdir -p $HOME/.local/state/mpd
+if [ ! -f $HOME/.config/mpd/mpd.conf ]; then
+touch $HOME/.config/mpd/database
+cat << MPDCONFIG > $HOME/.config/mpd/mpd.conf
+# $HOME/.config/mpd/mpd.conf or /etc/mpd.conf
 # Example: /usr/share/doc/mpd/mpdconf.example
 
 # Recommended location for database
-db_file            "~/.config/mpd/database"
+db_file            "$HOME/.config/mpd/database"
 
 # If running mpd using systemd, delete this line to log directly to systemd.
-# syslog or ~/.config/mpd/log
-log_file           "~/.config/mpd/log"
+# syslog or $HOME/.config/mpd/log
+log_file           "$HOME/.config/mpd/log"
 
 # The music directory is by default the XDG directory, uncomment to amend and choose a different directory
-#music_directory    "~/Music"
+#music_directory    "$HOME/Music"
 
 # MPD Server network
 bind_to_address     "127.0.0.1"
@@ -810,10 +810,10 @@ restore_paused "yes"
 auto_update "yes"
 
 # Uncomment to enable the functionalities
-playlist_directory "~/.config/mpd/playlists"
-pid_file           "~/.config/mpd/pid"
-state_file         "~/.local/state/mpd/state"
-sticker_file       "~/.config/mpd/sticker.sql"
+playlist_directory "$HOME/.config/mpd/playlists"
+pid_file           "$HOME/.config/mpd/pid"
+state_file         "$HOME/.local/state/mpd/state"
+sticker_file       "$HOME/.config/mpd/sticker.sql"
 follow_inside_symlinks  "yes"
 # save_absolute_paths_in_playlists       "no"
 
@@ -858,12 +858,12 @@ fi
 check_error "MPD Setup & config"
 
 # Nano config START
-if [ ! -f ~/.nanorc ]; then
-    cp /etc/nanorc ~/.nanorc
-    #sed -i 's/^# set linenumbers/set linenumbers/' ~/.nanorc
-    sed -i 's/^# set minibar/set minibar/' ~/.nanorc
-    sed -i 's/^# set softwrap/set softwrap/' ~/.nanorc
-    sed -i 's/^# set atblanks/set atblanks/' ~/.nanorc
+if [ ! -f $HOME/.nanorc ]; then
+    cp /etc/nanorc $HOME/.nanorc
+    #sed -i 's/^# set linenumbers/set linenumbers/' $HOME/.nanorc
+    sed -i 's/^# set minibar/set minibar/' $HOME/.nanorc
+    sed -i 's/^# set softwrap/set softwrap/' $HOME/.nanorc
+    sed -i 's/^# set atblanks/set atblanks/' $HOME/.nanorc
 else 
 	echo "File .nanorc already exists."
 fi
@@ -871,11 +871,11 @@ check_error "Nano config"
 
 #  Wallpapers START
 
-if [ ! -d ~/Wallpapers ]; then
-mkdir -p ~/Wallpapers
+if [ ! -d $HOME/Wallpapers ]; then
+mkdir -p $HOME/Wallpapers
 # Download some wallpaper, Please wait..."
 
-wget -O ~/Wallpapers/default_wallpaper.jpg https://github.com/ITmail-dk/qmade/blob/main/wallpapers/default_wallpaper.jpg?raw=true
+wget -O $HOME/Wallpapers/default_wallpaper.jpg https://github.com/ITmail-dk/qmade/blob/main/wallpapers/default_wallpaper.jpg?raw=true
 
 else 
 	echo "Wallpapers folder already exists."
@@ -885,20 +885,20 @@ check_error "Wallpapers"
 
 # Nitrogen - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-mkdir -p ~/.config/nitrogen
+mkdir -p $HOME/.config/nitrogen
 
-if [ ! -f ~/.config/nitrogen/bg-saved.cfg ]; then
-touch ~/.config/nitrogen/bg-saved.cfg
-echo "[xin_-1]" >> ~/.config/nitrogen/bg-saved.cfg
-echo "file=$HOME/Wallpapers/default-wallpaper.jpg" >> ~/.config/nitrogen/bg-saved.cfg
-echo "mode=5" >> ~/.config/nitrogen/bg-saved.cfg
-echo "bgcolor=#2E3440" >> ~/.config/nitrogen/bg-saved.cfg
+if [ ! -f $HOME/.config/nitrogen/bg-saved.cfg ]; then
+touch $HOME/.config/nitrogen/bg-saved.cfg
+echo "[xin_-1]" >> $HOME/.config/nitrogen/bg-saved.cfg
+echo "file=$HOME/Wallpapers/default-wallpaper.jpg" >> $HOME/.config/nitrogen/bg-saved.cfg
+echo "mode=5" >> $HOME/.config/nitrogen/bg-saved.cfg
+echo "bgcolor=#2E3440" >> $HOME/.config/nitrogen/bg-saved.cfg
 else 
 	echo "Nitrogen config file already exists."
 fi
 
-if [ ! -f ~/.config/nitrogen/nitrogen.cfg ]; then
-cat << "NITROGENCONFIG" > ~/.config/nitrogen/nitrogen.cfg
+if [ ! -f $HOME/.config/nitrogen/nitrogen.cfg ]; then
+cat << "NITROGENCONFIG" > $HOME/.config/nitrogen/nitrogen.cfg
 [geometry]
 posx=5
 posy=36
@@ -912,7 +912,7 @@ sort=alpha
 icon_caps=false
 NITROGENCONFIG
 
-echo "dirs=$HOME/Wallpapers/;" >> ~/.config/nitrogen/nitrogen.cfg
+echo "dirs=$HOME/Wallpapers/;" >> $HOME/.config/nitrogen/nitrogen.cfg
 
 else 
 	echo "Nitrogen config file already exists."
@@ -922,9 +922,9 @@ check_error "Nitrogen config"
 
 # Neovim config Start
 
-if [ ! -f ~/.config/nvim/init.vim ]; then
-mkdir -p ~/.config/nvim
-cat << "NEOVIMCONFIG" > ~/.config/nvim/init.vim
+if [ ! -f $HOME/.config/nvim/init.vim ]; then
+mkdir -p $HOME/.config/nvim
+cat << "NEOVIMCONFIG" > $HOME/.config/nvim/init.vim
 syntax on
 set number
 set numberwidth=5
@@ -972,11 +972,11 @@ check_error "Kitty config"
 
 # Tmux config Start
 
-if [ ! -f ~/.config/tmux/tmux.conf ]; then
-mkdir -p ~/.config/tmux
-cat << "TMUXCONFIG" > ~/.config/tmux/tmux.conf
+if [ ! -f $HOME/.config/tmux/tmux.conf ]; then
+mkdir -p $HOME/.config/tmux
+cat << "TMUXCONFIG" > $HOME/.config/tmux/tmux.conf
 unbind r
-bind r source-file ~/.config/tmux/tmux.conf
+bind r source-file $HOME/.config/tmux/tmux.conf
 
 TMUXCONFIG
 
@@ -990,9 +990,9 @@ check_error "Tmux config"
 
 #echo -e "${YELLOW} Xresources config Start ${NC}"
 
-#if [ ! -f ~/.Xresources ]; then
+#if [ ! -f $HOME/.Xresources ]; then
 
-#cat << "XRCONFIG" > ~/.Xresources
+#cat << "XRCONFIG" > $HOME/.Xresources
 
 #XRCONFIG
 
@@ -1227,16 +1227,16 @@ check_error "xrandr-set-max file"
 # -------------------------------------------------------------------------------------------------
 
 # Rofi Run menu START
-if [ ! -d ~/.config/rofi ]; then
-mkdir -p ~/.config/rofi
+if [ ! -d $HOME/.config/rofi ]; then
+mkdir -p $HOME/.config/rofi
 
 else 
 	echo "Rofi folder already exists."
 fi
 
-if [ ! -f ~/.config/rofi/config.rasi ]; then
-#touch ~/.config/rofi/config.rasi
-cat << "ROFICONFIG" > ~/.config/rofi/config.rasi
+if [ ! -f $HOME/.config/rofi/config.rasi ]; then
+#touch $HOME/.config/rofi/config.rasi
+cat << "ROFICONFIG" > $HOME/.config/rofi/config.rasi
 configuration {
   display-drun: "Applications:";
   display-window: "Windows:";
@@ -1246,7 +1246,7 @@ configuration {
 }
 
 /* The Theme */
-@import "~/.cache/wal/colors-rofi-dark.rasi"
+@import "$HOME/.cache/wal/colors-rofi-dark.rasi"
 
 // Theme location is "/usr/share/rofi/themes/name.rasi"
 //@theme "/usr/share/rofi/themes/Arc-Dark.rasi"
@@ -1261,8 +1261,8 @@ fi
 # Rofi Wifi menu
 # https://github.com/ericmurphyxyz/rofi-wifi-menu/tree/master
 
-if [ ! -f ~/.config/rofi/rofi-wifi-menu.sh ]; then
-cat << "ROFIWIFI" > ~/.config/rofi/rofi-wifi-menu.sh
+if [ ! -f $HOME/.config/rofi/rofi-wifi-menu.sh ]; then
+cat << "ROFIWIFI" > $HOME/.config/rofi/rofi-wifi-menu.sh
 #!/usr/bin/env bash
 
 notify-send "Getting list of available Wi-Fi networks..."
@@ -1270,9 +1270,9 @@ notify-send "Getting list of available Wi-Fi networks..."
 wifi_list=$(nmcli --fields "SECURITY,SSID" device wifi list | sed 1d | sed 's/  */ /g' | sed -E "s/WPA*.?\S/ /g" | sed "s/^--/ /g" | sed "s/  //g" | sed "/--/d")
 
 connected=$(nmcli -fields WIFI g)
-if [[ "$connected" =~ "enabled" ]]; then
+if [[ "$connected" =$HOME "enabled" ]]; then
 	toggle="󰖪  Disable Wi-Fi"
-elif [[ "$connected" =~ "disabled" ]]; then
+elif [[ "$connected" =$HOME "disabled" ]]; then
 	toggle="󰖩  Enable Wi-Fi"
 fi
 
@@ -1295,7 +1295,7 @@ else
 	if [[ $(echo "$saved_connections" | grep -w "$chosen_id") = "$chosen_id" ]]; then
 		nmcli connection up id "$chosen_id" | grep "successfully" && notify-send "Connection Established" "$success_message"
 	else
-		if [[ "$chosen_network" =~ "" ]]; then
+		if [[ "$chosen_network" =$HOME "" ]]; then
 			wifi_password=$(rofi -dmenu -p "Password: " )
 		fi
 		nmcli device wifi connect "$chosen_id" password "$wifi_password" | grep "successfully" && notify-send "Connection Established" "$success_message"
@@ -1304,7 +1304,7 @@ fi
 
 ROFIWIFI
 
-chmod +x ~/.config/rofi/rofi-wifi-menu.sh
+chmod +x $HOME/.config/rofi/rofi-wifi-menu.sh
 
 else 
 	echo "Rofi WiFi menu file already exists."
@@ -1313,8 +1313,8 @@ fi
 check_error "Rofi Run menu"
 
 if [ ! -f /location/powermenu.sh ]; then
-mkdir -p  ~/.config/rofi
-cat << "ROFIPOWERMENU" > ~/.config/rofi/powermenu.sh
+mkdir -p  $HOME/.config/rofi
+cat << "ROFIPOWERMENU" > $HOME/.config/rofi/powermenu.sh
 #!/usr/bin/env bash
 chosen=$(printf "󰒲  Suspend System\n  System Shutdown\n󰤄  Hibernate System\n  Lockdown Mode\n  Reboot" | rofi -dmenu -i -theme-str '@import "powermenu.rasi"')
 
@@ -1333,13 +1333,13 @@ else
 	echo "powermenu.sh file already exists."
 fi
 
-chmod +x ~/.config/rofi/powermenu.sh
+chmod +x $HOME/.config/rofi/powermenu.sh
 
 check_error "Rofi Powermenu"
 
-if [ ! -f ~/.config/rofi/powermenu.rasi ]; then
-mkdir -p  ~/.config/rofi
-cat << "ROFIPOWERMENURASI" > ~/.config/rofi/powermenu.rasi
+if [ ! -f $HOME/.config/rofi/powermenu.rasi ]; then
+mkdir -p  $HOME/.config/rofi
+cat << "ROFIPOWERMENURASI" > $HOME/.config/rofi/powermenu.rasi
 
 inputbar {
   children: [entry];
@@ -1358,9 +1358,9 @@ fi
 check_error "Rofi Powermenu rasi"
 
 # Add xfce4 file helpers
-if [ ! -f ~/.config/xfce4/helpers.rc ]; then
-mkdir -p ~/.config/xfce4
-cat << "XFCE4HELPER" > ~/.config/xfce4/helpers.rc
+if [ ! -f $HOME/.config/xfce4/helpers.rc ]; then
+mkdir -p $HOME/.config/xfce4
+cat << "XFCE4HELPER" > $HOME/.config/xfce4/helpers.rc
 FileManager=Thunar
 TerminalEmulator=kitty
 WebBrowser=google-chrome
@@ -1392,9 +1392,9 @@ check_error "Add kitty to open nvim and vim"
 # # # # # # # # # # #
 # Kitty config file.
 
-if [ ! -f ~/.config/kitty/kitty.conf ]; then
-mkdir -p ~/.config/kitty/themes
-cat << "KITTYCONFIG" > ~/.config/kitty/kitty.conf
+if [ ! -f $HOME/.config/kitty/kitty.conf ]; then
+mkdir -p $HOME/.config/kitty/themes
+cat << "KITTYCONFIG" > $HOME/.config/kitty/kitty.conf
 # A default configuration file can also be generated by running:
 # kitty +runpy 'from kitty.config import *; print(commented_out_default_config())'
 #
@@ -1468,7 +1468,7 @@ copy_on_select yes
 
 strip_trailing_spaces never
 
-select_by_word_characters @-./_~?&=%+#
+select_by_word_characters @-./_$HOME?&=%+#
 
 click_interval -1.0
 
@@ -1723,7 +1723,7 @@ map kitty_mod+delete clear_terminal reset active
 map kitty_mod+f5 load_config_file
 map kitty_mod+f6 debug_config
 
-include ~/.cache/wal/colors-kitty.conf
+include $HOME/.cache/wal/colors-kitty.conf
 
 KITTYCONFIG
 
@@ -1773,16 +1773,16 @@ if lspci | grep -i nvidia; then
     chmod +x NVIDIA-Linux-x86_64-$NVIDIAGETVERSION.run
     sudo ./NVIDIA-Linux-x86_64-$NVIDIAGETVERSION.run --no-questions --run-nvidia-xconfig
     
-    echo 'nvidia-settings --assign CurrentMetaMode="nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }"' >> ~/.config/qtile/autostart.sh
+    echo 'nvidia-settings --assign CurrentMetaMode="nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }"' >> $HOME/.config/qtile/autostart.sh
 fi
 
 check_error "NVIDIA driver installation"
 
 # Qtile Config file
 
-if [ ! -f ~/.config/qtile/config.py ]; then
+if [ ! -f $HOME/.config/qtile/config.py ]; then
 
-cat << "QTILECONFIG" > ~/.config/qtile/config.py
+cat << "QTILECONFIG" > $HOME/.config/qtile/config.py
 # Qtile Config - Start
 # https://docs.qtile.org/en/latest/index.html
 # -',.-'-,.'-,'.-',.-',-.'-,.'-,.'-,.'-,'.-',.-'-
@@ -1819,7 +1819,7 @@ def guess_browser():
 # Custom code end ------------------------------------------------------
 
 #Pywal Colors
-colors = os.path.expanduser("~/.cache/wal/colors.json")
+colors = os.path.expanduser("$HOME/.cache/wal/colors.json")
 colordict = json.load(open(colors))
 Color0 = colordict["colors"]["color0"]
 Color1 = colordict["colors"]["color1"]
@@ -1867,8 +1867,8 @@ keys = [
     Key([mod, "shift"], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
     Key([mod, "mod1"], "l", lazy.spawn(os.path.expanduser("xsecurelock")), desc="Computer Lockdown"),
     Key([mod, "control", "mod1"], "t", lazy.spawn(os.path.expanduser("auto-new-wallpaper-and-colors")), desc="Random Color Theme from Wallpapers"),
-    Key([mod, "control", "mod1"], "w", lazy.spawn(os.path.expanduser("~/.config/rofi/rofi-wifi-menu.sh")), desc="WiFi Manager"),
-    Key([mod, "control", "mod1"], "p", lazy.spawn(os.path.expanduser("~/.config/rofi/powermenu.sh")), desc="Power Menu"),
+    Key([mod, "control", "mod1"], "w", lazy.spawn(os.path.expanduser("$HOME/.config/rofi/rofi-wifi-menu.sh")), desc="WiFi Manager"),
+    Key([mod, "control", "mod1"], "p", lazy.spawn(os.path.expanduser("$HOME/.config/rofi/powermenu.sh")), desc="Power Menu"),
     Key([mod, "control", "mod1"], "n", lazy.spawn(os.path.expanduser("kitty -e sudo nmtui")), desc="Network Manager"),
 
     # Default
@@ -1934,7 +1934,7 @@ keys = [
     Key([], "XF86AudioNext", lazy.spawn("playerctl next"), desc='Next'),
     Key([], "XF86MonBrightnessUp", lazy.spawn("brightnessctl set +10%"), desc='Brightness UP'),
     Key([], "XF86MonBrightnessDown", lazy.spawn("brightnessctl set 10%-"), desc='Brightness Down'),
-    Key([], "Print", lazy.spawn("bash -c 'flameshot gui --path ~/Screenshots'"), desc='Screenshot'),
+    Key([], "Print", lazy.spawn("bash -c 'flameshot gui --path $HOME/Screenshots'"), desc='Screenshot'),
 ]
 
 # Add key bindings to switch VTs in Wayland.
@@ -2066,7 +2066,7 @@ screens = [
                 widget.Systray(fmt="󱊖  {}", icon_size=16),
                 # NB Wayland is incompatible with Systray, consider using StatusNotifier
                 # widget.StatusNotifier(icon_size=16),
-                #widget.Wallpaper(directory="~/Wallpapers/", label="", random_selection="True"),
+                #widget.Wallpaper(directory="$HOME/Wallpapers/", label="", random_selection="True"),
                 #widget.NetGraph(type='line', line_width=1),
                 #widget.Net(prefix='M'),
                 widget.ThermalSensor(format='CPU: {temp:.0f}{unit}'),
@@ -2085,7 +2085,7 @@ screens = [
         # By default we handle these events delayed to already improve performance, however your system might still be struggling
         # This variable is set to None (no cap) by default, but you can set it to 60 to indicate that you limit it to 60 events per second
         # x11_drag_polling_rate = 60,
-        #wallpaper="~/Wallpapers/default-wallpaper.png",
+        #wallpaper="$HOME/Wallpapers/default-wallpaper.png",
         #wallpaper_mode="fill"
     ),
 ]
@@ -2130,7 +2130,7 @@ auto_minimize = True
 # Remember to add, "hook" "import os" "import subprocess" "Match"
 @hook.subscribe.startup_once
 def autostart():
-    autostartscript = os.path.expanduser("~/.config/qtile/autostart.sh")
+    autostartscript = os.path.expanduser("$HOME/.config/qtile/autostart.sh")
     subprocess.run([autostartscript])
 
 @hook.subscribe.client_new
@@ -2174,4 +2174,4 @@ check_error "GRUB BOOT TIMEOUT"
 sudo reboot
 
 # Test Qtile config file.
-# python3 ~/.config/qtile/config.py
+# python3 $HOME/.config/qtile/config.py
