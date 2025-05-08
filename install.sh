@@ -753,7 +753,7 @@ fi
 check_error "Qtile Autostart.sh file"
 
 # Synaptics devices
-egrep -i 'synaptics|synap' /proc/bus/input/devices && sudo DEBIAN_FRONTEND=noninteractive apt install xserver-xorg-input-synaptics && \
+grep -iq 'synaptics|synap' /proc/bus/input/devices && sudo DEBIAN_FRONTEND=noninteractive apt install xserver-xorg-input-synaptics && \
 cat << EOF | tee -a $HOME/.config/qtile/autostart.sh
 # Synaptics - Touchpad left click and right click.
 synclient TapButton1=1 TapButton2=3 &
