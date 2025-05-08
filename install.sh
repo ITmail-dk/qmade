@@ -163,7 +163,7 @@ check_error "APT Sources list and APT Update"
 
 clear #Clear the screen
 # Core System APT install
-sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install bash-completion xserver-xorg x11-utils xinit arandr autorandr picom fwupd colord mesa-utils htop wget curl git tmux numlockx kitty neovim xdg-utils cups cups-common xsensors xbacklight brightnessctl unzip network-manager dnsutils dunst libnotify-bin notify-osd xsecurelock pm-utils rofi imagemagick nitrogen nsxiv mpv flameshot mc thunar gvfs gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq font-manager fontconfig fontconfig-config fonts-recommended fonts-liberation fonts-freefont-ttf fonts-noto-core libfontconfig1 pipewire pipewire-pulse wireplumber pipewire-alsa libspa-0.2-bluetooth pavucontrol alsa-utils qpwgraph sddm-theme-debian-maui ffmpeg cmake policykit-1 policykit-1-gnome
+sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install bash-completion xserver-xorg x11-utils xinit arandr autorandr picom fwupd colord mesa-utils htop wget curl git tmux numlockx kitty neovim xdg-utils cups cups-common xsensors xbacklight brightnessctl unzip network-manager dnsutils dunst libnotify-bin notify-osd xsecurelock pm-utils rofi imagemagick nsxiv mpv flameshot mc thunar gvfs gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq font-manager fontconfig fontconfig-config fonts-recommended fonts-liberation fonts-freefont-ttf fonts-noto-core libfontconfig1 pipewire pipewire-pulse wireplumber pipewire-alsa libspa-0.2-bluetooth pavucontrol alsa-utils qpwgraph sddm-theme-debian-maui ffmpeg cmake policykit-1 policykit-1-gnome
 sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install linux-headers-$(uname -r)
 sudo DEBIAN_FRONTEND=noninteractive apt -y install sddm --no-install-recommends
 check_error "Core System APT install"
@@ -747,7 +747,6 @@ mpd &
 xrdb ~/.Xresources &
 xset r rate 200 35 &
 xset b off &
-#nitrogen --restore &
 
 QTILEAUTOSTART
 
@@ -895,43 +894,6 @@ else
 fi
 clear #Clear the screen
 check_error "Wallpapers"
-
-# Nitrogen - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-mkdir -p ~/.config/nitrogen
-
-if [ ! -f ~/.config/nitrogen/bg-saved.cfg ]; then
-touch ~/.config/nitrogen/bg-saved.cfg
-echo "[xin_-1]" >> ~/.config/nitrogen/bg-saved.cfg
-echo "file=~/Wallpapers/default-wallpaper.jpg" >> ~/.config/nitrogen/bg-saved.cfg
-echo "mode=5" >> ~/.config/nitrogen/bg-saved.cfg
-echo "bgcolor=#2E3440" >> ~/.config/nitrogen/bg-saved.cfg
-else 
-	echo "Nitrogen config file already exists."
-fi
-
-if [ ! -f ~/.config/nitrogen/nitrogen.cfg ]; then
-cat << "NITROGENCONFIG" > ~/.config/nitrogen/nitrogen.cfg
-[geometry]
-posx=5
-posy=36
-sizex=1908
-sizey=1037
-
-[nitrogen]
-view=icon
-recurse=true
-sort=alpha
-icon_caps=false
-NITROGENCONFIG
-
-echo "dirs=~/Wallpapers/;" >> ~/.config/nitrogen/nitrogen.cfg
-
-else 
-	echo "Nitrogen config file already exists."
-fi
-clear #Clear the screen
-check_error "Nitrogen config"
 
 # Neovim config Start
 
