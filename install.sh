@@ -328,7 +328,7 @@ EnableHiDPI=true
 EnableHiDPI=true
 
 SDDMCONFIG'
-
+clear #Clear the screen
 check_error "Setup SDDM"
 
 # Midnight-Commander ini file
@@ -341,7 +341,8 @@ MCINI
 check_error "Setup Midnight-Commander ini file"
 
 # Qtile Core Dependencies apt install
-sudo DEBIAN_FRONTEND=noninteractive apt install -y feh python3-full python3-pip python3-venv pipx libxkbcommon-dev libxkbcommon-x11-dev libcairo2-dev pkg-config 
+sudo DEBIAN_FRONTEND=noninteractive apt install -y feh python3-full python3-pip python3-venv pipx libxkbcommon-dev libxkbcommon-x11-dev libcairo2-dev pkg-config
+clear #Clear the screen
 check_error "Qtile Core Dependencies apt install"
 
 # PyWAL install via pipx for auto-generated color themes
@@ -350,6 +351,7 @@ pipx install "pywal16[all]"
 pipx ensurepath
 # wal --cols16 darken -q -i $HOME/Wallpapers
 # wal --cols16 darken -q -i $HOME/Wallpapers --backend modern_colorthief
+clear #Clear the screen
 check_error "Pipx install"
 
 mkdir -p $HOME/.cache/wal
@@ -385,6 +387,7 @@ cat << "PYWALCOLORSJSON" > $HOME/.cache/wal/colors.json
 }
 
 PYWALCOLORSJSON
+clear #Clear the screen
 check_error "pywal colors json"
 
 mkdir -p $HOME/.config/kitty
@@ -444,7 +447,7 @@ color7       {color7}
 color15      {color15}
 
 PYWALCOLORSTEMPALETKITTY
-
+clear #Clear the screen
 check_error "pywal colors kitty"
 
 cat << "PYWALCOLORSTEMPALETROFI" > $HOME/.config/wal/templates/colors-rofi-dark.rasi
@@ -623,12 +626,12 @@ cat << "PYWALCOLORSTEMPALETROFI" > $HOME/.config/wal/templates/colors-rofi-dark.
 }}
 
 PYWALCOLORSTEMPALETROFI
-
+clear #Clear the screen
 check_error "pywal colors rofi"
 
 # Set xdg-desktop-portal prefer dark mode.
 gsettings set org.gnome.desktop.interface color-scheme prefer-dark
-
+clear #Clear the screen
 check_error "gsettings set color-scheme"
 
 
@@ -649,12 +652,14 @@ notify-send -u low "Automatically new background and color theme" "The backgroun
 AUTONEWWALLPAPERANDCOLORSBIN'
 
 sudo chmod +x /usr/local/bin/auto-new-wallpaper-and-colors
+clear #Clear the screen
 check_error "auto-new-wallpaper-and-colors bin"
 
 
 #Midnight Commander
 mkdir -p $HOME/.config/mc
 echo "skin=dark" >> $HOME/.config/mc/ini
+clear #Clear the screen
 check_error "Midnight Commander config"
 
 
@@ -694,7 +699,7 @@ bin/pip install qtile/.
 deactivate
 
 cp $HOME/.local/src/qtile_venv/bin/qtile $HOME/.local/bin/
-
+clear #Clear the screen
 check_error "qtile_venv"
 
 # ------------------------------------------------------------------------
@@ -711,6 +716,7 @@ QTILEDESKTOP'
 
 # Add to user .xsession
 touch $HOME/.xsession && echo "qtile start" > $HOME/.xsession
+clear #Clear the screen
 check_error "Add Qtile .xsession"
 
 # Qtile Autostart.sh file
@@ -750,15 +756,22 @@ chmod +x $HOME/.config/qtile/autostart.sh
 else 
 	echo "File autostart.sh already exists."
 fi
+clear #Clear the screen
 check_error "Qtile Autostart.sh file"
 
+
 # Synaptics devices
-grep -iq 'synaptics|synap' /proc/bus/input/devices && sudo DEBIAN_FRONTEND=noninteractive apt install xserver-xorg-input-synaptics && \
-cat << EOF | tee -a $HOME/.config/qtile/autostart.sh
+if grep -iq 'synaptics|synap' /proc/bus/input/devices; then
+    echo "Synaptics touchpad detected. Installing xserver-xorg-input-synaptics and configuring autostart..."
+    sudo DEBIAN_FRONTEND=noninteractive apt install -y xserver-xorg-input-synaptics
+    check_error "Failed to install xserver-xorg-input-synaptics"
+
+    cat << EOF | tee -a "$HOME/.config/qtile/autostart.sh" > /dev/null
 # Synaptics - Touchpad left click and right click.
 synclient TapButton1=1 TapButton2=3 &
 EOF
-
+fi
+clear #Clear the screen
 check_error "Add Synaptics Autostart.sh file"
 
 
@@ -771,7 +784,7 @@ else
     echo "# Lock the computer automatically after X time of minutes, using xautolock and xsecurelock." | tee -a $HOME/.config/qtile/autostart.sh
     echo 'xautolock -time 120 -locker "xsecurelock" -detectsleep -secure &' | tee -a $HOME/.config/qtile/autostart.sh
 fi
-
+clear #Clear the screen
 check_error "APT install under Unstable and Testing"
 
 
@@ -854,7 +867,7 @@ fi
 # mpd --version
 # mpd --stderr --no-daemon --verbose
 # aplay --list-pcm
-
+clear #Clear the screen
 check_error "MPD Setup & config"
 
 # Nano config START
@@ -880,7 +893,7 @@ wget -O $HOME/Wallpapers/default_wallpaper.jpg https://github.com/ITmail-dk/qmad
 else 
 	echo "Wallpapers folder already exists."
 fi
-
+clear #Clear the screen
 check_error "Wallpapers"
 
 # Nitrogen - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -917,7 +930,7 @@ echo "dirs=$HOME/Wallpapers/;" >> $HOME/.config/nitrogen/nitrogen.cfg
 else 
 	echo "Nitrogen config file already exists."
 fi
-
+clear #Clear the screen
 check_error "Nitrogen config"
 
 # Neovim config Start
@@ -935,7 +948,7 @@ NEOVIMCONFIG
 else 
 	echo "Neovim config file already exists."
 fi
-
+clear #Clear the screen
 check_error "Neovim config"
 
 # Kitty theme.conf Start
@@ -967,7 +980,7 @@ KITTYTHEMECONF
 else 
 	echo "kittytheme.conf file already exists."
 fi
-
+clear #Clear the screen
 check_error "Kitty config"
 
 # Tmux config Start
@@ -983,7 +996,7 @@ TMUXCONFIG
 else 
 	echo "Tmux config file already exists."
 fi
-
+clear #Clear the screen
 check_error "Tmux config"
 
 # -------------------------------------------------------------------------------------------------
@@ -1030,7 +1043,7 @@ sudo rm -f /usr/share/fonts/RobotoMono/LICENSE
 sudo rm -f /usr/share/fonts/*.md
 sudo rm -f /usr/share/fonts/*.txt
 sudo rm -f /usr/share/fonts/LICENSE
-
+clear #Clear the screen
 check_error "Themes Nerd Fonts"
 
 # Set the default font family to Noto in the /etc/fonts/local.conf file.
@@ -1066,7 +1079,7 @@ FONTSLOCALCONFIG'
 else 
 	echo "fonts local.conf file already exists."
 fi
-
+clear #Clear the screen
 check_error "Themes Fonts local.conf"
 
 # -------------------------------------------------------------------------------------------------
@@ -1175,7 +1188,7 @@ sudo sed -i 's/Adwaita/Nordzy-cursors/g' /usr/share/icons/default/index.theme
 # GTK Settings END --------------------------
 
 sudo fc-cache -fv
-
+clear #Clear the screen
 check_error "GTK Settings & Fonts"
 
 # -------------------------------------------------------------------------------------------------
@@ -1220,7 +1233,7 @@ fi
 #else
 #	echo "/etc/X11/Xsession.d/90_xrandr-set-max already exists."
 #fi
-
+clear #Clear the screen
 check_error "xrandr-set-max file"
 # -------------------------------------------------------------------------------------------------
 
@@ -1309,7 +1322,7 @@ chmod +x $HOME/.config/rofi/rofi-wifi-menu.sh
 else 
 	echo "Rofi WiFi menu file already exists."
 fi
-
+clear #Clear the screen
 check_error "Rofi Run menu"
 
 if [ ! -f /location/powermenu.sh ]; then
@@ -1334,7 +1347,7 @@ else
 fi
 
 chmod +x $HOME/.config/rofi/powermenu.sh
-
+clear #Clear the screen
 check_error "Rofi Powermenu"
 
 if [ ! -f $HOME/.config/rofi/powermenu.rasi ]; then
@@ -1354,7 +1367,7 @@ ROFIPOWERMENURASI
 else 
 	echo "powermenu.rasi file already exists."
 fi
-
+clear #Clear the screen
 check_error "Rofi Powermenu rasi"
 
 # Add xfce4 file helpers
@@ -1371,7 +1384,7 @@ XFCE4HELPER
 else 
 	echo "xfce4 helper config file already exists."
 fi
-
+clear #Clear the screen
 check_error "xfce4 helpers.rc"
 
 # Add kitty to open nvim and vim.
@@ -1386,7 +1399,7 @@ sudo sed -i 's/Exec=vim %F/Exec=kitty -e vim %F/' /usr/share/applications/vim.de
 else 
 	echo "no vim.desktop file"
 fi
-
+clear #Clear the screen
 check_error "Add kitty to open nvim and vim"
 
 # # # # # # # # # # #
@@ -1730,8 +1743,7 @@ KITTYCONFIG
 else 
 	echo "Kitty config already exists."
 fi
-
-
+clear #Clear the screen
 check_error "Kitty config file"
 
 # -------------------------------------------------------------------------------------------------
@@ -1775,7 +1787,7 @@ if lspci | grep -i nvidia; then
     
     echo 'nvidia-settings --assign CurrentMetaMode="nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }"' >> $HOME/.config/qtile/autostart.sh
 fi
-
+clear #Clear the screen
 check_error "NVIDIA driver installation"
 
 # Qtile Config file
@@ -2152,7 +2164,7 @@ QTILECONFIG
 else 
 	echo "Qtile config file already exists."
 fi
-
+clear #Clear the screen
 check_error "Qtile Config file"
 
 
@@ -2160,17 +2172,17 @@ check_error "Qtile Config file"
 # FastFetch Install.
 FASTFETCH_VERSION=2.40.3
 wget https://github.com/fastfetch-cli/fastfetch/releases/download/$FASTFETCH_VERSION/fastfetch-linux-amd64.deb && sudo dpkg -i fastfetch-linux-amd64.deb && rm fastfetch-linux-amd64.deb
-
+clear #Clear the screen
 check_error "FastFetch install"
 
 # ---------------------------------------------------------------------------------------
 # Edit GRUB BOOT TIMEOUT
 sudo sed -i 's+GRUB_TIMEOUT=5+GRUB_TIMEOUT=1+g' /etc/default/grub && sudo update-grub
-
+clear #Clear the screen
 check_error "GRUB BOOT TIMEOUT"
 # ---------------------------------------------------------------------------------------
 # Install Done ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##
-
+clear #Clear the screen
 sudo reboot
 
 # Test Qtile config file.
