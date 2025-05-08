@@ -888,7 +888,7 @@ mkdir -p ~/Wallpapers
 # Download some wallpaper, Please wait..."
 
 wget -O ~/Wallpapers/default_wallpaper.jpg https://github.com/ITmail-dk/qmade/blob/main/wallpapers/default_wallpaper.jpg?raw=true
-
+cd /tmp/ && git clone https://github.com/ITmail-dk/qmade/ && cp qmade/wallpapers/* ~/Wallpapers/ && cd ~
 else 
 	echo "Wallpapers folder already exists."
 fi
