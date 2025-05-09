@@ -1,9 +1,0 @@
-[submodule "GitSubModules/EliverLara-Nordic"]
-	path = GitSubModules/EliverLara-Nordic
-	url = https://github.com/EliverLara/Nordic
-[submodule "GitSubModules/Nordzy-Cursors"]
-	path = GitSubModules/Nordzy-Cursors
-	url = https://github.com/alvatip/Nordzy-cursors
-[submodule "GitSubModules/Nordzy-Icons"]
-	path = GitSubModules/Nordzy-Icons
-	url = https://github.com/alvatip/Nordzy-icon
