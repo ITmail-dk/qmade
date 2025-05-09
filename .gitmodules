@@ -1,3 +1,9 @@
-[submodule "EliverLara-Nordic"]
-	path = EliverLara-Nordic
+[submodule "EliverLaraNordic"]
+	path = EliverLaraNordic
 	url = https://github.com/EliverLara/Nordic
+[submodule "NordzyCursors"]
+	path = NordzyCursors
+	url = https://github.com/alvatip/Nordzy-cursors
+[submodule "NordzyIcons"]
+	path = Nordzy-icon
+	url = https://github.com/alvatip/Nordzy-icon
