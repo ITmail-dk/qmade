@@ -86,9 +86,9 @@ echo -e "${RED} ${NC}"
 echo -e "${RED} "
 echo -e "${RED}-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-"
 echo -e "${RED} "
-echo -e "${RED}      Preparation before starting the installation..."
+echo -e "${RED}      Preparation before starting the installation... ;-)"
 echo -e "${RED}      Enter your user password, to continue if necessary"
-echo -e "${RED}                   or CTRL + C to cancel"
+echo -e "${RED}            or CTRL + C to cancel the installation"
 echo -e "${RED} "
 echo -e "${RED}-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-"
 echo -e "${RED} ${NC}"
@@ -98,26 +98,6 @@ if [ ! -f /etc/apt/sources.list ]; then
     sudo cp /usr/share/doc/apt/examples/sources.list /etc/apt/sources.list
 fi
 check_error "Copy Default APT Sources list"
-
-if ! dpkg -s whiptail >/dev/null 2>&1; then
-    sudo apt update
-    sudo DEBIAN_FRONTEND=noninteractive apt install -y whiptail
-else
-    echo -e "${YELLOW} Preparation before starting the installation... done ;-) ${NC}"
-fi
-check_error "APT install whiptail"
-
-
-
-clear #Clear the screen
-echo -e "${RED} "
-echo -e "${RED}-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-"
-echo -e "${RED} "
-echo -e "${RED}      APT Preparation before starting the installation..."
-echo -e "${RED}      Enter your user password, to continue if necessary."
-echo -e "${RED} "
-echo -e "${RED}-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-"
-echo -e "${RED} ${NC}"
 
 # Sudoers ------------------------------------------------------------------------------------------------------------------------------------
 # Add User NOPASSWD to shutdown now and reboot
@@ -160,30 +140,24 @@ sudo apt update
 clear #Clear the screen
 check_error "APT Sources list and APT Update"
 # -------------------------------------------------------------------------------------------------
-
-clear #Clear the screen
 # Core System APT install
 sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install bash-completion xserver-xorg x11-utils xinit arandr autorandr picom fwupd colord mesa-utils htop wget curl git tmux numlockx kitty neovim xdg-utils cups cups-common xsensors xbacklight brightnessctl unzip network-manager dnsutils dunst libnotify-bin notify-osd xsecurelock pm-utils rofi imagemagick nsxiv mpv flameshot mc thunar gvfs gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq font-manager fontconfig fontconfig-config fonts-recommended fonts-liberation fonts-freefont-ttf fonts-noto-core libfontconfig1 pipewire pipewire-pulse wireplumber pipewire-alsa libspa-0.2-bluetooth pavucontrol alsa-utils qpwgraph sddm-theme-debian-maui ffmpeg cmake policykit-1 policykit-1-gnome
 sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install linux-headers-$(uname -r)
 sudo DEBIAN_FRONTEND=noninteractive apt -y install sddm --no-install-recommends
 check_error "Core System APT install"
 
-
 # APT install extra packages
-
 sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install remmina libreoffice
 clear #Clear the screen
 check_error "APT install extra packages"
 
 # Dependencies so the Nordic login theme works
 sudo apt install -y --no-install-recommends plasma-workspace plasma-framework
-clear #Clear the screen
 check_error "APT install under plasma-workspace plasma-framework"
 
 if [ -f /usr/share/xsessions/plasma.desktop ]; then
     sudo rm /usr/share/xsessions/plasma.desktop
 fi
-clear #Clear the screen
 check_error "Remove plasma.desktop"
 
 # Google Chrome install.
