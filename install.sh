@@ -2006,7 +2006,7 @@ screens = [
             [
                 widget.CurrentLayoutIcon(scale=0.7, padding=10),
                 widget.Spacer(length=5),
-                widget.GroupBox(fontsize=18, highlight_method="text", this_current_screen_border="#f7f7f7", highlight_color=Color3, this_screen_border=Color4, urgent_border=Color3, active=Color5, inactive=Color3, rounded="False", borderwidth=0),                widget.Spacer(length=9),
+                widget.GroupBox(fontsize=18, highlight_method="text", this_current_screen_border="#f7f7f7", highlight_color=Color2, this_screen_border=Color3, urgent_border=Color7, active=Color5, inactive="#00000000", rounded="False", borderwidth=0),                widget.Spacer(length=9),
                 widget.Prompt(),
                 widget.Spacer(),
                 widget.WindowName(width=bar.CALCULATED, max_chars=120),
@@ -2024,7 +2024,7 @@ screens = [
                 #widget.QuickExit(default_text="LOGOUT", countdown_format="     {}     "),
                 widget.Spacer(length=20),
             ], 30, # Define bar height
-            background=Color0, opacity=0.94, # Bar background color can also take transparency with "hex color code" or 0.XX
+            background=Color0, opacity=0.90, # Bar background color can also take transparency with "hex color code" or 0.XX
             margin=[5, 5, 0, 5], # Space around bar as int or list of ints [N E S W]
             border_width=[0, 0, 0, 0], # Width of border as int of list of ints [N E S W]
             border_color=[Color2, Color2, Color2, Color2] # Border colour as str or list of str [N E S W]
