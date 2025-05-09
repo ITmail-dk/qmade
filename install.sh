@@ -81,6 +81,7 @@ else
     exit 1
 fi
 
+clear #Clear the screen
 
 echo -e "${RED} ${NC}"
 echo -e "${RED} "
