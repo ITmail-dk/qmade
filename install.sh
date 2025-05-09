@@ -674,7 +674,7 @@ deactivate
 
 cp ~/.local/src/qtile_venv/bin/qtile ~/.local/bin/
 clear #Clear the screen
-check_error "qtile_venv"
+check_error "Install Qtile from qtile_venv"
 
 # ------------------------------------------------------------------------
 

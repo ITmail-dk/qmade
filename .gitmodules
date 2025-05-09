@@ -5,5 +5,5 @@
 	path = NordzyCursors
 	url = https://github.com/alvatip/Nordzy-cursors
 [submodule "NordzyIcons"]
-	path = Nordzy-icon
+	path = NordzyIcons
 	url = https://github.com/alvatip/Nordzy-icon
