@@ -65,7 +65,7 @@ check_error() {
 clear #Clear the screen
 
 if [ -f /etc/debian_version ]; then
-    echo "Preparation before starting the installation..."
+    echo ""
 else
     echo "This installation should only be run on a Debian Linux System."
     exit 1
@@ -74,14 +74,13 @@ fi
 # Check if it's a Debian system install.
 if [ -f /etc/debian_version ]; then
     . /etc/os-release #Get the VERSION_CODENAME
-    echo "Preparation before starting the installation on Debian $VERSION_CODENAME"
+    echo ""
 
 else
     echo "This installation should only be run on a Debian Linux System."
     exit 1
 fi
 
-clear #Clear the screen
 
 echo -e "${RED} ${NC}"
 echo -e "${RED} "
