@@ -139,6 +139,26 @@ fi
 sudo apt update
 clear #Clear the screen
 check_error "APT Sources list and APT Update"
+
+# Make .local/bin|src and git clone QMADE
+cd ~
+mkdir -p ~/.local/bin
+mkdir -p ~/.local/src && cd ~/.local/src
+git clone https://github.com/ITmail-dk/qmade
+
+clear #Clear the screen
+check_error "Make .local/bin|src and git clone QMADE"
+
+# Add Wallpapers
+if [ ! -d ~/Wallpapers ]; then
+mkdir -p ~/Wallpapers
+cp ~/.local/src/qmade/wallpapers/* ~/Wallpapers/ && cd ~
+else 
+	echo "Wallpapers folder already exists."
+fi
+clear #Clear the screen
+check_error "Add Wallpapers"
+
 # -------------------------------------------------------------------------------------------------
 # Core System APT install
 sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install bash-completion xserver-xorg x11-utils xinit arandr autorandr picom fwupd colord mesa-utils htop wget curl git tmux numlockx kitty neovim xdg-utils cups cups-common xsensors xbacklight brightnessctl unzip network-manager dnsutils dunst libnotify-bin notify-osd xsecurelock pm-utils rofi imagemagick nsxiv mpv flameshot mc thunar gvfs gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq font-manager fontconfig fontconfig-config fonts-recommended fonts-liberation fonts-freefont-ttf fonts-noto-core libfontconfig1 pipewire pipewire-pulse wireplumber pipewire-alsa libspa-0.2-bluetooth pavucontrol alsa-utils qpwgraph sddm-theme-debian-maui ffmpeg cmake policykit-1 policykit-1-gnome
@@ -855,19 +875,6 @@ else
 fi
 check_error "Nano config"
 
-#  Wallpapers START
-
-if [ ! -d ~/Wallpapers ]; then
-mkdir -p ~/Wallpapers
-# Download some wallpaper, Please wait..."
-
-wget -O ~/Wallpapers/default_wallpaper.jpg https://github.com/ITmail-dk/qmade/blob/main/wallpapers/default_wallpaper.jpg?raw=true
-cd /tmp/ && git clone https://github.com/ITmail-dk/qmade/ && cp qmade/wallpapers/* ~/Wallpapers/ && cd ~
-else 
-	echo "Wallpapers folder already exists."
-fi
-clear #Clear the screen
-check_error "Wallpapers"
 
 # Neovim config Start
 
