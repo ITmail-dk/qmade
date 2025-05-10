@@ -2034,7 +2034,7 @@ screens = [
             [
                 widget.CurrentLayoutIcon(scale=0.7, padding=10),
                 widget.Spacer(length=5),
-                widget.GroupBox(fontsize=18, highlight_method="text", this_current_screen_border="#f7f7f7", highlight_color=Color2, this_screen_border=Color3, urgent_border=Color7, active=Color5, inactive="#00000000", rounded="False", borderwidth=0),                widget.Spacer(length=9),
+                widget.GroupBox(fontsize=18, highlight_method="text", this_current_screen_border="#f7f7f7", highlight_color=Color14, this_screen_border=Color3, urgent_border=Color7, active=Color5, inactive=Color8, rounded="False", borderwidth=0),                widget.Spacer(length=9),
                 widget.Prompt(),
                 widget.Spacer(),
                 widget.WindowName(width=bar.CALCULATED, max_chars=120),
