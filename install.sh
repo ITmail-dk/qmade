@@ -681,7 +681,7 @@ mkdir -p ~/.local/src && cd ~/.local/src
 
 # Python3 venv install -----------------------------------------------------
 
-python3 -m venv qtile_venv && cd qtile_venv
+python3 -m venv qtile_venv && cd ~/.local/src/qtile_venv
 
 if [ -d qtile ]; then
     rm -rf qtile
@@ -698,6 +698,8 @@ deactivate
 cp ~/.local/src/qtile_venv/bin/qtile ~/.local/bin/
 clear #Clear the screen
 check_error "Install Qtile from qtile_venv"
+
+# if error "no module named pip" activate the virtual environment and run: python3 -m ensurepip --upgrade
 
 # ------------------------------------------------------------------------
 
