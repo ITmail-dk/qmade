@@ -84,13 +84,10 @@ fi
 
 echo -e "${RED} ${NC}"
 echo -e "${RED} "
-echo -e "${RED}-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-"
+echo -e "${RED}   Starting the QMADE installation"
+echo -e "${RED}   Enter your user password, to continue if necessary"
+echo -e "${RED}   Or CTRL + C to cancel the installation"
 echo -e "${RED} "
-echo -e "${RED}   Preparation before starting the QMADE installation..."
-echo -e "${RED}     Enter your user password, to continue if necessary"
-echo -e "${RED}           CTRL + C to cancel the installation"
-echo -e "${RED} "
-echo -e "${RED}-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-'-"
 echo -e "${RED} ${NC}"
 
 # Check and Copy Default APT Sources List
