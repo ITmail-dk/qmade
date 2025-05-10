@@ -35,7 +35,7 @@ check out the Qtile config file under Keybindings in "~/.config/qtile/config.py"
 
 
 ## Information:
-- Window Manager: Qtile
+- Window Manager: Qtile (Github From Source)
 - Compositor: X11, Picom
 - Bar / Panel:  Qtile Bar
 - Terminal: Kitty

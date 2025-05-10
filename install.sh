@@ -132,8 +132,11 @@ check_error "Sources list"
 if ! dpkg -s apt-transport-https >/dev/null 2>&1; then
     sudo DEBIAN_FRONTEND=noninteractive apt install -y apt-transport-https
     sudo sed -i 's+http:+https:+g' /etc/apt/sources.list
-else
-    echo "apt-transport-https is already installed."
+fi
+
+# APT Git install
+if ! dpkg -s git >/dev/null 2>&1; then
+    sudo DEBIAN_FRONTEND=noninteractive apt install -y git
 fi
 
 sudo apt update
@@ -161,7 +164,7 @@ check_error "Add Wallpapers"
 
 # -------------------------------------------------------------------------------------------------
 # Core System APT install
-sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install bash-completion xserver-xorg x11-utils xinit arandr autorandr picom fwupd colord mesa-utils htop wget curl git tmux numlockx kitty neovim xdg-utils cups cups-common xsensors xbacklight brightnessctl unzip network-manager dnsutils dunst libnotify-bin notify-osd xsecurelock pm-utils rofi imagemagick nsxiv mpv flameshot mc thunar gvfs gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq font-manager fontconfig fontconfig-config fonts-recommended fonts-liberation fonts-freefont-ttf fonts-noto-core libfontconfig1 pipewire pipewire-pulse wireplumber pipewire-alsa libspa-0.2-bluetooth pavucontrol alsa-utils qpwgraph sddm-theme-debian-maui ffmpeg cmake policykit-1 policykit-1-gnome
+sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install bash-completion xserver-xorg x11-utils xinit arandr autorandr picom fwupd colord mesa-utils htop wget curl git tmux numlockx kitty neovim xdg-utils cups cups-common xsensors xbacklight brightnessctl unzip network-manager dnsutils dunst libnotify-bin notify-osd xsecurelock pm-utils rofi imagemagick nsxiv mpv flameshot mc thunar gvfs gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq font-manager fontconfig fontconfig-config fonts-recommended fonts-liberation fonts-freefont-ttf fonts-noto-core libfontconfig1 pipewire pipewire-audio pipewire-alsa pipewire-pulse pipewire-jack wireplumber libspa-0.2-bluetooth pavucontrol alsa-utils qpwgraph sddm-theme-debian-maui ffmpeg cmake policykit-1 policykit-1-gnome
 sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install linux-headers-$(uname -r)
 sudo DEBIAN_FRONTEND=noninteractive apt -y install sddm --no-install-recommends
 check_error "Core System APT install"
@@ -346,7 +349,7 @@ pipx ensurepath
 # wal --cols16 darken -q -i ~/Wallpapers
 # wal --cols16 darken -q -i ~/Wallpapers --backend modern_colorthief
 clear #Clear the screen
-check_error "Pipx install"
+check_error "PyWAL Pipx install"
 
 mkdir -p ~/.cache/wal
 cat << "PYWALCOLORSJSON" > ~/.cache/wal/colors.json
