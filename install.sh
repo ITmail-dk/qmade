@@ -387,29 +387,45 @@ PYWALCOLORSJSON
 clear #Clear the screen
 check_error "pywal colors json"
 
-mkdir -p ~/.config/kitty
-cat << "PYWALCOLORSKITTY" > ~/.config/kitty/current-theme.conf 
-background #1e3143
-foreground #cec7bc
-color0 #1e3143
-color1 #708191
-color2 #bcc2be
-color3 #9ea5a3
-color4 #717c7a
-color5 #a9a5a8
-color6 #788483
-color7 #c1c6c3
-color8 #254657
-color9 #496c80
-color10 #28415a
-color11 #b1aea6
-color12 #849aa3
-color13 #c6c0b6
-color14 #648896
-color15 #cec7bc
+mkdir -p ~/.config/kitty/themes
+mkdir -p ~/.cache/wal/
+cat << "PYWALCOLORSKITTY" > ~/.cache/wal/colors-kitty.conf
+foreground         #c0c1c2
+background         #06080b
+background_opacity 0.98
+cursor             #c0c1c2
+
+active_tab_foreground     #06080b
+active_tab_background     #c0c1c2
+inactive_tab_foreground   #c0c1c2
+inactive_tab_background   #06080b
+
+active_border_color   #c0c1c2
+inactive_border_color #06080b
+bell_border_color     #1b394e
+
+color0       #06080b
+color8       #555b67
+color1       #1b394e
+color9       #244d68
+color2       #245067
+color10      #306b8a
+color3       #33667f
+color11      #4589aa
+color4       #4e606e
+color12      #698193
+color5       #557384
+color13      #729ab0
+color6       #6c818e
+color14      #91adbe
+color7       #898d95
+color15      #c0c1c2
 
 PYWALCOLORSKITTY
 
+ln -s ~/.cache/wal/colors-kitty.conf ~/.config/kitty/themes/current-theme.conf
+
+# PyWal kitty template
 mkdir -p ~/.config/wal/templates/
 cat << "PYWALCOLORSTEMPALETKITTY" > ~/.config/wal/templates/colors-kitty.conf
 foreground         {foreground}
