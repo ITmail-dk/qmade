@@ -40,7 +40,7 @@ check out the Qtile config file under Keybindings in "~/.config/qtile/config.py"
 - Bar / Panel:  Qtile Bar
 - Terminal: Kitty
 - Shell: Bash
-- Web browser: Google Chrome
+- Web browser: Google Chrome & WaterFox
 - Editor: Neovim
 - File Manager: Thunar + Midnight Commander
 - Notification Manager: Dunst

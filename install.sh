@@ -188,6 +188,26 @@ cd /tmp/ && wget https://dl.google.com/linux/direct/google-chrome-stable_current
 clear #Clear the screen
 check_error "Google Chrome install"
 
+# WaterFox install - https://www.waterfox.net/download/
+WATERFOX_VERSION=6.5.7
+wget -O waterfox.tar.bz2 https://cdn1.waterfox.net/waterfox/releases/$WATERFOX_VERSION/Linux_x86_64/waterfox-$WATERFOX_VERSION.tar.bz2
+tar -xvf waterfox.tar.bz2
+sudo mv waterfox /opt/
+sudo chown -R root:root /opt/waterfox/ 
+
+cat << EOF | sudo tee "/usr/share/applications/waterfox.desktop" > /dev/null
+[Desktop Entry]
+Name=Waterfox
+Exec=/opt/waterfox/waterfox
+Icon=/opt/waterfox/browser/chrome/icons/default/default128.png
+Type=Application
+Categories=Network;WebBrowser;
+EOF
+
+sudo ln -s /opt/waterfox/waterfox /usr/bin/waterfox
+
+clear #Clear the screen
+check_error "WaterFox install"
 
 # Network Share Components
 sudo DEBIAN_FRONTEND=noninteractive apt install -y ceph-common smbclient nfs-common && echo "# CEPH" | sudo tee -a /etc/fstab && echo "#:/  /mnt/cephfs ceph    name=clientNAME,noatime,_netdev    0       0" | sudo tee -a /etc/fstab
