@@ -57,6 +57,7 @@ BLUE="\033[0;94m"
 check_error() {
   if [ $? -ne 0 ]; then
     echo -e "${RED} An error occurred during installation and has been stopped. ${NC}"
+    echo -e "${RED} Or you have pressed CTRL + C to cancel. ${NC}"
     echo -e "${RED} Error occurred during $1 ${NC}"
     exit 1
   fi
@@ -78,6 +79,7 @@ fi
 echo -e "${GREEN} ${NC}"
 echo -e "${GREEN} "
 echo -e "${GREEN}      Starting the QMADE installation"
+echo -e "${GREEN}      See more info at https://github.com/ITmail-dk/qmade/"
 echo -e "${GREEN}      Enter your user password, to continue if necessary"
 echo -e "${GREEN}      Or CTRL + C to cancel the installation"
 echo -e "${GREEN} "
