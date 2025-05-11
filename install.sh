@@ -180,27 +180,6 @@ cd /tmp/ && wget https://dl.google.com/linux/direct/google-chrome-stable_current
 clear #Clear the screen
 check_error "Google Chrome install"
 
-# WaterFox install - https://www.waterfox.net/download/
-WATERFOX_VERSION=6.5.7
-wget -O waterfox.tar.bz2 https://cdn1.waterfox.net/waterfox/releases/$WATERFOX_VERSION/Linux_x86_64/waterfox-$WATERFOX_VERSION.tar.bz2
-tar -xvf waterfox.tar.bz2
-sudo mv waterfox /opt/
-sudo chown -R root:root /opt/waterfox/ 
-
-cat << EOF | sudo tee "/usr/share/applications/waterfox.desktop" > /dev/null
-[Desktop Entry]
-Name=Waterfox
-Exec=/opt/waterfox/waterfox
-Icon=/opt/waterfox/browser/chrome/icons/default/default128.png
-Type=Application
-Categories=Network;WebBrowser;
-EOF
-
-sudo ln -s /opt/waterfox/waterfox /usr/bin/waterfox
-
-clear #Clear the screen
-check_error "WaterFox install"
-
 # Network Share Components
 sudo DEBIAN_FRONTEND=noninteractive apt install -y ceph-common smbclient nfs-common && echo "# CEPH" | sudo tee -a /etc/fstab && echo "#:/  /mnt/cephfs ceph    name=clientNAME,noatime,_netdev    0       0" | sudo tee -a /etc/fstab
 clear #Clear the screen
@@ -865,15 +844,15 @@ decoder {
 
 # Audio output
 
-audio_output {                                                                 
-    type     "pipewire"                                                       
-    name     "PipeWire Sound Server"                                           
-    enabled  "yes"   
+audio_output {
+    type     "pipewire"
+    name     "PipeWire Sound Server"
+    enabled  "yes"
 }
-audio_output {                                                                 
-    type     "pulse"                                                           
-    name     "Local PulseAudio Server"                                         
-    enabled  "no"                                                             
+audio_output {
+    type     "pulse"
+    name     "Local PulseAudio Server"
+    enabled  "no"
 }       
 
 MPDCONFIG
@@ -2144,12 +2123,40 @@ clear #Clear the screen
 check_error "Qtile Config file"
 
 
+
+
 # ---------------------------------------------------------------------------------------
 # FastFetch Install.
 FASTFETCH_VERSION=2.40.3
 wget https://github.com/fastfetch-cli/fastfetch/releases/download/$FASTFETCH_VERSION/fastfetch-linux-amd64.deb && sudo dpkg -i fastfetch-linux-amd64.deb && rm fastfetch-linux-amd64.deb
 clear #Clear the screen
 check_error "FastFetch install"
+
+# WaterFox install - https://www.waterfox.net/download/
+WATERFOX_VERSION=6.5.7
+wget -O waterfox.tar.bz2 https://cdn1.waterfox.net/waterfox/releases/$WATERFOX_VERSION/Linux_x86_64/waterfox-$WATERFOX_VERSION.tar.bz2
+tar -xvf waterfox.tar.bz2
+sudo mv waterfox /opt/
+sudo chown -R root:root /opt/waterfox/ 
+
+cat << EOF | sudo tee "/usr/share/applications/waterfox.desktop" > /dev/null
+[Desktop Entry]
+Name=Waterfox
+Exec=/opt/waterfox/waterfox
+Icon=/opt/waterfox/browser/chrome/icons/default/default128.png
+Type=Application
+Categories=Network;WebBrowser;
+EOF
+
+sudo ln -s /opt/waterfox/waterfox /usr/bin/waterfox
+
+clear #Clear the screen
+check_error "WaterFox install"
+
+# Remove .first-login file
+if [ -f ~/.first-login ]; then
+    rm ~/.first-login
+fi
 
 # ---------------------------------------------------------------------------------------
 # Edit GRUB BOOT TIMEOUT
