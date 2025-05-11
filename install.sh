@@ -63,32 +63,25 @@ check_error() {
 }
 
 clear #Clear the screen
-
-if [ -f /etc/debian_version ]; then
-    echo ""
-else
-    echo "This installation should only be run on a Debian Linux System."
-    exit 1
-fi
-
-# Check if it's a Debian system install.
+# Check if it's a Debian system installation.
 if [ -f /etc/debian_version ]; then
     . /etc/os-release #Get the VERSION_CODENAME
     echo ""
 
 else
-    echo "This installation should only be run on a Debian Linux System."
+    echo -e "${RED} This installation should only be run on a Debian Linux System. ${NC}"
+    echo -e "${RED} See more at https://github.com/ITmail-dk/qmade/ ${NC}"
     exit 1
 fi
 
 
-echo -e "${RED} ${NC}"
-echo -e "${RED} "
-echo -e "${RED}   Starting the QMADE installation"
-echo -e "${RED}   Enter your user password, to continue if necessary"
-echo -e "${RED}   Or CTRL + C to cancel the installation"
-echo -e "${RED} "
-echo -e "${RED} ${NC}"
+echo -e "${GREEN} ${NC}"
+echo -e "${GREEN} "
+echo -e "${GREEN}      Starting the QMADE installation"
+echo -e "${GREEN}      Enter your user password, to continue if necessary"
+echo -e "${GREEN}      Or CTRL + C to cancel the installation"
+echo -e "${GREEN} "
+echo -e "${GREEN} ${NC}"
 
 # Check and Copy Default APT Sources List
 if [ ! -f /etc/apt/sources.list ]; then
