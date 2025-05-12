@@ -4,7 +4,7 @@
 # Meant to be run in the Shell on a Debian installation without any desktop environment, just after a clean install.
 
 # bash -c "$(wget -O- https://raw.githubusercontent.com/ITmail-dk/qmade/main/install.sh)"
-# or you can run the separate commands... 
+# or you can run the separate commands...
 # sudo apt install -y git && git clone https://github.com/ITmail-dk/qmade && cd qmade && . install.sh
 
 # Resource links to source
@@ -252,7 +252,7 @@ if [ "$CPUVENDOR" == "AuthenticAMD" ]; then
 else
     echo -e "${GREEN} Amd64 Microcode OK ${NC}"
 fi
-unset LC_ALL # unset the LC_ALL=C 
+unset LC_ALL # unset the LC_ALL=C
 
 clear #Clear the screen
 check_error "CPU Microcode install"
@@ -694,8 +694,8 @@ mkdir -p ~/.local/src && cd ~/.local/src
 
 
 # Python3 venv install -----------------------------------------------------
-
-python3 -m venv qtile_venv && cd ~/.local/src/qtile_venv
+cd /opt/
+python3 -m venv qtile_venv && cd /opt/qtile_venv
 
 if [ -d qtile ]; then
     rm -rf qtile
@@ -709,9 +709,29 @@ pip install -r qtile/requirements.txt
 bin/pip install qtile/.
 deactivate
 
-cp ~/.local/src/qtile_venv/bin/qtile ~/.local/bin/
+cp /opt/qtile_venv/bin/qtile /usr/local/bin/
 clear #Clear the screen
 check_error "Install Qtile from qtile_venv"
+
+
+# OLD INSTALL
+#python3 -m venv qtile_venv && cd ~/.local/src/qtile_venv
+
+#if [ -d qtile ]; then
+#    rm -rf qtile
+#fi
+
+#git clone https://github.com/qtile/qtile.git
+
+#source bin/activate
+#pip install dbus-next psutil wheel pyxdg
+#pip install -r qtile/requirements.txt
+#bin/pip install qtile/.
+#deactivate
+
+#cp ~/.local/src/qtile_venv/bin/qtile ~/.local/bin/
+#clear #Clear the screen
+#check_error "Install Qtile from qtile_venv"
 
 # if error "no module named pip" activate the virtual environment and run: python3 -m ensurepip --upgrade
 
@@ -745,7 +765,7 @@ exec /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 & # Graphica
 
 autorandr --change &&
 
-# This here if statement sets your background image, with feh... 
+# This here if statement sets your background image, with feh...
 # and is also used for the auto-generation of the background image and colors.
 if [ -f ~/.fehbg ]; then
     . ~/.fehbg
@@ -766,7 +786,7 @@ QTILEAUTOSTART
 
 chmod +x ~/.config/qtile/autostart.sh
 
-else 
+else
 	echo "File autostart.sh already exists."
 fi
 clear #Clear the screen
@@ -861,11 +881,11 @@ audio_output {
     type     "pulse"
     name     "Local PulseAudio Server"
     enabled  "no"
-}       
+}
 
 MPDCONFIG
 
-else 
+else
 	echo "mpd.conf already exists."
 fi
 
@@ -874,7 +894,7 @@ fi
 #systemctl enable --now --user mpd
 # systemctl status mpd.service
 
-#systemctl enable --now --user mpd.socket 
+#systemctl enable --now --user mpd.socket
 #systemctl enable --now --user mpd.service
 
 # mpd --version
@@ -890,7 +910,7 @@ if [ ! -f ~/.nanorc ]; then
     sed -i 's/^# set minibar/set minibar/' ~/.nanorc
     sed -i 's/^# set softwrap/set softwrap/' ~/.nanorc
     sed -i 's/^# set atblanks/set atblanks/' ~/.nanorc
-else 
+else
 	echo "File .nanorc already exists."
 fi
 check_error "Nano config"
@@ -908,7 +928,7 @@ set relativenumber
 set ignorecase
 NEOVIMCONFIG
 
-else 
+else
 	echo "Neovim config file already exists."
 fi
 clear #Clear the screen
@@ -940,7 +960,7 @@ color15 #cec7bc
 
 KITTYTHEMECONF
 
-else 
+else
 	echo "kittytheme.conf file already exists."
 fi
 clear #Clear the screen
@@ -956,7 +976,7 @@ bind r source-file ~/.config/tmux/tmux.conf
 
 TMUXCONFIG
 
-else 
+else
 	echo "Tmux config file already exists."
 fi
 clear #Clear the screen
@@ -983,7 +1003,7 @@ check_error "Tmux config"
 if [ ! -d /usr/share/fonts ]; then
 sudo mkdir -p /usr/share/fonts
 
-else 
+else
 	echo "fonts folder already exists."
 fi
 
@@ -1039,7 +1059,7 @@ sudo bash -c 'cat << "FONTSLOCALCONFIG" >> /etc/fonts/local.conf
 
 FONTSLOCALCONFIG'
 
-else 
+else
 	echo "fonts local.conf file already exists."
 fi
 clear #Clear the screen
@@ -1106,7 +1126,7 @@ cd /tmp/
 if [ ! -d /etc/gtk-3.0 ]; then
 sudo kdir -p /etc/gtk-3.0
 
-else 
+else
 	echo "/etc/gtk-3.0 already exists."
 fi
 
@@ -1127,7 +1147,7 @@ GTK3SETTINGS'
 if [ ! -d /etc/gtk-4.0 ]; then
 sudo mkdir -p /etc/gtk-4.0
 
-else 
+else
 	echo "/etc/gtk-4.0 already exists."
 fi
 
@@ -1186,7 +1206,7 @@ sudo sed -i '$a\. /usr/local/bin/xrandr-set-max' /usr/share/sddm/scripts/Xsetup
 
 sudo chmod +x /usr/local/bin/xrandr-set-max
 
-else 
+else
 	echo "xrandr-set-max already exists."
 fi
 
@@ -1206,7 +1226,7 @@ check_error "xrandr-set-max file"
 if [ ! -d ~/.config/rofi ]; then
 mkdir -p ~/.config/rofi
 
-else 
+else
 	echo "Rofi folder already exists."
 fi
 
@@ -1229,7 +1249,7 @@ configuration {
 
 ROFICONFIG
 
-else 
+else
 	echo "Rofi config file already exists."
 fi
 
@@ -1282,7 +1302,7 @@ ROFIWIFI
 
 chmod +x ~/.config/rofi/rofi-wifi-menu.sh
 
-else 
+else
 	echo "Rofi WiFi menu file already exists."
 fi
 clear #Clear the screen
@@ -1305,7 +1325,7 @@ esac
 
 ROFIPOWERMENU
 
-else 
+else
 	echo "powermenu.sh file already exists."
 fi
 
@@ -1327,7 +1347,7 @@ listview {
 
 ROFIPOWERMENURASI
 
-else 
+else
 	echo "powermenu.rasi file already exists."
 fi
 clear #Clear the screen
@@ -1344,7 +1364,7 @@ MailReader=
 
 XFCE4HELPER
 
-else 
+else
 	echo "xfce4 helper config file already exists."
 fi
 clear #Clear the screen
@@ -1352,14 +1372,14 @@ check_error "xfce4 helpers.rc"
 
 # Add kitty to open nvim and vim.
 if [ -f /usr/share/applications/nvim.desktop ]; then
-sudo sed -i 's/Exec=nvim %F/Exec=kitty -e nvim %F/' /usr/share/applications/nvim.desktop 
-else 
+sudo sed -i 's/Exec=nvim %F/Exec=kitty -e nvim %F/' /usr/share/applications/nvim.desktop
+else
 	echo "no nvim.desktop file"
 fi
 
 if [ -f /usr/share/applications/vim.desktop ]; then
-sudo sed -i 's/Exec=vim %F/Exec=kitty -e vim %F/' /usr/share/applications/vim.desktop 
-else 
+sudo sed -i 's/Exec=vim %F/Exec=kitty -e vim %F/' /usr/share/applications/vim.desktop
+else
 	echo "no vim.desktop file"
 fi
 clear #Clear the screen
@@ -1703,7 +1723,7 @@ include ~/.cache/wal/colors-kitty.conf
 
 KITTYCONFIG
 
-else 
+else
 	echo "Kitty config already exists."
 fi
 clear #Clear the screen
@@ -1935,7 +1955,7 @@ for vt in range(1, 8):
 # nf-fa-volume_high   nf-fa-volume_low  nf-fa-volume_xmark 
 # nf-md-pac_man 󰮯 nf-md-ghost 󰊠 nf-fa-circle  nf-cod-circle_large  nf-cod-circle_filled  nf-md-circle_small 󰧟 nf-md-circle_medium 󰧞 
 
-# Group Match example: 
+# Group Match example:
 # Group("1", label="", layout="monadtall", matches=[Match(wm_class=re.compile(r"^(Google\-chrome)$"))]),
 
 groups = [
@@ -2124,7 +2144,7 @@ wmname = "Qtile"
 
 QTILECONFIG
 
-else 
+else
 	echo "Qtile config file already exists."
 fi
 clear #Clear the screen
@@ -2145,7 +2165,7 @@ WATERFOX_VERSION=6.5.7
 wget -O waterfox.tar.bz2 https://cdn1.waterfox.net/waterfox/releases/$WATERFOX_VERSION/Linux_x86_64/waterfox-$WATERFOX_VERSION.tar.bz2
 tar -xvf waterfox.tar.bz2
 sudo mv waterfox /opt/
-sudo chown -R root:root /opt/waterfox/ 
+sudo chown -R root:root /opt/waterfox/
 
 cat << EOF | sudo tee "/usr/share/applications/waterfox.desktop" > /dev/null
 [Desktop Entry]
