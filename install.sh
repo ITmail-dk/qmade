@@ -203,6 +203,14 @@ fi
 clear #Clear the screen
 check_error "Check for Bluetooth hardware and install"
 
+# Check for Logitech hardware using lsusb
+# Solaar - Logitech Unifying Receiver - Accessory management for Linux.
+if lsusb | grep -iq Logitech; then
+    echo "Logitech detected, Installing required packages..."
+    sudo DEBIAN_FRONTEND=noninteractive apt install -y solaar
+fi
+clear #Clear the screen
+check_error "Check for Logitech hardware and install"
 
 # Audio Start - https://alsa.opensrc.org - https://wiki.debian.org/ALSA
 # See hardware run: "pacmd list-sinks" or "lspci | grep -i audio" or... sudo dmesg  | grep 'snd\|firmware\|audio'
