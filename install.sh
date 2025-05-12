@@ -362,7 +362,7 @@ pip install dbus-next psutil wheel pyxdg
 pip install -r qtile/requirements.txt
 bin/pip install qtile/.
 # PyWAL install via pip3 for auto-generated color themes
-pip3 install pywal16
+pip3 install pywal16[all]
 deactivate
 
 sudo cp bin/qtile /usr/local/bin/
