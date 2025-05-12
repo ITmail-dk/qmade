@@ -728,7 +728,8 @@ Keywords=wm;tiling
 QTILEDESKTOP'
 
 # Add to user .xsession
-touch ~/.xsession && echo "qtile start" > ~/.xsession
+echo "qtile start" > ~/.xsession
+echo "qtile start" | sudo tee -a "/etc/skel/.xsession" > /dev/null
 clear #Clear the screen
 check_error "Add Qtile .xsession"
 
