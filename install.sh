@@ -340,14 +340,68 @@ sudo DEBIAN_FRONTEND=noninteractive apt install -y feh python3-full python3-pip 
 clear #Clear the screen
 check_error "Qtile Core Dependencies apt install"
 
+# Install Qtile from source via github and Pip
+cd ~
+mkdir -p ~/.local/bin
+mkdir -p ~/.local/src
+
+# Python3 venv Qtile install
+cd /opt/
+sudo python3 -m venv qtile_venv
+sudo chmod -R 777 /opt/qtile_venv
+cd /opt/qtile_venv
+
+if [ -d qtile ]; then
+    sudo rm -rf qtile
+fi
+
+git clone https://github.com/qtile/qtile.git
+
+source bin/activate
+pip install dbus-next psutil wheel pyxdg
+pip install -r qtile/requirements.txt
+bin/pip install qtile/.
+# PyWAL install via pip3 for auto-generated color themes
+pip3 install pywal16
+deactivate
+
+sudo cp bin/qtile /usr/local/bin/
+sudo cp bin/wal /usr/local/bin/
+clear #Clear the screen
+check_error "Install Qtile and PyWAL from qtile_venv"
+
+
+# OLD QTILE INSTALL
+#cd ~/.local/src
+#python3 -m venv qtile_venv && cd ~/.local/src/qtile_venv
+
+#if [ -d qtile ]; then
+#    rm -rf qtile
+#fi
+
+#git clone https://github.com/qtile/qtile.git
+
+#source bin/activate
+#pip install dbus-next psutil wheel pyxdg
+#pip install -r qtile/requirements.txt
+#bin/pip install qtile/.
+#deactivate
+
+#sudo cp bin/qtile /usr/local/bin/
+#cp ~/.local/src/qtile_venv/bin/qtile ~/.local/bin/
+#clear #Clear the screen
+#check_error "Install Qtile from qtile_venv"
+
+# if error "no module named pip" activate the virtual environment and run: python3 -m ensurepip --upgrade
+
+# OLD INSTALL
 # PyWAL install via pipx for auto-generated color themes
 #pipx install pywal16
-pipx install "pywal16[all]"
-pipx ensurepath
+
 # wal --cols16 darken -q -i ~/Wallpapers
 # wal --cols16 darken -q -i ~/Wallpapers --backend modern_colorthief
-clear #Clear the screen
-check_error "PyWAL Pipx install"
+#clear #Clear the screen
+#check_error "PyWAL Pipx install"
 
 mkdir -p ~/.cache/wal
 cat << "PYWALCOLORSJSON" > ~/.cache/wal/colors.json
@@ -673,67 +727,6 @@ echo "skin=dark" >> ~/.config/mc/ini
 clear #Clear the screen
 check_error "Midnight Commander config"
 
-
-# Install Qtile from source via github and Pip
-cd ~
-mkdir -p ~/.local/bin
-mkdir -p ~/.local/src && cd ~/.local/src
-
-# Git src install ----------------------------------------------------------
-#if [ -d qtile ]; then
-#    rm -rf qtile
-#fi
-
-#git clone https://github.com/qtile/qtile.git
-#cd qtile
-
-#pip install dbus-next psutil wheel --break-system-packages
-#pip install -r ~/.local/src/qtile/requirements.txt --break-system-packages
-
-#pip install . --break-system-packages --no-warn-script-location
-
-
-# Python3 venv install -----------------------------------------------------
-cd /opt/
-python3 -m venv qtile_venv && cd /opt/qtile_venv
-
-if [ -d qtile ]; then
-    rm -rf qtile
-fi
-
-git clone https://github.com/qtile/qtile.git
-
-source bin/activate
-pip install dbus-next psutil wheel pyxdg
-pip install -r qtile/requirements.txt
-bin/pip install qtile/.
-deactivate
-
-cp /opt/qtile_venv/bin/qtile /usr/local/bin/
-clear #Clear the screen
-check_error "Install Qtile from qtile_venv"
-
-
-# OLD INSTALL
-#python3 -m venv qtile_venv && cd ~/.local/src/qtile_venv
-
-#if [ -d qtile ]; then
-#    rm -rf qtile
-#fi
-
-#git clone https://github.com/qtile/qtile.git
-
-#source bin/activate
-#pip install dbus-next psutil wheel pyxdg
-#pip install -r qtile/requirements.txt
-#bin/pip install qtile/.
-#deactivate
-
-#cp ~/.local/src/qtile_venv/bin/qtile ~/.local/bin/
-#clear #Clear the screen
-#check_error "Install Qtile from qtile_venv"
-
-# if error "no module named pip" activate the virtual environment and run: python3 -m ensurepip --upgrade
 
 # ------------------------------------------------------------------------
 
@@ -2053,7 +2046,8 @@ screens = [
             [
                 widget.CurrentLayoutIcon(scale=0.7, padding=10),
                 widget.Spacer(length=5),
-                widget.GroupBox(fontsize=18, highlight_method="text", this_current_screen_border="#f7f7f7", highlight_color=Color14, this_screen_border=Color3, urgent_border=Color7, active=Color5, inactive=Color8, rounded="False", borderwidth=0),                widget.Spacer(length=9),
+                widget.GroupBox(fontsize=18, highlight_method="text", this_current_screen_border="#f7f7f7", highlight_color=Color14, this_screen_border=Color3, urgent_border=Color7, active=Color5, inactive=Color8, rounded="False", borderwidth=0),
+                widget.Spacer(length=9),
                 widget.Prompt(),
                 widget.Spacer(),
                 widget.WindowName(width=bar.CALCULATED, max_chars=120),
