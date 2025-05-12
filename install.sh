@@ -64,7 +64,7 @@ check_error() {
 }
 
 clear #Clear the screen
-# Check if it's a Debian system installation.
+# Check if it's a Debian system installation and get the version codename.
 if [ -f /etc/debian_version ]; then
     . /etc/os-release #Get the VERSION_CODENAME
     echo ""
@@ -793,7 +793,7 @@ if [[ "$VERSION_CODENAME" == "trixie" ]]; then
 	echo "Your version of Debian is not compatible with This package"
 else
     sudo DEBIAN_FRONTEND=noninteractive apt install -y freerdp2-x11 libfreerdp-client2-2 libfreerdp2-2 libwinpr2-2
-	sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install xautolock solaar speedcrunch fonts-arkpandora
+	sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install xautolock speedcrunch fonts-arkpandora
     echo "# Lock the computer automatically after X time of minutes, using xautolock and xsecurelock." | tee -a ~/.config/qtile/autostart.sh
     echo 'xautolock -time 120 -locker "xsecurelock" -detectsleep -secure &' | tee -a ~/.config/qtile/autostart.sh
 fi
