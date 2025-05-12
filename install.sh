@@ -67,8 +67,7 @@ clear #Clear the screen
 # Check if it's a Debian system installation and get the version codename.
 if [ -f /etc/debian_version ]; then
     . /etc/os-release #Get the VERSION_CODENAME
-    echo ""
-
+    VERSION_CODENAME_SHOULD_NOT_BE=trixie
 else
     echo -e "${RED} This installation should only be run on a Debian Linux System. ${NC}"
     echo -e "${RED} See more at https://github.com/ITmail-dk/qmade/ ${NC}"
@@ -789,7 +788,7 @@ check_error "Add Synaptics Autostart.sh file"
 
 
 # APT install under Unstable and Testing
-if [[ "$VERSION_CODENAME" == "trixie" ]]; then
+if [[ "$VERSION_CODENAME" == "$VERSION_CODENAME_SHOULD_NOT_BE" ]]; then
 	echo "Your version of Debian is not compatible with This package"
 else
     sudo DEBIAN_FRONTEND=noninteractive apt install -y freerdp2-x11 libfreerdp-client2-2 libfreerdp2-2 libwinpr2-2
