@@ -325,8 +325,14 @@ EnableHiDPI=true
 EnableHiDPI=true
 
 SDDMCONFIG'
+
+sudo chmod 777 /usr/share/sddm/themes/breeze/theme.conf
+# Set login wallpape under background=/ in /usr/share/sddm/themes/breeze/theme.conf
+#/usr/share/wallpapers/login-wallpape.jpg
+
+
 clear #Clear the screen
-check_error "Setup SDDM"
+check_error "Setup SDDM Login"
 
 # Midnight-Commander ini file
 mkdir -p ~/.config/mc
