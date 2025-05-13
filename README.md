@@ -2,7 +2,7 @@
 Qtile Martin Andersen Desktop Environment, Qmade for short.!
 
 ## Remember to install Debian without a desktop environment.
-Install a fresh copy of Debian Linux - Stable via the Netinst AMD64 installer ISO.
+Install a fresh copy of Debian Linux - Stable via the Netinst installer ISO.
 After installation Debian, Reboot the computer and login with your username and password.
 Start the installation as regular users with SUDO rights, after you login to your freshly installed machine.
 
@@ -45,7 +45,7 @@ check out the Qtile config file under Keybindings in "~/.config/qtile/config.py"
 - File Manager: Thunar + Yazi & Midnight Commander
 - Notification Manager: Dunst
 - Application Launcher: Rofi
-- Login Manager: SDDM (Nordic Darker Theme)
+- Login Manager: SDDM
 - Audio Server: PipeWire, WirePlumber
 - Theme: EliverLara Nordic
 - Icons: Nordzy-icon
