@@ -139,26 +139,7 @@ check_error "APT Sources list and APT Update"
 # Make .local/bin|src and git clone QMADE
 cd ~
 mkdir -p ~/.local/bin
-mkdir -p ~/.local/src && cd ~/.local/src
-git clone https://github.com/ITmail-dk/qmade
-
-clear #Clear the screen
-check_error "Make .local/bin|src and git clone QMADE"
-
-# Add Wallpapers
-if [ ! -d ~/Wallpapers ]; then
-mkdir -p ~/Wallpapers
-cp ~/.local/src/qmade/wallpapers/* ~/Wallpapers/ && cd ~
-else 
-	echo "Wallpapers folder already exists."
-fi
-
-sudo chmod 777 /usr/share/wallpapers
-sudo cp $(find wallpapers -type f -name "*.jpg" | shuf -n 1) /usr/share/wallpapers/login-wallpape.jpg
-sudo chmod 777 /usr/share/wallpapers/login-wallpape.jpg
-
-clear #Clear the screen
-check_error "Add Wallpapers"
+mkdir -p ~/.local/src
 
 # -------------------------------------------------------------------------------------------------
 # Core System APT install
@@ -2182,6 +2163,27 @@ check_error "Qtile Config file"
 
 # ---------------------------------------------------------------------------------------
 cd /tmp/
+# QMADE Git clone install
+git clone https://github.com/ITmail-dk/qmade
+
+clear #Clear the screen
+check_error "Make .local/bin|src and git clone QMADE"
+
+# Add Wallpapers
+if [ ! -d ~/Wallpapers ]; then
+mkdir -p ~/Wallpapers
+cp ~/.local/src/qmade/wallpapers/* ~/Wallpapers/ && cd ~
+else 
+	echo "Wallpapers folder already exists."
+fi
+
+sudo chmod 777 /usr/share/wallpapers
+sudo cp $(find wallpapers -type f -name "*.jpg" | shuf -n 1) /usr/share/wallpapers/login-wallpape.jpg
+sudo chmod 777 /usr/share/wallpapers/login-wallpape.jpg
+
+clear #Clear the screen
+check_error "Add Wallpapers"
+
 
 # FastFetch Install.
 FASTFETCH_VERSION=2.40.3
