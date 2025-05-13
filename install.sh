@@ -2172,13 +2172,13 @@ check_error "Make .local/bin|src and git clone QMADE"
 # Add Wallpapers
 if [ ! -d ~/Wallpapers ]; then
 mkdir -p ~/Wallpapers
-cp ~/.local/src/qmade/wallpapers/* ~/Wallpapers/ && cd ~
+cp qmade/wallpapers/* ~/Wallpapers/
 else 
 	echo "Wallpapers folder already exists."
 fi
 
 sudo chmod 777 /usr/share/wallpapers
-sudo cp $(find wallpapers -type f -name "*.jpg" | shuf -n 1) /usr/share/wallpapers/login-wallpape.jpg
+sudo cp $(find qmade/wallpapers -type f -name "*.jpg" | shuf -n 1) /usr/share/wallpapers/login-wallpape.jpg
 sudo chmod 777 /usr/share/wallpapers/login-wallpape.jpg
 
 clear #Clear the screen
