@@ -2210,4 +2210,4 @@ clear #Clear the screen
 sudo reboot
 
 # Test Qtile config file.
-# python3 ~/.config/qtile/config.py
+# Run qtileconfig-test-venv or qtileconfig-test for no python venv.
