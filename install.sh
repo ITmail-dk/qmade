@@ -300,22 +300,8 @@ EnableHiDPI=true
 
 SDDMCONFIG'
 
-sudo chmod 777 /usr/share/sddm/themes/breeze/theme.conf
-
 # Set login wallpape under background=/ in /usr/share/sddm/themes/breeze/theme.conf
 #/usr/share/wallpapers/login-wallpape.jpg
-
-NEW_LOGIN_WALLPAPER="/usr/share/wallpapers/login-wallpape.jpg"
-
-# Check if the file exists
-if [ -f "/usr/share/sddm/themes/breeze/theme.conf" ]; then
-    # Use sed to replace the background line
-    sed -i "s|background=.*$|background=$NEW_LOGIN_WALLPAPER|" "/usr/share/sddm/themes/breeze/theme.conf"
-    echo "Updated background image in /usr/share/sddm/themes/breeze/theme.conf"
-else
-    echo "Error: File /usr/share/sddm/themes/breeze/theme.conf not found"
-fi
-
 
 clear #Clear the screen
 check_error "Setup SDDM Login"
@@ -2184,6 +2170,21 @@ sudo chmod 777 /usr/share/wallpapers/login-wallpape.jpg
 clear #Clear the screen
 check_error "Add Wallpapers"
 
+# SDDM New login wallpaper
+sudo chmod 777 /usr/share/sddm/themes/breeze
+sudo chmod 777 /usr/share/sddm/themes/breeze/theme.conf
+
+NEW_LOGIN_WALLPAPER="/usr/share/wallpapers/login-wallpape.jpg"
+
+# Check if the file exists
+if [ -f "/usr/share/sddm/themes/breeze/theme.conf" ]; then
+    # Use sed to replace the background line
+    sed -i "s|background=.*$|background=$NEW_LOGIN_WALLPAPER|" "/usr/share/sddm/themes/breeze/theme.conf"
+    echo "Updated background image in /usr/share/sddm/themes/breeze/theme.conf"
+else
+    echo "Error: File /usr/share/sddm/themes/breeze/theme.conf not found"
+fi
+check_error "NEW SDDM LOGIN WALLPAPER"
 
 # FastFetch Install.
 FASTFETCH_VERSION=2.40.3
