@@ -155,7 +155,7 @@ check_error "Add Wallpapers"
 
 # -------------------------------------------------------------------------------------------------
 # Core System APT install
-sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install bash-completion xserver-xorg x11-utils xinit arandr autorandr picom fwupd colord mesa-utils htop wget curl git tmux numlockx kitty neovim xdg-utils cups cups-common xsensors xbacklight brightnessctl unzip network-manager dnsutils dunst libnotify-bin notify-osd xsecurelock pm-utils rofi imagemagick nsxiv mpv flameshot mc thunar gvfs gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq font-manager fontconfig fontconfig-config fonts-recommended fonts-liberation fonts-freefont-ttf fonts-noto-core libfontconfig1 pipewire pipewire-audio pipewire-alsa pipewire-pulse pipewire-jack wireplumber libspa-0.2-bluetooth pavucontrol alsa-utils qpwgraph sddm-theme-debian-maui ffmpeg cmake policykit-1 policykit-1-gnome
+sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install bash-completion xserver-xorg x11-utils xinit arandr autorandr picom fwupd colord mesa-utils htop wget curl git tmux numlockx kitty neovim xdg-utils cups cups-common xsensors xbacklight brightnessctl unzip network-manager dnsutils dunst libnotify-bin notify-osd xsecurelock pm-utils rofi 7zip jq poppler-utils fd-find ripgrep zoxide imagemagick nsxiv mpv flameshot mc thunar gvfs gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq font-manager fontconfig fontconfig-config fonts-recommended fonts-liberation fonts-freefont-ttf fonts-noto-core libfontconfig1 pipewire pipewire-audio pipewire-alsa pipewire-pulse pipewire-jack wireplumber libspa-0.2-bluetooth pavucontrol alsa-utils qpwgraph sddm-theme-debian-maui ffmpeg cmake policykit-1 policykit-1-gnome
 sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install linux-headers-$(uname -r)
 sudo DEBIAN_FRONTEND=noninteractive apt -y install sddm --no-install-recommends
 check_error "Core System APT install"
@@ -2148,11 +2148,14 @@ check_error "Qtile Config file"
 
 
 # ---------------------------------------------------------------------------------------
+cd /tmp/
+
 # FastFetch Install.
 FASTFETCH_VERSION=2.40.3
 wget https://github.com/fastfetch-cli/fastfetch/releases/download/$FASTFETCH_VERSION/fastfetch-linux-amd64.deb && sudo dpkg -i fastfetch-linux-amd64.deb && rm fastfetch-linux-amd64.deb
 clear #Clear the screen
 check_error "FastFetch install"
+
 
 # WaterFox install - https://www.waterfox.net/download/
 WATERFOX_VERSION=6.5.7
@@ -2175,18 +2178,32 @@ sudo ln -s /opt/waterfox/waterfox /usr/bin/waterfox
 clear #Clear the screen
 check_error "WaterFox install"
 
-# Remove .first-login file
+
+# Yazi File Manager
+# https://github.com/sxyazi/yazi/releases/latest
+YAZI_VERSION=v25.4.8
+wget https://github.com/sxyazi/yazi/releases/download/$YAZI_VERSION/yazi-x86_64-unknown-linux-musl.zip
+unzip yazi-x86_64-unknown-linux-musl.zip
+sudo cp yazi-x86_64-unknown-linux-musl/yazi /usr/local/bin/
+sudo chown root:root /usr/local/bin/yazi
+sudo chmod +x /usr/local/bin/yazi
+
+clear #Clear the screen
+check_error "Yazi File Manager install"
+
+
+# Remove .first-login file --------------------------------------------------------------
 if [ -f ~/.first-login ]; then
     rm ~/.first-login
 fi
 
-# ---------------------------------------------------------------------------------------
-# Edit GRUB BOOT TIMEOUT
+# Edit GRUB BOOT TIMEOUT ----------------------------------------------------------------
 sudo sed -i 's+GRUB_TIMEOUT=5+GRUB_TIMEOUT=1+g' /etc/default/grub && sudo update-grub
 clear #Clear the screen
 check_error "GRUB BOOT TIMEOUT"
 # ---------------------------------------------------------------------------------------
 # Install Done ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##
+# ---------------------------------------------------------------------------------------
 clear #Clear the screen
 sudo reboot
 
