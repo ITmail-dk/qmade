@@ -42,7 +42,7 @@ check out the Qtile config file under Keybindings in "~/.config/qtile/config.py"
 - Shell: Bash
 - Web browser: Google Chrome & WaterFox
 - Editor: Neovim
-- File Manager: Thunar + Midnight Commander
+- File Manager: Thunar + Yazi & Midnight Commander
 - Notification Manager: Dunst
 - Application Launcher: Rofi
 - Login Manager: SDDM (Nordic Darker Theme)
