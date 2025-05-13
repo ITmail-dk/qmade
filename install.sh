@@ -152,6 +152,11 @@ cp ~/.local/src/qmade/wallpapers/* ~/Wallpapers/ && cd ~
 else 
 	echo "Wallpapers folder already exists."
 fi
+
+sudo chmod 777 /usr/share/wallpapers
+sudo cp $(find wallpapers -type f -name "*.jpg" | shuf -n 1) /usr/share/wallpapers/login-wallpape.jpg
+sudo chmod 777 /usr/share/wallpapers/login-wallpape.jpg
+
 clear #Clear the screen
 check_error "Add Wallpapers"
 
@@ -315,8 +320,20 @@ EnableHiDPI=true
 SDDMCONFIG'
 
 sudo chmod 777 /usr/share/sddm/themes/breeze/theme.conf
+
 # Set login wallpape under background=/ in /usr/share/sddm/themes/breeze/theme.conf
 #/usr/share/wallpapers/login-wallpape.jpg
+
+NEW_LOGIN_WALLPAPER="/usr/share/wallpapers/login-wallpape.jpg"
+
+# Check if the file exists
+if [ -f "/usr/share/sddm/themes/breeze/theme.conf" ]; then
+    # Use sed to replace the background line
+    sed -i "s|background=.*$|background=$NEW_LOGIN_WALLPAPER|" "/usr/share/sddm/themes/breeze/theme.conf"
+    echo "Updated background image in /usr/share/sddm/themes/breeze/theme.conf"
+else
+    echo "Error: File /usr/share/sddm/themes/breeze/theme.conf not found"
+fi
 
 
 clear #Clear the screen
@@ -708,6 +725,8 @@ notify-send -u low "Automatically new background and color theme" "Please wait w
 qtile cmd-obj -o cmd -f reload_config
 kitty +kitten themes --reload-in=all current-theme
 
+cp $(cat "$HOME/.cache/wal/wal") /usr/share/wallpapers/login-wallpape.jpg && chmod 777 /usr/share/wallpapers/login-wallpape.jpg
+
 notify-send -u low "Automatically new background and color theme" "The background image and colors has been updated."
 
 AUTONEWWALLPAPERANDCOLORSBIN'
@@ -770,6 +789,11 @@ mpd &
 xrdb ~/.Xresources &
 xset r rate 200 35 &
 xset b off &
+
+# Remove .first-login file --------------------------------------------------------------
+if [ -f ~/.first-login ]; then
+    rm ~/.first-login
+fi
 
 QTILEAUTOSTART
 
@@ -2205,6 +2229,8 @@ check_error "Yazi File Manager install"
 if [ $(whoami) != "root" ]; then
     # Sound systemctl enable --user
     systemctl enable --user --now pipewire.socket pipewire-pulse.socket wireplumber.service
+else
+    echo "User is root"
 fi
 check_error "Systemctl enable for user"
 
