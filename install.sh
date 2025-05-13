@@ -308,7 +308,7 @@ check_error "Set User .face.icon file"
 sudo mkdir -p /etc/sddm.conf.d
 sudo bash -c 'cat << "SDDMCONFIG" >> /etc/sddm.conf.d/default.conf
 [Theme]
-# Set Current theme "name" breeze, maui, Nordic-darker
+# Set Current theme "name" breeze, maui
 Current=breeze
 
 [Wayland]
