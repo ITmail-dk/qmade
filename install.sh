@@ -130,6 +130,8 @@ if ! dpkg -s git >/dev/null 2>&1; then
     sudo DEBIAN_FRONTEND=noninteractive apt install -y git
 fi
 
+clear #Clear the screen
+
 sudo apt update
 clear #Clear the screen
 check_error "APT Sources list and APT Update"
