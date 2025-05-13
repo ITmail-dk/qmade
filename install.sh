@@ -167,15 +167,6 @@ sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install remmina libr
 clear #Clear the screen
 check_error "APT install extra packages"
 
-# Dependencies so the Nordic login theme works
-sudo apt install -y --no-install-recommends plasma-workspace plasma-framework
-check_error "APT install under plasma-workspace plasma-framework"
-
-if [ -f /usr/share/xsessions/plasma.desktop ]; then
-    sudo rm /usr/share/xsessions/plasma.desktop
-fi
-check_error "Remove plasma.desktop"
-
 # Google Chrome install.
 cd /tmp/ && wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && sudo DEBIAN_FRONTEND=noninteractive apt install -y /tmp/google-chrome-stable_current_amd64.deb && rm google-chrome-stable_current_amd64.deb
 clear #Clear the screen
@@ -1075,6 +1066,19 @@ check_error "Themes Fonts local.conf"
 # sudo nano /etc/gtk-2.0/gtkrc
 
 # https://github.com/EliverLara/Nordic
+
+# SDDM Dependencies so the Nordic login theme works
+#sudo apt install -y --no-install-recommends plasma-workspace plasma-framework
+#check_error "APT install under plasma-workspace plasma-framework"
+
+if [ -f /usr/share/xsessions/plasma.desktop ]; then
+    sudo rm /usr/share/xsessions/plasma.desktop
+fi
+if [ -f /usr/share/wayland-sessions/plasmawayland.desktop ]; then
+    sudo rm /usr/share/wayland-sessions/plasmawayland.desktop
+fi
+
+check_error "Remove plasma sessions .desktop"
 
 sudo rm -rf /tmp/EliverLara-Nordic
 sudo git clone https://github.com/EliverLara/Nordic /tmp/EliverLara-Nordic
