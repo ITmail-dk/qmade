@@ -408,32 +408,32 @@ check_error "Install Qtile and PyWAL from qtile_venv"
 mkdir -p ~/.cache/wal
 cat << "PYWALCOLORSJSON" > ~/.cache/wal/colors.json
 {
-    "checksum": "2e7aed21e3ddcc643b1a0b396fa6c986",
-    "wallpaper": "~/Wallpapers/default_wallpaper.jpg",
+    "checksum": "85abc768e55abc92396e0c76280093cc",
+    "wallpaper": "/home/mara/Wallpapers/default_wallpaper.jpg",
     "alpha": "100",
 
     "special": {
-        "background": "#1f212f",
-        "foreground": "#c7c7cb",
-        "cursor": "#c7c7cb"
+        "background": "#06090c",
+        "foreground": "#c0c1c2",
+        "cursor": "#c0c1c2"
     },
     "colors": {
-        "color0": "#1f212f",
-        "color1": "#647691",
-        "color2": "#738296",
-        "color3": "#7e8a9d",
-        "color4": "#968593",
-        "color5": "#8592a3",
-        "color6": "#8898a9",
-        "color7": "#989aa2",
-        "color8": "#66687d",
-        "color9": "#869EC2",
-        "color10": "#9AAEC9",
-        "color11": "#A8B9D2",
-        "color12": "#C9B2C5",
-        "color13": "#B2C3DA",
-        "color14": "#B6CBE2",
-        "color15": "#c7c7cb"
+        "color0": "#06090c",
+        "color1": "#1f384b",
+        "color2": "#304d5c",
+        "color3": "#375d6e",
+        "color4": "#4e5b61",
+        "color5": "#526870",
+        "color6": "#66767a",
+        "color7": "#899195",
+        "color8": "#555f68",
+        "color9": "#2a4b64",
+        "color10": "#40677b",
+        "color11": "#4a7d93",
+        "color12": "#687a82",
+        "color13": "#6e8b96",
+        "color14": "#889ea3",
+        "color15": "#c0c1c2"
     }
 }
 
