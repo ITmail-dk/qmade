@@ -210,18 +210,15 @@ check_error "Check for Logitech hardware and install"
 # Test file run: "aplay /usr/share/sounds/alsa/Front_Center.wav"
 # sudo adduser $USER audio
 
-
 # PipeWire Sound Server "Audio" - https://pipewire.org/
-systemctl enable --user --now pipewire.socket pipewire-pulse.socket wireplumber.service
+
+
 
 # More Audio tools
 # sudo DEBIAN_FRONTEND=noninteractive apt install -y alsa-tools
 
-# PulseAudio
-# sudo DEBIAN_FRONTEND=noninteractive apt install -y pulseaudio
-# systemctl --user enable pulseaudio
-
 # sudo alsactl init
+
 clear #Clear the screen
 check_error "Audio Core System APT install"
 
@@ -2203,6 +2200,13 @@ sudo chmod +x /usr/local/bin/yazi
 clear #Clear the screen
 check_error "Yazi File Manager install"
 
+
+# Systemctl enable --user
+if [ $(whoami) != "root" ]; then
+    # Sound systemctl enable --user
+    systemctl enable --user --now pipewire.socket pipewire-pulse.socket wireplumber.service
+fi
+check_error "Systemctl enable for user"
 
 # Remove .first-login file --------------------------------------------------------------
 if [ -f ~/.first-login ]; then
