@@ -658,7 +658,7 @@ wal --cols16 darken -q -i ~/Wallpapers --backend haishoku
 notify-send -u low "Automatically new background and color theme" "Please wait while i find a new background image and some colors to match"
 
 qtile cmd-obj -o cmd -f reload_config
-kitty +kitten themes --reload-in=all current-theme
+kitty +kitten themes --reload-in=all Current-theme
 
 cp $(cat "$HOME/.cache/wal/wal") /usr/share/wallpapers/login-wallpape.jpg
 
