@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# $USER_HOME to $USER_HOME and $NEW_USERNAM to $NEW_USERNAM
+# $USER_HOME to $USER_HOME and $NEW_USERNAME to $NEW_USERNAME
 USER_HOME=$(grep ":1000:" /etc/passwd | cut -d: -f6) 
 NEW_USERNAME=$(grep ":1000:" /etc/passwd | cut -d: -f1)
 
@@ -14,10 +14,10 @@ fi
 
 # Sudoers ------------------------------------------------------------------------------------------------------------------------------------
 # Add User NOPASSWD to shutdown now and reboot
-echo "$NEW_USERNAM ALL=(ALL) NOPASSWD: /sbin/shutdown now, /sbin/reboot" | tee -a /etc/sudoers.d/$NEW_USERNAM && vi-c -f /etc/sudoers.d/$NEW_USERNAM
+echo "$NEW_USERNAME ALL=(ALL) NOPASSWD: /sbin/shutdown now, /sbin/reboot" | tee -a /etc/sudoers.d/$NEW_USERNAME && vi-c -f /etc/sudoers.d/$NEW_USERNAME
 
 # Set password timeout
-echo "Defaults timestamp_timeout=25" | tee -a /etc/sudoers.d/$NEW_USERNAM && vi-c -f /etc/sudoers.d/$NEW_USERNAM
+echo "Defaults timestamp_timeout=25" | tee -a /etc/sudoers.d/$NEW_USERNAME && vi-c -f /etc/sudoers.d/$NEW_USERNAME
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
 # APT Add - contrib non-free" to the sources list
@@ -99,23 +99,6 @@ if lsusb | grep -iq Logitech; then
     echo "Logitech detected, Installing required packages..."
     DEBIAN_FRONTEND=noninteractive apt install -y solaar
 fi
-
-
-# Audio Start - https://alsa.opensrc.org - https://wiki.debian.org/ALSA
-# See hardware run: "pacmd list-sinks" or "lspci | grep -i audio" or... dmesg  | grep 'snd\|firmware\|audio'
-# Run.: "pw-cli info" provides detailed information about the PipeWire nodes and devices, including ALSA devices.
-# Test file run: "aplay /usr/share/sounds/alsa/Front_Center.wav"
-# adduser $NEW_USERNAM audio
-
-# PipeWire Sound Server "Audio" - https://pipewire.org/
-
-
-
-# More Audio tools
-# DEBIAN_FRONTEND=noninteractive apt install -y alsa-tools
-
-# alsactl init
-
 
 
 # CPU Microcode install
@@ -218,6 +201,10 @@ DEBIAN_FRONTEND=noninteractive apt install -y feh python3-full python3-pip pytho
 cd $USER_HOME
 mkdir -p $USER_HOME/.local/bin
 mkdir -p $USER_HOME/.local/src
+mkdir -p $USER_HOME/.cache/pip
+chmod -R 777 $USER_HOME/.cache/pip
+mkdir -p $USER_HOME/.cache/wal
+chmod -R 777 $USER_HOME/.cache/wal
 
 # Python3 venv Qtile install
 cd /opt/
@@ -236,7 +223,7 @@ pip install dbus-next psutil wheel pyxdg
 pip install -r qtile/requirements.txt
 bin/pip install qtile/.
 # PyWAL install via pip3 for auto-generated color themes
-pip install pywal16[all]
+pip3 install pywal16[all]
 deactivate
 
 cp bin/qtile /usr/local/bin/
@@ -545,9 +532,9 @@ wal --cols16 darken -q -i ~/Wallpapers --backend haishoku
 notify-send -u low "Automatically new background and color theme" "Please wait while i find a new background image and some colors to match"
 
 qtile cmd-obj -o cmd -f reload_config
-kitty +kitten themes --reload-in=all current-theme
+kitty +kitten themes --reload-in=all Current-theme
 
-cp $(cat "~/.cache/wal/wal") /usr/share/wallpapers/login-wallpape.jpg && chmod 777 /usr/share/wallpapers/login-wallpape.jpg
+cp $(cat "$HOME/.cache/wal/wal") /usr/share/wallpapers/login-wallpape.jpg && chmod 777 /usr/share/wallpapers/login-wallpape.jpg
 
 notify-send -u low "Automatically new background and color theme" "The background image and colors has been updated."
 
@@ -2039,14 +2026,14 @@ else
 fi
 
 # chown new user files and folders
-chown -R $NEW_USERNAM:$NEW_USERNAM $USER_HOME/.config
-chown -R $NEW_USERNAM:$NEW_USERNAM $USER_HOME/.cache
-chown -R $NEW_USERNAM:$NEW_USERNAM $USER_HOME/.local
-chown -R $NEW_USERNAM:$NEW_USERNAM $USER_HOME/Wallpapers
-chown $NEW_USERNAM:$NEW_USERNAM $USER_HOME/.face.icon
-chown $NEW_USERNAM:$NEW_USERNAM $USER_HOME/.nanorc
-chown $NEW_USERNAM:$NEW_USERNAM $USER_HOME/.xsession
-chown $NEW_USERNAM:$NEW_USERNAM $USER_HOME/.first-login
+chown -R $NEW_USERNAME:$NEW_USERNAME $USER_HOME/.config
+chown -R $NEW_USERNAME:$NEW_USERNAME $USER_HOME/.cache
+chown -R $NEW_USERNAME:$NEW_USERNAME $USER_HOME/.local
+chown -R $NEW_USERNAME:$NEW_USERNAME $USER_HOME/Wallpapers
+chown $NEW_USERNAME:$NEW_USERNAME $USER_HOME/.face.icon
+chown $NEW_USERNAME:$NEW_USERNAME $USER_HOME/.nanorc
+chown $NEW_USERNAME:$NEW_USERNAME $USER_HOME/.xsession
+chown $NEW_USERNAME:$NEW_USERNAME $USER_HOME/.first-login
 
 # Edit GRUB BOOT TIMEOUT ----------------------------------------------------------------
 sed -i 's+GRUB_TIMEOUT=5+GRUB_TIMEOUT=1+g' /etc/default/grub && update-grub
