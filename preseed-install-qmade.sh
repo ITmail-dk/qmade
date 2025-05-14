@@ -1120,12 +1120,12 @@ cat << "ROFIPOWERMENU" > $USER_HOME/.config/rofi/powermenu.sh
 chosen=$(printf "󰒲  Suspend System\n  System Shutdown\n󰤄  Hibernate System\n  Lockdown Mode\n  Reboot" | rofi -dmenu -i -theme-str '@import "powermenu.rasi"')
 
 case "$chosen" in
-	"󰒲  Suspend System") systemctl suspend ;;
-    "  System Shutdown") shutdown now ;;
-    "󰤄  Hibernate System") systemctl hibernate ;;
-	"  Lockdown Mode") xsecurelock ;;
-	"  Reboot") reboot ;;
-	*) exit 1 ;;
+    "󰒲  Suspend System") sudo systemctl suspend ;;
+    "  System Shutdown") sudo shutdown now ;;
+    "󰤄  Hibernate System") sudo systemctl hibernate ;;
+    "  Lockdown Mode") xsecurelock ;;
+    "  Reboot") sudo reboot ;;
+    *) exit 1 ;;
 esac
 
 ROFIPOWERMENU
@@ -1862,7 +1862,7 @@ screens = [
                 widget.Volume(fmt="  {}"),
                 widget.Spacer(length=5),
                 widget.Clock(fmt="  {}",format="%H:%M %A %d-%m-%Y %p"),
-                #widget.QuickExit(default_text="LOGOUT", countdown_format="     {}     "),
+                widget.QuickExit(default_text='', countdown_format='{}', fontsize=16),
                 widget.Spacer(length=20),
             ], 30, # Define bar height
             background=Color0, opacity=0.90, # Bar background color can also take transparency with "hex color code" or 0.XX

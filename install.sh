@@ -1269,19 +1269,19 @@ fi
 clear #Clear the screen
 check_error "Rofi Run menu"
 
-if [ ! -f /location/powermenu.sh ]; then
+if [ ! -f ~/.config/rofi/powermenu.sh ]; then
 mkdir -p  ~/.config/rofi
 cat << "ROFIPOWERMENU" > ~/.config/rofi/powermenu.sh
 #!/usr/bin/env bash
 chosen=$(printf "󰒲  Suspend System\n  System Shutdown\n󰤄  Hibernate System\n  Lockdown Mode\n  Reboot" | rofi -dmenu -i -theme-str '@import "powermenu.rasi"')
 
 case "$chosen" in
-	"󰒲  Suspend System") sudo systemctl suspend ;;
+    "󰒲  Suspend System") sudo systemctl suspend ;;
     "  System Shutdown") sudo shutdown now ;;
     "󰤄  Hibernate System") sudo systemctl hibernate ;;
-	"  Lockdown Mode") xsecurelock ;;
-	"  Reboot") sudo reboot ;;
-	*) exit 1 ;;
+    "  Lockdown Mode") xsecurelock ;;
+    "  Reboot") sudo reboot ;;
+    *) exit 1 ;;
 esac
 
 ROFIPOWERMENU
