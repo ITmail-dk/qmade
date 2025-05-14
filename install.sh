@@ -249,8 +249,8 @@ echo 'bind '"'"'"\C-f":"open "$(fzf)"\n"'"'" >> $BASHALIASFILE
 echo 'alias lsman="compgen -c | fzf | xargs man"' >> $BASHALIASFILE
 
 echo 'alias qtileconfig="nano ~/.config/qtile/config.py"' >> $BASHALIASFILE
-echo 'alias qtileconfig-test="python3 .config/qtile/config.py"' >> $BASHALIASFILE
-echo 'alias qtileconfig-test-venv="source .local/src/qtile_venv/bin/activate && python3 .config/qtile/config.py && deactivate"' >> $BASHALIASFILE
+echo 'alias qtileconfig-test="python3 ~/.config/qtile/config.py"' >> $BASHALIASFILE
+echo 'alias qtileconfig-test-venv="source ~/.local/src/qtile_venv/bin/activate && python3 ~/.config/qtile/config.py && deactivate"' >> $BASHALIASFILE
 
 echo 'alias vi="nvim"' >> $BASHALIASFILE
 
@@ -350,38 +350,6 @@ sudo cp bin/wal /usr/local/bin/
 clear #Clear the screen
 check_error "Install Qtile and PyWAL from qtile_venv"
 
-
-# OLD QTILE INSTALL
-#cd ~/.local/src
-#python3 -m venv qtile_venv && cd ~/.local/src/qtile_venv
-
-#if [ -d qtile ]; then
-#    rm -rf qtile
-#fi
-
-#git clone https://github.com/qtile/qtile.git
-
-#source bin/activate
-#pip install dbus-next psutil wheel pyxdg
-#pip install -r qtile/requirements.txt
-#bin/pip install qtile/.
-#deactivate
-
-#sudo cp bin/qtile /usr/local/bin/
-#cp ~/.local/src/qtile_venv/bin/qtile ~/.local/bin/
-#clear #Clear the screen
-#check_error "Install Qtile from qtile_venv"
-
-# if error "no module named pip" activate the virtual environment and run: python3 -m ensurepip --upgrade
-
-# OLD INSTALL
-# PyWAL install via pipx for auto-generated color themes
-#pipx install pywal16
-
-# wal --cols16 darken -q -i ~/Wallpapers
-# wal --cols16 darken -q -i ~/Wallpapers --backend modern_colorthief
-#clear #Clear the screen
-#check_error "PyWAL Pipx install"
 
 mkdir -p ~/.cache/wal
 cat << "PYWALCOLORSJSON" > ~/.cache/wal/colors.json
