@@ -223,7 +223,7 @@ pip install dbus-next psutil wheel pyxdg
 pip install -r qtile/requirements.txt
 bin/pip install qtile/.
 # PyWAL install via pip3 for auto-generated color themes
-pip3 install pywal16[all]
+pip3 install pywal16[all] --break-system-packages
 deactivate
 
 cp bin/qtile /usr/local/bin/
@@ -526,7 +526,8 @@ gsettings set org.gnome.desktop.interface color-scheme prefer-dark
 bash -c 'cat << "AUTONEWWALLPAPERANDCOLORSBIN" >> /usr/local/bin/auto-new-wallpaper-and-colors
 #!/usr/bin/env bash
 
-wal --cols16 darken -q -i ~/Wallpapers --backend haishoku
+if command -v wal > /dev/null 2>&1; then wal --cols16 darken -q -i ~/Wallpapers --backend haishoku; else pip3 install pywal16[all] --break-system-packages && wal --cols16 darken -q -i ~/Wallpapers --backend haishoku; fi
+#wal --cols16 darken -q -i ~/Wallpapers --backend haishoku
 # Backends: colorz, colorthief, fast_colorthief, okthief, schemer2, haishoku, modern_colorthief, wal
 
 notify-send -u low "Automatically new background and color theme" "Please wait while i find a new background image and some colors to match"
