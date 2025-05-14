@@ -236,7 +236,7 @@ pip install dbus-next psutil wheel pyxdg
 pip install -r qtile/requirements.txt
 bin/pip install qtile/.
 # PyWAL install via pip3 for auto-generated color themes
-pip3 install pywal16[all]
+pip install pywal16[all]
 deactivate
 
 cp bin/qtile /usr/local/bin/
@@ -547,7 +547,7 @@ notify-send -u low "Automatically new background and color theme" "Please wait w
 qtile cmd-obj -o cmd -f reload_config
 kitty +kitten themes --reload-in=all current-theme
 
-cp $(cat "$HOME/.cache/wal/wal") /usr/share/wallpapers/login-wallpape.jpg && chmod 777 /usr/share/wallpapers/login-wallpape.jpg
+cp $(cat "~/.cache/wal/wal") /usr/share/wallpapers/login-wallpape.jpg && chmod 777 /usr/share/wallpapers/login-wallpape.jpg
 
 notify-send -u low "Automatically new background and color theme" "The background image and colors has been updated."
 
@@ -606,6 +606,17 @@ mpd &
 xrdb ~/.Xresources &
 xset r rate 200 35 &
 xset b off &
+
+# This if statement can be removed if you don't intend to make more users on this computer
+if [ -f ~/.first-login ]; then
+    xdg-user-dirs-update
+    xdg-mime default kitty.desktop text/x-shellscript
+    xdg-mime default nsxiv.desktop image/jpeg
+    xdg-mime default nsxiv.desktop image/png
+    xdg-mime default thunar.desktop inode/directory
+    rm ~/.first-login
+fi
+
 
 QTILEAUTOSTART
 
@@ -2027,6 +2038,15 @@ else
     echo "User is root"
 fi
 
+# chown new user files and folders
+chown -R $NEW_USERNAM:$NEW_USERNAM $USER_HOME/.config
+chown -R $NEW_USERNAM:$NEW_USERNAM $USER_HOME/.cache
+chown -R $NEW_USERNAM:$NEW_USERNAM $USER_HOME/.local
+chown -R $NEW_USERNAM:$NEW_USERNAM $USER_HOME/Wallpapers
+chown $NEW_USERNAM:$NEW_USERNAM $USER_HOME/.face.icon
+chown $NEW_USERNAM:$NEW_USERNAM $USER_HOME/.nanorc
+chown $NEW_USERNAM:$NEW_USERNAM $USER_HOME/.xsession
+chown $NEW_USERNAM:$NEW_USERNAM $USER_HOME/.first-login
 
 # Edit GRUB BOOT TIMEOUT ----------------------------------------------------------------
 sed -i 's+GRUB_TIMEOUT=5+GRUB_TIMEOUT=1+g' /etc/default/grub && update-grub
