@@ -535,7 +535,7 @@ notify-send -u low "Automatically new background and color theme" "Please wait w
 qtile cmd-obj -o cmd -f reload_config
 kitty +kitten themes --reload-in=all Current-theme
 
-cp $(cat "$HOME/.cache/wal/wal") /usr/share/wallpapers/login-wallpape.jpg && chmod 777 /usr/share/wallpapers/login-wallpape.jpg
+cp $(cat "$HOME/.cache/wal/wal") /usr/share/wallpapers/login-wallpape.jpg
 
 notify-send -u low "Automatically new background and color theme" "The background image and colors has been updated."
 
