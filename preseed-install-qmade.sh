@@ -1047,7 +1047,7 @@ configuration {
 }
 
 /* The Theme */
-@import "$USER_HOME/.cache/wal/colors-rofi-dark.rasi"
+@import "~/.cache/wal/colors-rofi-dark.rasi"
 
 // Theme location is "/usr/share/rofi/themes/name.rasi"
 //@theme "/usr/share/rofi/themes/Arc-Dark.rasi"
