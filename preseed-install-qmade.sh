@@ -1859,10 +1859,10 @@ screens = [
                 #widget.NetGraph(type='line', line_width=1),
                 #widget.Net(prefix='M'),
                 #widget.ThermalSensor(format='CPU: {temp:.0f}{unit}'),
-                widget.ThermalSensor(tag_sensor="CPU", update_interval=10),
+                #widget.ThermalSensor(tag_sensor="CPU", update_interval=10),
                 widget.Volume(fmt="  {}"),
                 widget.Spacer(length=5),
-                widget.Clock(fmt="  {}",format="%H:%M %A %d-%m-%Y %p"),
+                widget.Clock(fmt="  {}",format="%A %d-%m-%Y %H:%M %p"),
                 widget.QuickExit(default_text='', countdown_format='{}', fontsize=16),
                 widget.Spacer(length=20),
             ], 30, # Define bar height
