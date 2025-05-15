@@ -337,7 +337,7 @@ fi
 
 git clone https://github.com/qtile/qtile.git
 
-source bin/activate
+source /opt/qtile_venv/bin/activate
 pip install dbus-next psutil wheel pyxdg
 pip install -r qtile/requirements.txt
 bin/pip install qtile/.
