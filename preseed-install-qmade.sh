@@ -141,7 +141,7 @@ echo 'alias lsman="compgen -c | fzf | xargs man"' >> $BASHALIASFILE
 
 echo 'alias qtileconfig="nano ~/.config/qtile/config.py"' >> $BASHALIASFILE
 echo 'alias qtileconfig-test="python3 ~/.config/qtile/config.py"' >> $BASHALIASFILE
-echo 'alias qtileconfig-test-venv="source .local/src/qtile_venv/bin/activate && python3 ~/.config/qtile/config.py && deactivate"' >> $BASHALIASFILE
+echo 'alias qtileconfig-test-venv="source /opt/qtile_venv/bin/activate && python3 ~/.config/qtile/config.py && deactivate"' >> $BASHALIASFILE
 
 echo 'alias vi="nvim"' >> $BASHALIASFILE
 
@@ -1858,7 +1858,8 @@ screens = [
                 #widget.Wallpaper(directory="~/Wallpapers/", label="", random_selection="True"),
                 #widget.NetGraph(type='line', line_width=1),
                 #widget.Net(prefix='M'),
-                widget.ThermalSensor(format='CPU: {temp:.0f}{unit}'),
+                #widget.ThermalSensor(format='CPU: {temp:.0f}{unit}'),
+                widget.ThermalSensor(tag_sensor="CPU", update_interval=10),
                 widget.Volume(fmt="  {}"),
                 widget.Spacer(length=5),
                 widget.Clock(fmt="  {}",format="%H:%M %A %d-%m-%Y %p"),
