@@ -61,7 +61,7 @@ mkdir -p $USER_HOME/.local/src
 
 # -------------------------------------------------------------------------------------------------
 # Core System APT install
-DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install bash-completion xserver-xorg x11-utils xinit arandr autorandr picom fwupd colord mesa-utils htop wget curl git tmux numlockx kitty neovim xdg-utils cups cups-common xsensors xbacklight brightnessctl unzip network-manager dnsutils dunst libnotify-bin notify-osd xsecurelock pm-utils rofi 7zip jq poppler-utils fd-find ripgrep zoxide imagemagick nsxiv mpv flameshot mc thunar gvfs gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq font-manager fontconfig fontconfig-config fonts-recommended fonts-liberation fonts-freefont-ttf fonts-noto-core libfontconfig1 pipewire pipewire-audio pipewire-alsa pipewire-pulse pipewire-jack wireplumber libspa-0.2-bluetooth pavucontrol alsa-utils qpwgraph sddm-theme-breeze sddm-theme-maui ffmpeg cmake policykit-1 policykit-1-gnome
+DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install bash-completion xserver-xorg x11-utils xinit arandr autorandr picom fwupd colord mesa-utils htop wget curl git tmux numlockx kitty neovim xdg-utils cups cups-common lm-sensors fancontrol xbacklight brightnessctl unzip network-manager dnsutils dunst libnotify-bin notify-osd xsecurelock pm-utils rofi 7zip jq poppler-utils fd-find ripgrep zoxide imagemagick nsxiv mpv flameshot mc thunar gvfs gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq font-manager fontconfig fontconfig-config fonts-recommended fonts-liberation fonts-freefont-ttf fonts-noto-core libfontconfig1 pipewire pipewire-audio pipewire-alsa pipewire-pulse pipewire-jack wireplumber libspa-0.2-bluetooth pavucontrol alsa-utils qpwgraph sddm-theme-breeze sddm-theme-maui ffmpeg cmake policykit-1 policykit-1-gnome
 DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install linux-headers-$(uname -r)
 DEBIAN_FRONTEND=noninteractive apt -y install sddm --no-install-recommends
 
@@ -2005,8 +2005,6 @@ EOF
 ln -s /opt/waterfox/waterfox /usr/bin/waterfox
 
 
-
-
 # Yazi File Manager
 # https://github.com/sxyazi/yazi/releases/latest
 YAZI_VERSION=v25.4.8
@@ -2017,7 +2015,8 @@ chown root:root /usr/local/bin/yazi
 chmod +x /usr/local/bin/yazi
 
 
-
+# LM-Sensors config
+sensors-detect --auto
 
 # Systemctl enable --user
 if [ $(whoami) != "root" ]; then
@@ -2026,6 +2025,7 @@ if [ $(whoami) != "root" ]; then
 else
     echo "User is root"
 fi
+
 
 # chown new user files and folders
 chown -R $NEW_USERNAME:$NEW_USERNAME $USER_HOME/.config
