@@ -251,7 +251,7 @@ echo 'alias lsman="compgen -c | fzf | xargs man"' >> $BASHALIASFILE
 echo 'alias qtileconfig="nano ~/.config/qtile/config.py"' >> $BASHALIASFILE
 echo 'alias qtileconfig-test="python3 ~/.config/qtile/config.py"' >> $BASHALIASFILE
 echo 'alias qtileconfig-test-venv="source /opt/qtile_venv/bin/activate && python3 ~/.config/qtile/config.py && deactivate"' >> $BASHALIASFILE
-
+echo 'alias autostart-edit="nano ~/.config/qtile/autostart.sh"' >> $BASHALIASFILE
 echo 'alias vi="nvim"' >> $BASHALIASFILE
 
 clear #Clear the screen
