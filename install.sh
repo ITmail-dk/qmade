@@ -702,7 +702,8 @@ if [ ! -f ~/.config/qtile/autostart.sh ]; then
 cat << "QTILEAUTOSTART" > ~/.config/qtile/autostart.sh
 #!/usr/bin/env bash
 # Picom - https://manpages.debian.org/stable/picom/picom.1.en.html
-pgrep -x picom > /dev/null || picom --backend xrender --vsync & # Picom use... --backend glx or xrender, --vsync --no-vsync,
+pgrep -x picom > /dev/null || picom --backend xrender --vsync --no-fading-openclose --no-fading-destroyed-argb &
+# Picom use... --backend glx or xrender, --vsync --no-vsync --no-fading-openclose --no-fading-destroyed-argb etc.
 
 exec /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 & # Graphical authentication agent
 
