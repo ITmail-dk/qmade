@@ -571,7 +571,7 @@ mkdir -p $USER_HOME/.config/qtile/
 if [ ! -f $USER_HOME/.config/qtile/autostart.sh ]; then
 cat << "QTILEAUTOSTART" > $USER_HOME/.config/qtile/autostart.sh
 #!/usr/bin/env bash
-# Picom - https://manpages.ubuntu.com/manpages/plucky/man1/picom.1.html
+# Picom - https://manpages.debian.org/stable/picom/picom.1.en.html
 pgrep -x picom > /dev/null || picom --backend xrender --vsync & # Picom use... --backend glx or xrender, --vsync --no-vsync,
 
 exec /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 & # Graphical authentication agent
