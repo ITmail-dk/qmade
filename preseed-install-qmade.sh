@@ -53,13 +53,15 @@ apt update
 
 # -------------------------------------------------------------------------------------------------
 # Core System APT install
-DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install bash-completion xserver-xorg x11-utils xinit acl arandr autorandr picom fwupd colord mesa-utils htop wget curl git tmux numlockx kitty neovim xdg-utils cups cups-common lm-sensors fancontrol xbacklight brightnessctl unzip network-manager dnsutils dunst libnotify-bin notify-osd xsecurelock pm-utils rofi 7zip jq poppler-utils fd-find ripgrep zoxide imagemagick nsxiv mpv flameshot mc thunar gvfs gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq font-manager fontconfig fontconfig-config fonts-recommended fonts-liberation fonts-freefont-ttf fonts-noto-core libfontconfig1 pipewire pipewire-audio pipewire-alsa pipewire-pulse pipewire-jack wireplumber libspa-0.2-bluetooth pavucontrol alsa-utils qpwgraph sddm-theme-breeze sddm-theme-maui ffmpeg cmake
+for i in bash-completion xserver-xorg x11-utils xinit acl arandr autorandr picom fwupd colord mesa-utils htop wget curl git tmux numlockx kitty neovim xdg-utils cups cups-common lm-sensors fancontrol xbacklight brightnessctl unzip network-manager dnsutils dunst libnotify-bin notify-osd xsecurelock pm-utils rofi 7zip jq poppler-utils fd-find ripgrep zoxide imagemagick nsxiv mpv flameshot mc thunar gvfs gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq font-manager fontconfig fontconfig-config fonts-recommended fonts-liberation fonts-freefont-ttf fonts-noto-core libfontconfig1 pipewire pipewire-audio pipewire-alsa pipewire-pulse pipewire-jack wireplumber libspa-0.2-bluetooth pavucontrol alsa-utils qpwgraph sddm-theme-breeze sddm-theme-maui ffmpeg cmake policykit-1 policykit-1-gnome remmina libreoffice keynav; do
+  DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install $i
+done
+
 DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install linux-headers-$(uname -r)
 DEBIAN_FRONTEND=noninteractive apt -y install sddm --no-install-recommends
 
+
 # APT install extra packages
-DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install remmina libreoffice
-DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install policykit-1 policykit-1-gnome keynav
 
 # Google Chrome install.
 cd /tmp/ && wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && DEBIAN_FRONTEND=noninteractive apt install -y /tmp/google-chrome-stable_current_amd64.deb && rm google-chrome-stable_current_amd64.deb
@@ -218,8 +220,8 @@ bin/pip install qtile/.
 pip3 install pywal16[all] --break-system-packages
 deactivate
 
-cp bin/qtile /usr/local/bin/
-cp bin/wal /usr/local/bin/
+cp bin/qtile /usr/bin/
+cp bin/wal /usr/bin/
 
 
 mkdir -p $USER_HOME/.cache/wal
@@ -515,7 +517,7 @@ gsettings set org.gnome.desktop.interface color-scheme prefer-dark
 
 
 # auto-new-wallpaper-and-colors BIN
-bash -c 'cat << "AUTONEWWALLPAPERANDCOLORSBIN" >> /usr/local/bin/auto-new-wallpaper-and-colors
+bash -c 'cat << "AUTONEWWALLPAPERANDCOLORSBIN" >> /usr/bin/auto-new-wallpaper-and-colors
 #!/usr/bin/env bash
 
 if command -v wal > /dev/null 2>&1; then wal --cols16 darken -q -i ~/Wallpapers --backend haishoku; else pip3 install pywal16[all] --break-system-packages && wal --cols16 darken -q -i ~/Wallpapers --backend haishoku; fi
@@ -533,7 +535,7 @@ notify-send -u low "Automatically new background and color theme" "The backgroun
 
 AUTONEWWALLPAPERANDCOLORSBIN'
 
-chmod +x /usr/local/bin/auto-new-wallpaper-and-colors
+chmod +x /usr/bin/auto-new-wallpaper-and-colors
 
 
 #Midnight Commander
@@ -548,14 +550,14 @@ bash -c 'cat << "QTILEDESKTOP" >> /usr/share/xsessions/qtile.desktop
 [Desktop Entry]
 Name=Qtile
 Comment=Qtile Session
-Exec=qtile start
+Exec=/usr/bin/qtile start
 Type=Application
 Keywords=wm;tiling
 QTILEDESKTOP'
 
 # Add to user .xsession
-echo "qtile start" > $USER_HOME/.xsession
-echo "qtile start" | tee -a "/etc/skel/.xsession" > /dev/null
+echo "exec /usr/bin/qtile start" > $USER_HOME/.xsession
+echo "exec /usr/bin/qtile start" | tee -a "/etc/skel/.xsession" > /dev/null
 
 
 # Qtile Autostart.sh file
@@ -980,7 +982,7 @@ fc-cache -fv
 
 # xrandr-set-max + Xsession START
 
-if [ ! -f /usr/local/bin/xrandr-set-max ]; then
+if [ ! -f /usr/bin/xrandr-set-max ]; then
 # Define the content of the script
 xrandrsetmaxcontent=$(cat << "XRANDRSETMAX"
 #!/usr/bin/env bash
@@ -1000,20 +1002,20 @@ XRANDRSETMAX
 )
 
 # Write the script content to the target file using sudo
-echo "$xrandrsetmaxcontent" | tee /usr/local/bin/xrandr-set-max >/dev/null
+echo "$xrandrsetmaxcontent" | tee /usr/bin/xrandr-set-max >/dev/null
 
 # SDDM Before Login - /usr/share/sddm/scripts/Xsetup and After Login - /usr/share/sddm/scripts/Xsession
-sed -i '$a\. /usr/local/bin/xrandr-set-max' /usr/share/sddm/scripts/Xsetup
-#sed -i '$a\. /usr/local/bin/xrandr-set-max' /usr/share/sddm/scripts/Xsession
+sed -i '$a\. /usr/bin/xrandr-set-max' /usr/share/sddm/scripts/Xsetup
+#sed -i '$a\. /usr/bin/xrandr-set-max' /usr/share/sddm/scripts/Xsession
 
-chmod +x /usr/local/bin/xrandr-set-max
+chmod +x /usr/bin/xrandr-set-max
 
 else
 	echo "xrandr-set-max already exists."
 fi
 
 #if [ ! -f /etc/X11/Xsession.d/90_xrandr-set-max ]; then
-#    cp /usr/local/bin/xrandr-set-max /etc/X11/Xsession.d/90_xrandr-set-max
+#    cp /usr/bin/xrandr-set-max /etc/X11/Xsession.d/90_xrandr-set-max
 #    # Run at Login /etc/X11/Xsession.d/FILENAME
 #else
 #	echo "/etc/X11/Xsession.d/90_xrandr-set-max already exists."
@@ -2002,9 +2004,9 @@ ln -s /opt/waterfox/waterfox /usr/bin/waterfox
 YAZI_VERSION=v25.4.8
 wget https://github.com/sxyazi/yazi/releases/download/$YAZI_VERSION/yazi-x86_64-unknown-linux-musl.zip
 unzip yazi-x86_64-unknown-linux-musl.zip
-cp yazi-x86_64-unknown-linux-musl/yazi /usr/local/bin/
-chown root:root /usr/local/bin/yazi
-chmod +x /usr/local/bin/yazi
+cp yazi-x86_64-unknown-linux-musl/yazi /usr/bin/
+chown root:root /usr/bin/yazi
+chmod +x /usr/bin/yazi
 
 
 # LM-Sensors config

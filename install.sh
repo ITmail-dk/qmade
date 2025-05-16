@@ -138,14 +138,17 @@ check_error "APT Sources list and APT Update"
 
 # -------------------------------------------------------------------------------------------------
 # Core System APT install
-sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install bash-completion xserver-xorg x11-utils xinit acl arandr autorandr picom fwupd colord mesa-utils htop wget curl git tmux numlockx kitty neovim xdg-utils cups cups-common lm-sensors fancontrol xbacklight brightnessctl unzip network-manager dnsutils dunst libnotify-bin notify-osd xsecurelock pm-utils rofi 7zip jq poppler-utils fd-find ripgrep zoxide imagemagick nsxiv mpv flameshot mc thunar gvfs gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq font-manager fontconfig fontconfig-config fonts-recommended fonts-liberation fonts-freefont-ttf fonts-noto-core libfontconfig1 pipewire pipewire-audio pipewire-alsa pipewire-pulse pipewire-jack wireplumber libspa-0.2-bluetooth pavucontrol alsa-utils qpwgraph sddm-theme-breeze sddm-theme-maui ffmpeg cmake
+for i in bash-completion xserver-xorg x11-utils xinit acl arandr autorandr picom fwupd colord mesa-utils htop wget curl git tmux numlockx kitty neovim xdg-utils cups cups-common lm-sensors fancontrol xbacklight brightnessctl unzip network-manager dnsutils dunst libnotify-bin notify-osd xsecurelock pm-utils rofi 7zip jq poppler-utils fd-find ripgrep zoxide imagemagick nsxiv mpv flameshot mc thunar gvfs gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq font-manager fontconfig fontconfig-config fonts-recommended fonts-liberation fonts-freefont-ttf fonts-noto-core libfontconfig1 pipewire pipewire-audio pipewire-alsa pipewire-pulse pipewire-jack wireplumber libspa-0.2-bluetooth pavucontrol alsa-utils qpwgraph sddm-theme-breeze sddm-theme-maui ffmpeg cmake policykit-1 policykit-1-gnome remmina libreoffice keynav; do
+  sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install $i
+done
+
 sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install linux-headers-$(uname -r)
 sudo DEBIAN_FRONTEND=noninteractive apt -y install sddm --no-install-recommends
 check_error "Core System APT install"
 
 # APT install extra packages
-sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install remmina libreoffice
-sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install policykit-1 policykit-1-gnome keynav
+#sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install 
+
 clear #Clear the screen
 check_error "APT install extra packages"
 
@@ -342,8 +345,8 @@ bin/pip install qtile/.
 pip3 install pywal16[all]
 deactivate
 
-sudo cp bin/qtile /usr/local/bin/
-sudo cp bin/wal /usr/local/bin/
+sudo cp bin/qtile /usr/bin/
+sudo cp bin/wal /usr/bin/
 clear #Clear the screen
 check_error "Install Qtile and PyWAL from qtile_venv"
 
@@ -646,7 +649,7 @@ check_error "gsettings set color-scheme"
 
 
 # auto-new-wallpaper-and-colors BIN
-sudo bash -c 'cat << "AUTONEWWALLPAPERANDCOLORSBIN" >> /usr/local/bin/auto-new-wallpaper-and-colors
+sudo bash -c 'cat << "AUTONEWWALLPAPERANDCOLORSBIN" >> /usr/bin/auto-new-wallpaper-and-colors
 #!/usr/bin/env bash
 
 wal --cols16 darken -q -i ~/Wallpapers --backend haishoku
@@ -663,7 +666,7 @@ notify-send -u low "Automatically new background and color theme" "The backgroun
 
 AUTONEWWALLPAPERANDCOLORSBIN'
 
-sudo chmod +x /usr/local/bin/auto-new-wallpaper-and-colors
+sudo chmod +x /usr/bin/auto-new-wallpaper-and-colors
 clear #Clear the screen
 check_error "auto-new-wallpaper-and-colors bin"
 
@@ -682,14 +685,14 @@ sudo bash -c 'cat << "QTILEDESKTOP" >> /usr/share/xsessions/qtile.desktop
 [Desktop Entry]
 Name=Qtile
 Comment=Qtile Session
-Exec=qtile start
+Exec=/usr/bin/qtile start
 Type=Application
 Keywords=wm;tiling
 QTILEDESKTOP'
 
 # Add to user .xsession
-echo "qtile start" > ~/.xsession
-echo "qtile start" | sudo tee -a "/etc/skel/.xsession" > /dev/null
+echo "exec /usr/bin/qtile start" > ~/.xsession
+echo "exec /usr/bin/qtile start" | sudo tee -a "/etc/skel/.xsession" > /dev/null
 clear #Clear the screen
 check_error "Add Qtile .xsession"
 
@@ -1125,7 +1128,7 @@ check_error "GTK Settings & Fonts"
 
 # xrandr-set-max + Xsession START
 
-if [ ! -f /usr/local/bin/xrandr-set-max ]; then
+if [ ! -f /usr/bin/xrandr-set-max ]; then
 # Define the content of the script
 xrandrsetmaxcontent=$(cat << "XRANDRSETMAX"
 #!/usr/bin/env bash
@@ -1145,20 +1148,20 @@ XRANDRSETMAX
 )
 
 # Write the script content to the target file using sudo
-echo "$xrandrsetmaxcontent" | sudo tee /usr/local/bin/xrandr-set-max >/dev/null
+echo "$xrandrsetmaxcontent" | sudo tee /usr/bin/xrandr-set-max >/dev/null
 
 # SDDM Before Login - /usr/share/sddm/scripts/Xsetup and After Login - /usr/share/sddm/scripts/Xsession
-sudo sed -i '$a\. /usr/local/bin/xrandr-set-max' /usr/share/sddm/scripts/Xsetup
-#sudo sed -i '$a\. /usr/local/bin/xrandr-set-max' /usr/share/sddm/scripts/Xsession
+sudo sed -i '$a\. /usr/bin/xrandr-set-max' /usr/share/sddm/scripts/Xsetup
+#sudo sed -i '$a\. /usr/bin/xrandr-set-max' /usr/share/sddm/scripts/Xsession
 
-sudo chmod +x /usr/local/bin/xrandr-set-max
+sudo chmod +x /usr/bin/xrandr-set-max
 
 else
 	echo "xrandr-set-max already exists."
 fi
 
 #if [ ! -f /etc/X11/Xsession.d/90_xrandr-set-max ]; then
-#    sudo cp /usr/local/bin/xrandr-set-max /etc/X11/Xsession.d/90_xrandr-set-max
+#    sudo cp /usr/bin/xrandr-set-max /etc/X11/Xsession.d/90_xrandr-set-max
 #    # Run at Login /etc/X11/Xsession.d/FILENAME
 #else
 #	echo "/etc/X11/Xsession.d/90_xrandr-set-max already exists."
@@ -2170,9 +2173,9 @@ check_error "WaterFox install"
 YAZI_VERSION=v25.4.8
 wget https://github.com/sxyazi/yazi/releases/download/$YAZI_VERSION/yazi-x86_64-unknown-linux-musl.zip
 unzip yazi-x86_64-unknown-linux-musl.zip
-sudo cp yazi-x86_64-unknown-linux-musl/yazi /usr/local/bin/
-sudo chown root:root /usr/local/bin/yazi
-sudo chmod +x /usr/local/bin/yazi
+sudo cp yazi-x86_64-unknown-linux-musl/yazi /usr/bin/
+sudo chown root:root /usr/bin/yazi
+sudo chmod +x /usr/bin/yazi
 
 clear #Clear the screen
 check_error "Yazi File Manager install"
