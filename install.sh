@@ -685,7 +685,7 @@ sudo bash -c 'cat << "QTILEDESKTOP" >> /usr/share/xsessions/qtile.desktop
 [Desktop Entry]
 Name=Qtile
 Comment=Qtile Session
-Exec=/usr/bin/qtile start
+Exec=/etc/sddm/Xsession
 Type=Application
 Keywords=wm;tiling
 QTILEDESKTOP'
