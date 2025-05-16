@@ -882,19 +882,17 @@ fi
 
 if [ -f /usr/share/xsessions/plasma.desktop ]; then
     rm /usr/share/xsessions/plasma.desktop
+    update-alternatives --remove x-session-manager /usr/bin/startplasma-x11
 fi
 if [ -f /usr/share/wayland-sessions/plasmawayland.desktop ]; then
     rm /usr/share/wayland-sessions/plasmawayland.desktop
+    update-alternatives --remove x-session-manager /usr/bin/startplasma-x11
 fi
 
 
 rm -rf /tmp/EliverLara-Nordic
 git clone https://github.com/EliverLara/Nordic /tmp/EliverLara-Nordic
 cp -r /tmp/EliverLara-Nordic /usr/share/themes/
-
-#rm /usr/share/sddm/themes/debian-theme
-#mkdir -p /usr/share/sddm/themes/debian-theme/
-#cp -r /tmp/EliverLara-Nordic/kde/sddm/Nordic-darker/* /usr/share/sddm/themes/debian-theme/
 
 mkdir -p /usr/share/sddm/themes/Nordic-darker/
 cp -r /tmp/EliverLara-Nordic/kde/sddm/Nordic-darker/* /usr/share/sddm/themes/Nordic-darker/

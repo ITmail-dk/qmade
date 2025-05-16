@@ -1016,36 +1016,22 @@ fi
 clear #Clear the screen
 check_error "Themes Fonts local.conf"
 
-# -------------------------------------------------------------------------------------------------
-
-# ls -d /usr/share/themes/*
-# ls -d /usr/share/icons/*
-# ls -d /usr/share/
-# sudo nano /etc/gtk-3.0/settings.ini
-# sudo nano /etc/gtk-2.0/gtkrc
-
-# https://github.com/EliverLara/Nordic
-
-# SDDM Dependencies so the Nordic login theme works
-#sudo apt install -y --no-install-recommends plasma-workspace plasma-framework
-#check_error "APT install under plasma-workspace plasma-framework"
 
 if [ -f /usr/share/xsessions/plasma.desktop ]; then
     sudo rm /usr/share/xsessions/plasma.desktop
+    sudo update-alternatives --remove x-session-manager /usr/bin/startplasma-x11
 fi
 if [ -f /usr/share/wayland-sessions/plasmawayland.desktop ]; then
     sudo rm /usr/share/wayland-sessions/plasmawayland.desktop
+    sudo update-alternatives --remove x-session-manager /usr/bin/startplasma-x11
 fi
 
 check_error "Remove plasma sessions .desktop"
 
+
 sudo rm -rf /tmp/EliverLara-Nordic
 sudo git clone https://github.com/EliverLara/Nordic /tmp/EliverLara-Nordic
 sudo cp -r /tmp/EliverLara-Nordic /usr/share/themes/
-
-#sudo rm /usr/share/sddm/themes/debian-theme
-#sudo mkdir -p /usr/share/sddm/themes/debian-theme/
-#sudo cp -r /tmp/EliverLara-Nordic/kde/sddm/Nordic-darker/* /usr/share/sddm/themes/debian-theme/
 
 sudo mkdir -p /usr/share/sddm/themes/Nordic-darker/
 sudo cp -r /tmp/EliverLara-Nordic/kde/sddm/Nordic-darker/* /usr/share/sddm/themes/Nordic-darker/
