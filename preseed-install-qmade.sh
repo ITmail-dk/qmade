@@ -2015,6 +2015,8 @@ chmod +x /usr/bin/yazi
 sensors-detect --auto
 
 # Systemctl enable --user
+# See list run: systemctl list-unit-files --state=enabled
+
 if [ $(whoami) != "root" ]; then
     # Sound systemctl enable --user
     systemctl enable --user --now pipewire.socket pipewire-pulse.socket wireplumber.service
