@@ -801,7 +801,7 @@ fi
 
 #XRCONFIG
 
-#else 
+#else
 #	echo ".Xresources config file already exists."
 #fi
 
@@ -1252,7 +1252,7 @@ url_prefixes http https file ftp gemini irc gopher mailto news git
 
 detect_urls yes
 
-#url_excluded_characters 
+#url_excluded_characters
 
 copy_on_select yes
 
@@ -1554,7 +1554,6 @@ if lspci | grep -i nvidia; then
 
     chmod +x NVIDIA-Linux-x86_64-$NVIDIAGETVERSION.run
     ./NVIDIA-Linux-x86_64-$NVIDIAGETVERSION.run --no-questions --run-nvidia-xconfig
-    
     echo 'nvidia-settings --assign CurrentMetaMode="nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }"' >> $USER_HOME/.config/qtile/autostart.sh
 fi
 
