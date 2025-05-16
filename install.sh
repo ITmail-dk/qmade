@@ -326,6 +326,8 @@ mkdir -p ~/.local/src
 
 
 # Python3 venv Qtile install
+# Upgrade run: python3 -m venv --upgrade qtile_venv
+
 cd /opt/
 sudo python3 -m venv qtile_venv
 sudo chmod -R 777 /opt/qtile_venv

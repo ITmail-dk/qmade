@@ -201,6 +201,8 @@ mkdir -p $USER_HOME/.cache/wal
 chmod -R 777 $USER_HOME/.cache/wal
 
 # Python3 venv Qtile install
+# Upgrade run: python3 -m venv --upgrade qtile_venv
+
 cd /opt/
 python3 -m venv qtile_venv
 chmod -R 777 /opt/qtile_venv
