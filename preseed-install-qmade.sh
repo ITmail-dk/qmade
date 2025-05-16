@@ -128,7 +128,7 @@ echo 'alias df="df -h"' >> $BASHALIASFILE
 
 echo 'alias neofetch="fastfetch"' >> $BASHALIASFILE
 
-echo 'alias upup="apt update && apt upgrade -y && apt clean && apt autoremove -y"' >> $BASHALIASFILE
+echo 'alias upup="sudo apt update && sudo apt upgrade -y && sudo apt clean && sudo apt autoremove -y"' >> $BASHALIASFILE
 
 echo 'bind '"'"'"\C-f":"open "$(fzf)"\n"'"'" >> $BASHALIASFILE
 echo 'alias lsman="compgen -c | fzf | xargs man"' >> $BASHALIASFILE
