@@ -880,13 +880,13 @@ else
 fi
 
 
-if [ -f /usr/share/xsessions/plasma.desktop ]; then
-    rm /usr/share/xsessions/plasma.desktop
-    update-alternatives --remove x-session-manager /usr/bin/startplasma-x11
+if [ -d /usr/share/xsessions/ ]; then
+    find /usr/share/xsessions/ -name plasma* -exec sudo rm -f {} \;
+    sudo update-alternatives --remove x-session-manager /usr/bin/startplasma-x11
 fi
-if [ -f /usr/share/wayland-sessions/plasmawayland.desktop ]; then
-    rm /usr/share/wayland-sessions/plasmawayland.desktop
-    update-alternatives --remove x-session-manager /usr/bin/startplasma-x11
+if [ -d /usr/share/wayland-sessions/ ]; then
+    find /usr/share/wayland-sessions/ -name plasma* -exec sudo rm -f {} \;
+    sudo update-alternatives --remove x-session-manager /usr/bin/startplasma-x11
 fi
 
 

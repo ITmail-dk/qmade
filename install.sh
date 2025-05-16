@@ -1017,12 +1017,12 @@ clear #Clear the screen
 check_error "Themes Fonts local.conf"
 
 
-if [ -f /usr/share/xsessions/plasma.desktop ]; then
-    sudo rm /usr/share/xsessions/plasma.desktop
+if [ -d /usr/share/xsessions/ ]; then
+    find /usr/share/xsessions/ -name plasma* -exec sudo rm -f {} \;
     sudo update-alternatives --remove x-session-manager /usr/bin/startplasma-x11
 fi
-if [ -f /usr/share/wayland-sessions/plasmawayland.desktop ]; then
-    sudo rm /usr/share/wayland-sessions/plasmawayland.desktop
+if [ -d /usr/share/wayland-sessions/ ]; then
+    find /usr/share/wayland-sessions/ -name plasma* -exec sudo rm -f {} \;
     sudo update-alternatives --remove x-session-manager /usr/bin/startplasma-x11
 fi
 
