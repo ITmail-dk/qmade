@@ -49,15 +49,7 @@ if ! dpkg -s git >/dev/null 2>&1; then
     DEBIAN_FRONTEND=noninteractive apt install -y git
 fi
 
-
-
 apt update
-
-
-# Make .local/bin|src and git clone QMADE
-cd $USER_HOME
-mkdir -p $USER_HOME/.local/bin
-mkdir -p $USER_HOME/.local/src
 
 # -------------------------------------------------------------------------------------------------
 # Core System APT install
@@ -1955,7 +1947,7 @@ git clone https://github.com/ITmail-dk/qmade
 if [ ! -d $USER_HOME/Wallpapers ]; then
 mkdir -p $USER_HOME/Wallpapers
 cp qmade/wallpapers/* $USER_HOME/Wallpapers/
-else 
+else
 	echo "Wallpapers folder already exists."
 fi
 

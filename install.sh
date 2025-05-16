@@ -136,11 +136,6 @@ sudo apt update
 clear #Clear the screen
 check_error "APT Sources list and APT Update"
 
-# Make .local/bin|src and git clone QMADE
-cd ~
-mkdir -p ~/.local/bin
-mkdir -p ~/.local/src
-
 # -------------------------------------------------------------------------------------------------
 # Core System APT install
 sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install bash-completion xserver-xorg x11-utils xinit acl arandr autorandr picom fwupd colord mesa-utils htop wget curl git tmux numlockx keynav kitty neovim xdg-utils cups cups-common lm-sensors fancontrol xbacklight brightnessctl unzip network-manager dnsutils dunst libnotify-bin notify-osd xsecurelock pm-utils rofi 7zip jq poppler-utils fd-find ripgrep zoxide imagemagick nsxiv mpv flameshot mc thunar gvfs gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq font-manager fontconfig fontconfig-config fonts-recommended fonts-liberation fonts-freefont-ttf fonts-noto-core libfontconfig1 pipewire pipewire-audio pipewire-alsa pipewire-pulse pipewire-jack wireplumber libspa-0.2-bluetooth pavucontrol alsa-utils qpwgraph sddm-theme-breeze sddm-theme-maui ffmpeg cmake policykit-1 policykit-1-gnome
@@ -324,6 +319,7 @@ check_error "Qtile Core Dependencies apt install"
 cd ~
 mkdir -p ~/.local/bin
 mkdir -p ~/.local/src
+
 
 # Python3 venv Qtile install
 cd /opt/
@@ -2109,14 +2105,11 @@ cd /tmp/
 # QMADE Git clone install
 git clone https://github.com/ITmail-dk/qmade
 
-clear #Clear the screen
-check_error "Make .local/bin|src and git clone QMADE"
-
 # Add Wallpapers
 if [ ! -d ~/Wallpapers ]; then
 mkdir -p ~/Wallpapers
 cp qmade/wallpapers/* ~/Wallpapers/
-else 
+else
 	echo "Wallpapers folder already exists."
 fi
 
