@@ -53,13 +53,13 @@ apt update
 
 # -------------------------------------------------------------------------------------------------
 # Core System APT install
-DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install bash-completion xserver-xorg x11-utils xinit acl arandr autorandr picom fwupd colord mesa-utils htop wget curl git tmux numlockx keynav kitty neovim xdg-utils cups cups-common lm-sensors fancontrol xbacklight brightnessctl unzip network-manager dnsutils dunst libnotify-bin notify-osd xsecurelock pm-utils rofi 7zip jq poppler-utils fd-find ripgrep zoxide imagemagick nsxiv mpv flameshot mc thunar gvfs gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq font-manager fontconfig fontconfig-config fonts-recommended fonts-liberation fonts-freefont-ttf fonts-noto-core libfontconfig1 pipewire pipewire-audio pipewire-alsa pipewire-pulse pipewire-jack wireplumber libspa-0.2-bluetooth pavucontrol alsa-utils qpwgraph sddm-theme-breeze sddm-theme-maui ffmpeg cmake policykit-1 policykit-1-gnome
+DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install bash-completion xserver-xorg x11-utils xinit acl arandr autorandr picom fwupd colord mesa-utils htop wget curl git tmux numlockx keynav kitty neovim xdg-utils cups cups-common lm-sensors fancontrol xbacklight brightnessctl unzip network-manager dnsutils dunst libnotify-bin notify-osd xsecurelock pm-utils rofi 7zip jq poppler-utils fd-find ripgrep zoxide imagemagick nsxiv mpv flameshot mc thunar gvfs gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq font-manager fontconfig fontconfig-config fonts-recommended fonts-liberation fonts-freefont-ttf fonts-noto-core libfontconfig1 pipewire pipewire-audio pipewire-alsa pipewire-pulse pipewire-jack wireplumber libspa-0.2-bluetooth pavucontrol alsa-utils qpwgraph sddm-theme-breeze sddm-theme-maui ffmpeg cmake
 DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install linux-headers-$(uname -r)
 DEBIAN_FRONTEND=noninteractive apt -y install sddm --no-install-recommends
 
 # APT install extra packages
 DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install remmina libreoffice
-
+DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install policykit-1 policykit-1-gnome
 
 # Google Chrome install.
 cd /tmp/ && wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && DEBIAN_FRONTEND=noninteractive apt install -y /tmp/google-chrome-stable_current_amd64.deb && rm google-chrome-stable_current_amd64.deb
