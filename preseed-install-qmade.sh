@@ -514,10 +514,6 @@ cat << "PYWALCOLORSTEMPALETROFI" > $USER_HOME/.config/wal/templates/colors-rofi-
 PYWALCOLORSTEMPALETROFI
 
 
-# Set xdg-desktop-portal prefer dark mode.
-gsettings set org.gnome.desktop.interface color-scheme prefer-dark
-
-
 # auto-new-wallpaper-and-colors BIN
 bash -c 'cat << "AUTONEWWALLPAPERANDCOLORSBIN" >> /usr/bin/auto-new-wallpaper-and-colors
 #!/usr/bin/env bash
@@ -601,6 +597,7 @@ if [ -f ~/.first-login ]; then
     xdg-mime default nsxiv.desktop image/jpeg
     xdg-mime default nsxiv.desktop image/png
     xdg-mime default thunar.desktop inode/directory
+    gsettings set org.gnome.desktop.interface color-scheme prefer-dark
     rm ~/.first-login
 fi
 
