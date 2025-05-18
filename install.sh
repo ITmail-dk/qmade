@@ -1189,7 +1189,7 @@ configuration {
   display-drun: "Applications:";
   display-window: "Windows:";
   drun-display-format: "{name}";
-  font: "DejaVuSansMono Nerd Font Book 10";
+  font: "JetBrainsMono Nerd Font Propo 11";
   modi: "window,run,drun";
 }
 
