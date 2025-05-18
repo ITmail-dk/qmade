@@ -1197,12 +1197,12 @@ cat << "KITTYCONFIG" > $USER_HOME/.config/kitty/kitty.conf
 
 background_opacity 0.98
 
-font_family      JetBrainsMono Nerd Font
+font_family      JetBrainsMono Nerd Font Mono
 bold_font        auto
 italic_font      auto
 bold_italic_font auto
 
-font_size 13
+font_size 14
 force_ltr no
 
 adjust_line_height  0
