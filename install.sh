@@ -92,7 +92,7 @@ check_error "Copy Default APT Sources list"
 
 # Sudoers ------------------------------------------------------------------------------------------------------------------------------------
 # Add User NOPASSWD to shutdown now and reboot
-echo "$USER ALL=(ALL) NOPASSWD: /sbin/shutdown now, /sbin/reboot" | sudo tee -a /etc/sudoers.d/$USER && sudo visudo -c -f /etc/sudoers.d/$USER
+echo "$USER ALL=(ALL) NOPASSWD: /sbin/shutdown now, /sbin/reboot, /sbin/pm-suspend" | sudo tee -a /etc/sudoers.d/$USER && sudo visudo -c -f /etc/sudoers.d/$USER
 check_error "Sudo User NOPASSWD to shutdown now and reboot"
 
 # Set sudo password timeout
