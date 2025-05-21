@@ -2170,7 +2170,7 @@ check_error "GRUB BOOT TIMEOUT"
 # Check for Nvidia graphics card and install drivers ----------------------------------------------
 
 if lsmod | grep -iq nouveau; then
-    sudo rmmod -f nouveau
+    #sudo rmmod -f nouveau #remove test
     echo "blacklist nouveau" | sudo tee -a /etc/modprobe.d/nouveau-blacklist.conf
 fi
 
