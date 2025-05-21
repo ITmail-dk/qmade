@@ -1685,7 +1685,7 @@ check_error "Kitty config file"
 # Check for Nvidia graphics card and install drivers ----------------------------------------------
 
 if lspci | grep -i nvidia; then
-
+    lsmod | grep nouveau && sudo rmmod -f nouveau
     echo "Installing required packages..."
     sudo apt -y install linux-headers-$(uname -r)
     sudo apt -y install gcc make acpid dkms libglvnd-core-dev libglvnd0 libglvnd-dev
