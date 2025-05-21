@@ -2209,8 +2209,9 @@ if lspci | grep -i nvidia; then
     check_error "downloading NVIDIA driver"
 
     chmod +x NVIDIA-Linux-x86_64-$NVIDIAGETVERSION.run
-    sudo ./NVIDIA-Linux-x86_64-$NVIDIAGETVERSION.run --no-questions --run-nvidia-xconfig --allow-installation-with-running-driver -M proprietary
     echo 'nvidia-settings --assign CurrentMetaMode="nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }"' >> ~/.config/qtile/autostart.sh
+    sudo ./NVIDIA-Linux-x86_64-$NVIDIAGETVERSION.run --silent --no-questions --disable-nouveau --allow-installation-with-running-driver -M proprietary --skip-module-load
+    # --run-nvidia-xconfig
 fi
 clear #Clear the screen
 check_error "NVIDIA driver installation"
