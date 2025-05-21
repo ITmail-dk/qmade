@@ -2157,6 +2157,16 @@ check_error "Systemctl enable for user"
 # LM-Sensors config
 sudo sensors-detect --auto
 
+# Remove .first-login file --------------------------------------------------------------
+if [ -f ~/.first-login ]; then
+    rm ~/.first-login
+fi
+
+# Edit GRUB BOOT TIMEOUT ----------------------------------------------------------------
+sudo sed -i 's+GRUB_TIMEOUT=5+GRUB_TIMEOUT=1+g' /etc/default/grub && sudo update-grub
+clear #Clear the screen
+check_error "GRUB BOOT TIMEOUT"
+
 # Check for Nvidia graphics card and install drivers ----------------------------------------------
 
 if lsmod | grep -iq nouveau; then
@@ -2205,15 +2215,6 @@ fi
 clear #Clear the screen
 check_error "NVIDIA driver installation"
 
-# Remove .first-login file --------------------------------------------------------------
-if [ -f ~/.first-login ]; then
-    rm ~/.first-login
-fi
-
-# Edit GRUB BOOT TIMEOUT ----------------------------------------------------------------
-sudo sed -i 's+GRUB_TIMEOUT=5+GRUB_TIMEOUT=1+g' /etc/default/grub && sudo update-grub
-clear #Clear the screen
-check_error "GRUB BOOT TIMEOUT"
 # ---------------------------------------------------------------------------------------
 # Install Done ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##
 # ---------------------------------------------------------------------------------------
