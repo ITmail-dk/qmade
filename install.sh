@@ -1682,48 +1682,6 @@ clear #Clear the screen
 check_error "Kitty config file"
 
 # -------------------------------------------------------------------------------------------------
-# Check for Nvidia graphics card and install drivers ----------------------------------------------
-
-if lspci | grep -i nvidia; then
-    lsmod | grep nouveau && sudo rmmod -f nouveau
-    echo "Installing required packages..."
-    sudo apt -y install linux-headers-$(uname -r)
-    sudo apt -y install gcc make acpid dkms libglvnd-core-dev libglvnd0 libglvnd-dev
-    check_error "package installation"
-
-    echo "Blacklisting nouveau..."
-    BLACKLIST_CONF="/etc/modprobe.d/blacklist.conf"
-    echo "blacklist nouveau" | sudo tee -a $BLACKLIST_CONF
-    check_error "blacklisting nouveau"
-
-    echo "Removing old NVIDIA drivers..."
-    sudo apt remove -y nvidia-* && sudo apt autoremove -y $(dpkg -l nvidia-driver* | grep ii | awk '{print $2}')
-    check_error "removal of old NVIDIA drivers"
-
-    echo "Enabling i386 architecture and installing 32-bit libraries..."
-    sudo dpkg --add-architecture i386 && sudo apt update && sudo apt install -y libc6:i386
-    check_error "installation of i386 libraries"
-
-    echo "Updating GRUB configuration..."
-    GRUB_CONF="/etc/default/grub"
-    sudo sed -i '/^GRUB_CMDLINE_LINUX_DEFAULT=/ s/"$/ rd.driver.blacklist=nouveau"/' $GRUB_CONF
-    check_error "updating GRUB configuration"
-    sudo update-grub
-    check_error "GRUB update"
-
-    #NVIDIAGETVERSION=570.133.07
-    NVIDIAGETVERSION="$(curl -s "https://www.nvidia.com/en-us/drivers/unix/" | grep "Latest Production Branch Version:" | awk -F'"> ' '{print $2}' | cut -d'<' -f1 | awk 'NR==1')"
-    echo "Downloading and installing NVIDIA $NVIDIAGETVERSION driver..."
-    wget https://us.download.nvidia.com/XFree86/Linux-x86_64/$NVIDIAGETVERSION/NVIDIA-Linux-x86_64-$NVIDIAGETVERSION.run
-    check_error "downloading NVIDIA driver"
-
-    chmod +x NVIDIA-Linux-x86_64-$NVIDIAGETVERSION.run
-    sudo ./NVIDIA-Linux-x86_64-$NVIDIAGETVERSION.run --no-questions --run-nvidia-xconfig
-    echo 'nvidia-settings --assign CurrentMetaMode="nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }"' >> ~/.config/qtile/autostart.sh
-fi
-clear #Clear the screen
-check_error "NVIDIA driver installation"
-
 # Qtile Config file
 
 if [ ! -f ~/.config/qtile/config.py ]; then
@@ -2196,6 +2154,52 @@ check_error "Systemctl enable for user"
 
 # LM-Sensors config
 sudo sensors-detect --auto
+
+# Check for Nvidia graphics card and install drivers ----------------------------------------------
+
+if lspci | grep -i nvidia; then
+    lsmod | grep nouveau && sudo rmmod -f nouveau
+    lsmod | grep nvidia && sudo rmmod -f nvidia_modeset
+    lsmod | grep nvidia && sudo rmmod -f nvidia_drm
+    lsmod | grep nvidia && sudo rmmod -f nvidia
+    
+    echo "Installing required packages..."
+    sudo apt -y install linux-headers-$(uname -r)
+    sudo apt -y install gcc make acpid dkms libglvnd-core-dev libglvnd0 libglvnd-dev
+    check_error "package installation"
+
+    #echo "Blacklisting nouveau..."
+    #BLACKLIST_CONF="/etc/modprobe.d/blacklist.conf"
+    #echo "blacklist nouveau" | sudo tee -a $BLACKLIST_CONF
+    #check_error "blacklisting nouveau"
+
+    echo "Removing old NVIDIA drivers..."
+    sudo apt remove -y nvidia-* && sudo apt autoremove -y $(dpkg -l nvidia-driver* | grep ii | awk '{print $2}')
+    check_error "removal of old NVIDIA drivers"
+
+    echo "Enabling i386 architecture and installing 32-bit libraries..."
+    sudo dpkg --add-architecture i386 && sudo apt update && sudo apt install -y libc6:i386
+    check_error "installation of i386 libraries"
+
+    echo "Updating GRUB configuration..."
+    GRUB_CONF="/etc/default/grub"
+    sudo sed -i '/^GRUB_CMDLINE_LINUX_DEFAULT=/ s/"$/ rd.driver.blacklist=nouveau"/' $GRUB_CONF
+    check_error "updating GRUB configuration"
+    sudo update-grub
+    check_error "GRUB update"
+
+    #NVIDIAGETVERSION=570.133.07
+    NVIDIAGETVERSION="$(curl -s "https://www.nvidia.com/en-us/drivers/unix/" | grep "Latest Production Branch Version:" | awk -F'"> ' '{print $2}' | cut -d'<' -f1 | awk 'NR==1')"
+    echo "Downloading and installing NVIDIA $NVIDIAGETVERSION driver..."
+    wget https://us.download.nvidia.com/XFree86/Linux-x86_64/$NVIDIAGETVERSION/NVIDIA-Linux-x86_64-$NVIDIAGETVERSION.run
+    check_error "downloading NVIDIA driver"
+
+    chmod +x NVIDIA-Linux-x86_64-$NVIDIAGETVERSION.run
+    sudo ./NVIDIA-Linux-x86_64-$NVIDIAGETVERSION.run --no-questions --run-nvidia-xconfig
+    echo 'nvidia-settings --assign CurrentMetaMode="nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }"' >> ~/.config/qtile/autostart.sh
+fi
+clear #Clear the screen
+check_error "NVIDIA driver installation"
 
 # Remove .first-login file --------------------------------------------------------------
 if [ -f ~/.first-login ]; then
