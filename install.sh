@@ -2149,7 +2149,8 @@ if [ $(whoami) != "root" ]; then
     # Sound systemctl enable --user
     systemctl enable --user --now pipewire.socket pipewire-pulse.socket wireplumber.service
 else
-    echo "User is root"
+    echo "#!/usr/bin/env bash" >> ~/.first-login-user-setup
+    echo "systemctl enable --user --now pipewire.socket pipewire-pulse.socket wireplumber.service" >> ~/.first-login-user-setup
 fi
 check_error "Systemctl enable for user"
 
