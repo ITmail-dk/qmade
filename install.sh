@@ -1982,7 +1982,7 @@ screens = [
                 widget.Volume(fmt="  {}"),
                 widget.Spacer(length=5),
                 widget.Clock(fmt="  {}",format="%A %d-%m-%Y %H:%M %p"),
-                widget.QuickExit(default_text='', countdown_format='{}', fontsize=16),
+                widget.QuickExit(default_text='', countdown_format='{}', fontsize=16, countdown_start=3),
                 widget.Spacer(length=20),
             ], 30, # Define bar height
             background=Color0, opacity=0.90, # Bar background color can also take transparency with "hex color code" or 0.XX
