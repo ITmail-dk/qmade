@@ -269,6 +269,8 @@ xdg-mime default nsxiv.desktop image/jpeg
 xdg-mime default nsxiv.desktop image/png
 xdg-mime default thunar.desktop inode/directory
 
+mkdir -p ~/Screenshots
+
 check_error "xdg-user-dirs-update and xdg-mime"
 
 sudo rm /usr/share/sddm/faces/.face.icon
