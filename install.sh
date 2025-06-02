@@ -276,9 +276,9 @@ check_error "xdg-user-dirs-update and xdg-mime"
 sudo rm /usr/share/sddm/faces/.face.icon
 sudo rm /usr/share/sddm/faces/root.face.icon
 
-sudo wget -O /usr/share/sddm/faces/root.face.icon https://github.com/ITmail-dk/qmade/blob/main/root.face.icon?raw=true
-sudo wget -O /usr/share/sddm/faces/.face.icon https://github.com/ITmail-dk/qmade/blob/main/.face.icon?raw=true
-wget -O ~/.face.icon https://github.com/ITmail-dk/qmade/blob/main/.face.icon?raw=true
+sudo wget -O /usr/share/sddm/faces/root.face.icon https://github.com/ITmail-dk/qmade/blob/main/src/root.face.icon?raw=true
+sudo wget -O /usr/share/sddm/faces/.face.icon https://github.com/ITmail-dk/qmade/blob/main/src/.face.icon?raw=true
+wget -O ~/.face.icon https://github.com/ITmail-dk/qmade/blob/main/src/.face.icon?raw=true
 
 setfacl -m u:sddm:x ~/
 setfacl -m u:sddm:r ~/.face.icon
