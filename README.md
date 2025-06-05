@@ -1,4 +1,4 @@
-# Qmade - Now testing in daily use.
+# Qmade - Now my daily driver.
 Qtile Martin Andersen Desktop Environment, Qmade for short.!
 
 ## Remember to install Debian without a desktop environment.
@@ -27,32 +27,33 @@ Default Modkey is the Windows key (**MOD4**) and **MOD1** is Alt Left.
 
 **WIN + CTRL + ALT + P** = Power Menu for shutdown, reboot and lock screen.
 
-**WIN + CTRL + ALT + T** = Autogenerate a new background image and color theme,  
+**WIN + CTRL + ALT + T** = Autogenerate a new background image and color theme, 
 from the Wallpaper folder in your home directory.
 
-For a quick reference to the keybindings used in Qmade,  
+For a quick reference to the keybindings used in Qmade, 
 check out the Qtile config file under Keybindings in "~/.config/qtile/config.py" to see them all.
 
 
 ## Information:
 - Window Manager: Qtile (Github From Source)
 - Compositor: X11, Picom
-- Bar / Panel:  Qtile Bar
+- Bar / Panel: Qtile Bar
 - Terminal: Kitty
 - Shell: Bash
 - Web browser: Google Chrome & WaterFox
-- Editor: Neovim
+- Editor: Neovim + Notepadqq
 - File Manager: Thunar + Yazi & Midnight Commander
 - Notification Manager: Dunst
 - Application Launcher: Rofi
 - Login Manager: SDDM
 - Audio Server: PipeWire, WirePlumber
 - Theme: EliverLara Nordic
-- Icons: Nordzy-icon
-- Cursor: Nordzy
-- Colors: PyWal 16
-- Font: Noto & Jet Brains Mono + Roboto Mono (Nerd Fonts)
+- Icons: Nordzy
+- Cursors: Nordzy
+- Colors: PyWal 16 (From the Wallpaper)
+- Fonts: Noto & Jet Brains Mono + Roboto Mono (Nerd Fonts)
 
 
 ## Roadmap:
 - Compositor: Wayland + XWayland
+- Audio: Better setup process and configuration
