@@ -1954,7 +1954,8 @@ layouts = [
 widget_defaults = dict(
     font="JetBrainsMono Nerd Font",
     fontsize=14,
-    padding=5,
+    background=Color0,
+    padding=6,
 )
 extension_defaults = widget_defaults.copy()
 
@@ -1964,14 +1965,14 @@ screens = [
     Screen(
         top=bar.Bar(
             [
-                widget.CurrentLayoutIcon(scale=0.7, padding=10),
+                widget.CurrentLayoutIcon(scale=0.7, padding=5),
                 widget.Spacer(length=5),
                 widget.GroupBox(fontsize=18, highlight_method="text", this_current_screen_border="#f7f7f7", highlight_color=Color14, this_screen_border=Color3, urgent_border=Color7, active=Color5, inactive=Color8, rounded="False", borderwidth=0),
                 widget.Spacer(length=9),
                 widget.Prompt(),
-                widget.Spacer(),
+                widget.Spacer(background="#000000E6"),
                 widget.WindowName(width=bar.CALCULATED, max_chars=120),
-                widget.Spacer(),
+                widget.Spacer(background="#000000E6"),
                 widget.Systray(fmt="󱊖  {}", icon_size=16),
                 # NB Wayland is incompatible with Systray, consider using StatusNotifier
                 # widget.StatusNotifier(icon_size=16),
@@ -1985,7 +1986,7 @@ screens = [
                 widget.QuickExit(default_text='', countdown_format='{}', fontsize=16, countdown_start=3),
                 widget.Spacer(length=20),
             ], 30, # Define bar height
-            background=Color0, opacity=0.90, # Bar background color can also take transparency with "hex color code" or 0.XX
+            background="#000000CC", opacity=0.90, # Bar background color can also take transparency with "hex color code" or 0.XX
             margin=[5, 5, 0, 5], # Space around bar as int or list of ints [N E S W]
             border_width=[0, 0, 0, 0], # Width of border as int of list of ints [N E S W]
             border_color=[Color2, Color2, Color2, Color2] # Border colour as str or list of str [N E S W]
