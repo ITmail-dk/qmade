@@ -136,6 +136,7 @@ keys = [
     Key([mod, "mod1"], "Up", lazy.spawn("wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%+"), desc='Volume Up'),
     Key([mod, "mod1"], "Down", lazy.spawn("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"), desc='Volume Down'),
     Key([mod, "mod1"], "m", lazy.spawn("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"), desc='Volume Mute Toggle'),
+    Key([mod, "mod1", "control"], "a", lazy.spawn("audio-toggle"), desc='Audio Source Toggle'),
 
     # XF86 Audio & Brightness keys
     Key([], "XF86AudioRaiseVolume", lazy.spawn("wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%+"), desc='Volume Up'),
@@ -175,7 +176,7 @@ for vt in range(1, 8):
 # nf-fa-volume_high   nf-fa-volume_low  nf-fa-volume_xmark 
 # nf-md-pac_man 󰮯 nf-md-ghost 󰊠 nf-fa-circle  nf-cod-circle_large  nf-cod-circle_filled  nf-md-circle_small 󰧟 nf-md-circle_medium 󰧞 
 
-# Group Match example: 
+# Group Match example:
 # Group("1", label="", layout="monadtall", matches=[Match(wm_class=re.compile(r"^(Google\-chrome)$"))]),
 
 groups = [
@@ -218,7 +219,7 @@ for i in groups:
 # ScratchPad Keybindings
 keys.extend([
     Key([mod, "shift"], "Return", lazy.group['scratchpad'].dropdown_toggle('term')),
-    Key([mod, "shift"], "e", lazy.group['scratchpad'].dropdown_toggle('mc')),
+    Key([mod, "shift"], "e", lazy.group['scratchpad'].dropdown_toggle('file-explorer')),
     Key([mod, "shift"], "a", lazy.group['scratchpad'].dropdown_toggle('audio')),
     Key([mod, "shift"], "n", lazy.group['scratchpad'].dropdown_toggle('notes')),
     Key([mod, "shift"], "m", lazy.group['scratchpad'].dropdown_toggle('music')),
@@ -227,7 +228,7 @@ keys.extend([
 # ScratchPads
 groups.append(ScratchPad("scratchpad", [
     DropDown("term", "kitty --class=scratch", width=0.8, height=0.8, x=0.1, y=0.1, opacity=1),
-    DropDown("mc", "kitty --class=mc -e mc", width=0.8, height=0.8, x=0.1, y=0.1, opacity=1),
+    DropDown("file-explorer", "kitty --class=yazi -e yazi", width=0.8, height=0.8, x=0.1, y=0.1, opacity=1),
     DropDown("audio", "kitty --class=volume -e alsamixer", width=0.8, height=0.8, x=0.1, y=0.1, opacity=1),
     DropDown("notes", "notepadqq", width=0.6, height=0.6, x=0.2, y=0.2, opacity=1),
     DropDown("music", "kitty --class=music -e ncmpcpp", width=0.8, height=0.8, x=0.1, y=0.1, opacity=1),
@@ -261,7 +262,8 @@ layouts = [
 widget_defaults = dict(
     font="JetBrainsMono Nerd Font",
     fontsize=14,
-    padding=5,
+    background=Color0,
+    padding=6,
 )
 extension_defaults = widget_defaults.copy()
 
@@ -271,27 +273,30 @@ screens = [
     Screen(
         top=bar.Bar(
             [
-                widget.CurrentLayoutIcon(scale=0.7, padding=10),
+                widget.CurrentLayoutIcon(scale=0.7, padding=5),
                 widget.Spacer(length=5),
-                widget.GroupBox(fontsize=18, highlight_method="text", this_current_screen_border="#f7f7f7", highlight_color=Color2, this_screen_border=Color3, urgent_border=Color7, active=Color5, inactive="#00000000", rounded="False", borderwidth=0),                widget.Spacer(length=9),
+                widget.GroupBox(fontsize=18, highlight_method="text", this_current_screen_border="#f7f7f7", highlight_color=Color14, this_screen_border=Color3, urgent_border=Color7, active=Color5, inactive=Color8, rounded="False", borderwidth=0),
+                widget.Spacer(length=9),
                 widget.Prompt(),
-                widget.Spacer(),
+                widget.Spacer(background="#000000E6"),
                 widget.WindowName(width=bar.CALCULATED, max_chars=120),
-                widget.Spacer(),
-                widget.Systray(fmt="󱊖  {}", icon_size=16),
+                widget.Spacer(background="#000000E6"),
+                #widget.Systray(fmt="󱊖  {}", icon_size=16),
                 # NB Wayland is incompatible with Systray, consider using StatusNotifier
                 # widget.StatusNotifier(icon_size=16),
                 #widget.Wallpaper(directory="~/Wallpapers/", label="", random_selection="True"),
                 #widget.NetGraph(type='line', line_width=1),
                 #widget.Net(prefix='M'),
-                widget.ThermalSensor(format='CPU: {temp:.0f}{unit}'),
+                #widget.ThermalSensor(format='CPU: {temp:.0f}{unit}'),
                 widget.Volume(fmt="  {}"),
-                widget.Spacer(length=5),
-                widget.Clock(fmt="  {}",format="%H:%M %A %d-%m-%Y %p"),
-                #widget.QuickExit(default_text="LOGOUT", countdown_format="     {}     "),
+		widget.Spacer(length=5),
+                widget.Systray(fmt="󱊖  {}", icon_size=16),
+		widget.Spacer(length=5),
+                widget.Clock(fmt="  {}",format="%A %d-%m-%Y %H:%M %p"),
+                widget.QuickExit(default_text='', countdown_format='{}', fontsize=16, countdown_start=3),
                 widget.Spacer(length=20),
             ], 30, # Define bar height
-            background=Color0, opacity=0.90, # Bar background color can also take transparency with "hex color code" or 0.XX
+            background="#000000CC", opacity=0.90, # Bar background color can also take transparency with "hex color code" or 0.XX
             margin=[5, 5, 0, 5], # Space around bar as int or list of ints [N E S W]
             border_width=[0, 0, 0, 0], # Width of border as int of list of ints [N E S W]
             border_color=[Color2, Color2, Color2, Color2] # Border colour as str or list of str [N E S W]
@@ -361,3 +366,4 @@ def move_window_to_group(client):
 wl_input_rules = None
 
 wmname = "Qtile"
+
