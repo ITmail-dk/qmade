@@ -1135,7 +1135,6 @@ check_error "GTK Settings & Fonts"
 # xrandr-set-max + Xsession START
 
 if [ ! -f /usr/bin/xrandr-set-max ]; then
-# Define the content of the script
 xrandrsetmaxcontent=$(cat << "XRANDRSETMAX"
 #!/usr/bin/env bash
 
@@ -1157,8 +1156,8 @@ XRANDRSETMAX
 echo "$xrandrsetmaxcontent" | sudo tee /usr/bin/xrandr-set-max >/dev/null
 
 # SDDM Before Login - /usr/share/sddm/scripts/Xsetup and After Login - /usr/share/sddm/scripts/Xsession
-sudo sed -i '$a\. /usr/bin/xrandr-set-max' /usr/share/sddm/scripts/Xsetup
-#sudo sed -i '$a\. /usr/bin/xrandr-set-max' /usr/share/sddm/scripts/Xsession
+#sudo sed -i '$a\. /usr/bin/xrandr-set-max' /usr/share/sddm/scripts/Xsetup
+#sudo sed -i '$a\. /usr/bin/xrandr-set-max' /usr/share/sddm/scripts/Xsession #Old
 
 sudo chmod +x /usr/bin/xrandr-set-max
 
@@ -1172,6 +1171,7 @@ fi
 #else
 #	echo "/etc/X11/Xsession.d/90_xrandr-set-max already exists."
 #fi
+
 clear #Clear the screen
 check_error "xrandr-set-max file"
 # -------------------------------------------------------------------------------------------------
@@ -1842,7 +1842,7 @@ if lspci | grep -i nvidia; then
     check_error "downloading NVIDIA driver"
 
     chmod +x NVIDIA-Linux-x86_64-$NVIDIAGETVERSION.run
-    echo 'nvidia-settings --assign CurrentMetaMode="nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }"' >> ~/.config/qtile/autostart.sh
+#    echo 'nvidia-settings --assign CurrentMetaMode="nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }"' >> ~/.config/qtile/autostart.sh
     sudo ./NVIDIA-Linux-x86_64-$NVIDIAGETVERSION.run --silent --no-questions --disable-nouveau --allow-installation-with-running-driver -M proprietary --skip-module-load
     # --run-nvidia-xconfig
 fi
