@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+# EDIT / SET
+SPEAKERS="pactl set-card-profile alsa_card.pci-0000_0b_00.4 output:iec958-stereo+input:analog-stereo"
+HEADPHONES="pactl set-card-profile alsa_card.pci-0000_0b_00.4 output:analog-stereo+input:analog-stereo"
+
+if [ -f /tmp/SETHEADPHONES ]; then
+    eval "$HEADPHONES" && rm /tmp/SETHEADPHONES
+else
+    eval "$SPEAKERS" && touch /tmp/SETHEADPHONES
+fi

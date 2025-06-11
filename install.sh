@@ -276,9 +276,9 @@ check_error "xdg-user-dirs-update and xdg-mime"
 sudo rm /usr/share/sddm/faces/.face.icon
 sudo rm /usr/share/sddm/faces/root.face.icon
 
-sudo wget -O /usr/share/sddm/faces/root.face.icon https://github.com/ITmail-dk/qmade/blob/main/src/root.face.icon?raw=true
-sudo wget -O /usr/share/sddm/faces/.face.icon https://github.com/ITmail-dk/qmade/blob/main/src/.face.icon?raw=true
-wget -O ~/.face.icon https://github.com/ITmail-dk/qmade/blob/main/src/.face.icon?raw=true
+sudo wget -O /usr/share/sddm/faces/root.face.icon https://github.com/ITmail-dk/qmade/blob/main/src/home/root.face.icon?raw=true
+sudo wget -O /usr/share/sddm/faces/.face.icon https://github.com/ITmail-dk/qmade/blob/main/src/home/.face.icon?raw=true
+wget -O ~/.face.icon https://github.com/ITmail-dk/qmade/blob/main/src/home/.face.icon?raw=true
 
 setfacl -m u:sddm:x ~/
 setfacl -m u:sddm:r ~/.face.icon
@@ -1694,7 +1694,7 @@ git clone https://github.com/ITmail-dk/qmade
 
 # Qtile Config file
 if [ ! -f ~/.config/qtile/config.py ]; then
-cat qmade/src/qtile-config.py > ~/.config/qtile/config.py
+cat qmade/src/config/qtile-config.py > ~/.config/qtile/config.py
 else
         echo "Qtile config file already exists."
 fi
