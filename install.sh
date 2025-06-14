@@ -1859,6 +1859,71 @@ sudo reboot
 # End of function start_installation
 }
 
+# Start of update function
+function update() {
+cd /opt
+
+if [ -d qtile_venv ]; then
+    sudo rm -rf qtile_venv
+fi
+
+sudo python3 -m venv qtile_venv
+sudo chmod -R 777 qtile_venv
+
+cd qtile_venv
+
+git clone https://github.com/qtile/qtile.git
+git clone https://github.com/ITmail-dk/qmade.git
+
+source bin/activate
+pip install dbus-next psutil wheel pyxdg
+pip install -r qtile/requirements.txt
+bin/pip install qtile/.
+
+# PyWAL install via pip3 for auto-generated color themes
+pip3 install pywal16[all]
+deactivate
+
+sudo cp bin/qtile /usr/bin/
+sudo cp bin/wal /usr/bin/
+
+
+# SDDM New login wallpaper
+sudo chmod 777 /usr/share/sddm/themes/breeze
+sudo chmod 777 /usr/share/sddm/themes/breeze/theme.conf
+
+sudo mkdir -p /usr/share/wallpapers
+sudo chmod 777 /usr/share/wallpapers
+sudo cp $(find qmade/wallpapers -type f -name "*.jpg" | shuf -n 1) /usr/share/wallpapers/login-wallpape.jpg
+
+NEW_LOGIN_WALLPAPER="/usr/share/wallpapers/login-wallpape.jpg"
+
+if [ -f "/usr/share/sddm/themes/breeze/theme.conf" ]; then
+    # Use sed to replace the background line
+    sed -i "s|background=.*$|background=$NEW_LOGIN_WALLPAPER|" "/usr/share/sddm/themes/breeze/theme.conf"
+    echo "Updated background image in /usr/share/sddm/themes/breeze/theme.conf"
+else
+    echo "Error: File /usr/share/sddm/themes/breeze/theme.conf not found"
+fi
+
+
+if [ -d /usr/share/xsessions/ ]; then
+    find /usr/share/xsessions/ -name plasma* -exec sudo rm -f {} \;
+    sudo update-alternatives --remove x-session-manager /usr/bin/startplasma-x11
+fi
+if [ -d /usr/share/wayland-sessions/ ]; then
+    find /usr/share/wayland-sessions/ -name plasma* -exec sudo rm -f {} \;
+    sudo update-alternatives --remove x-session-manager /usr/bin/startplasma-x11
+fi
+
+
+echo "QMADE Update done ;-)"
+
+# End of update function
+}
+
+
+
 
 main() {
     if [ -z "$1" ]; then
@@ -1874,7 +1939,7 @@ main() {
             echo "Update QMADE."
             ;;
         *)
-            echo "Unknown function: $1. Available functions are: help, install and update-qmade"
+            echo "Unknown function: $1. Available functions are: help, install and update"
             exit 1
             ;;
     esac
