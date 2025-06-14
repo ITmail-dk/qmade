@@ -86,16 +86,22 @@ echo -e "${GREEN}      Or CTRL + C to cancel the installation"
 echo -e "${GREEN} "
 echo -e "${GREEN} ${NC}"
 
-# 
-# QMADE Git clone install
+# Run APT Update
+sudo apt update
+
+clear #Clear the screen
+check_error "APT Update Nr. 1"
+
+# QMADE Git install + clone
 cd /tmp/
 
 # Check if the GIT is installed
 if ! dpkg -s git >/dev/null 2>&1; then
-    echo "git is not installed. Installing..."
-    sudo apt install -y git
+    echo "Git is not installed, Installing git now..."
+    sudo DEBIAN_FRONTEND=noninteractive apt install -y git
 fi
 
+# QMADE git clone
 git clone https://github.com/ITmail-dk/qmade.git
 
 
@@ -139,49 +145,21 @@ echo "Defaults timestamp_timeout=25" | sudo tee -a /etc/sudoers.d/$USER && sudo 
 check_error "Set sudo password timeout"
 # Sudoers ------------------------------------------------------------------------------------------------------------------------------------
 
-# APT Add - contrib non-free" to the sources list
-if [ -f /etc/apt/sources.list ]; then
-    if ! grep -q "deb .* contrib non-free" /etc/apt/sources.list; then
-        sudo sed -i 's/^deb.* main/& contrib non-free/g' /etc/apt/sources.list
-    else
-        echo "contrib non-free is already present in /etc/apt/sources.list"
-    fi
-fi
-
-if [ -f /etc/apt/sources.list.d/debian.sources ]; then
-    if ! grep -q "Components:.* contrib non-free non-free-firmware" /etc/apt/sources.list.d/debian.sources; then
-        sudo sed -i 's/^Components:* main/& contrib non-free non-free-firmware/g' /etc/apt/sources.list.d/debian.sources
-    else
-        echo "contrib non-free non-free-firmware is already present in /etc/apt/sources.list.d/debian.sources"
-    fi
-fi
-
-check_error "Sources list"
-
-# APT Add - apt-transport-https
-if ! dpkg -s apt-transport-https >/dev/null 2>&1; then
-    sudo DEBIAN_FRONTEND=noninteractive apt install -y apt-transport-https
-    sudo sed -i 's+http:+https:+g' /etc/apt/sources.list
-fi
-
-# APT Git install
-if ! dpkg -s git >/dev/null 2>&1; then
-    sudo DEBIAN_FRONTEND=noninteractive apt install -y git
-fi
-
 clear #Clear the screen
 
 sudo apt update
+
 clear #Clear the screen
-check_error "APT Sources list and APT Update"
+check_error "APT Update Nr. 2"
 
 # -------------------------------------------------------------------------------------------------
 # Core System APT install
-sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install bash-completion xserver-xorg x11-utils xinit acl arandr autorandr picom fwupd colord mesa-utils htop wget curl git tmux numlockx kitty neovim xdg-utils cups cups-common lm-sensors fancontrol xbacklight brightnessctl unzip network-manager dnsutils dunst libnotify-bin notify-osd xsecurelock pm-utils rofi 7zip jq poppler-utils fd-find ripgrep zoxide imagemagick nsxiv mpv flameshot mc thunar gvfs gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq font-manager fontconfig fontconfig-config fonts-recommended fonts-liberation fonts-freefont-ttf fonts-noto-core libfontconfig1 pipewire pipewire-audio pipewire-alsa pipewire-pulse pipewire-jack wireplumber libspa-0.2-bluetooth pavucontrol alsa-utils qpwgraph sddm-theme-breeze sddm-theme-maui ffmpeg cmake policykit-1 policykit-1-gnome remmina libreoffice keynav
+sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install bash-completion xserver-xorg x11-utils xinit acl arandr autorandr picom fwupd colord mesa-utils htop wget curl git tmux numlockx kitty neovim xdg-utils cups cups-common lm-sensors fancontrol xbacklight brightnessctl unzip network-manager dnsutils dunst libnotify-bin notify-osd xsecurelock pm-utils rofi 7zip jq poppler-utils fd-find ripgrep zoxide imagemagick nsxiv mpv flameshot mc thunar gvfs gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq font-manager fontconfig fontconfig-config fonts-recommended fonts-liberation fonts-freefont-ttf fonts-noto-core libfontconfig1 pipewire pipewire-audio pipewire-alsa pipewire-pulse pipewire-jack wireplumber libspa-0.2-bluetooth pavucontrol alsa-utils qpwgraph sddm-theme-breeze sddm-theme-maui ffmpeg cmake remmina libreoffice
 
-#for i in bash-completion xserver-xorg x11-utils xinit acl arandr autorandr picom fwupd colord mesa-utils htop wget curl git tmux numlockx kitty neovim xdg-utils cups cups-common lm-sensors fancontrol xbacklight brightnessctl unzip network-manager dnsutils dunst libnotify-bin notify-osd xsecurelock pm-utils rofi 7zip jq poppler-utils fd-find ripgrep zoxide imagemagick nsxiv mpv flameshot mc thunar gvfs gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq font-manager fontconfig fontconfig-config fonts-recommended fonts-liberation fonts-freefont-ttf fonts-noto-core libfontconfig1 pipewire pipewire-audio pipewire-alsa pipewire-pulse pipewire-jack wireplumber libspa-0.2-bluetooth pavucontrol alsa-utils qpwgraph sddm-theme-breeze sddm-theme-maui ffmpeg cmake policykit-1 policykit-1-gnome remmina libreoffice keynav; do
-#  sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install $i
-#done
+# For packages that might be missing so it doesn't stop the big apt installation of packages or slow it down
+for i in policykit-1 policykit-1-gnome keynav; do
+  sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install $i
+done
 
 sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install linux-headers-$(uname -r)
 sudo DEBIAN_FRONTEND=noninteractive apt -y install sddm --no-install-recommends
