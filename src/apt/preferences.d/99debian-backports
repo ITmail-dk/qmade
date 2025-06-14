@@ -1,0 +1,4 @@
+# Never prefer packages from the "bookworm-backports" repository (apt-cache policy)
+Package: *
+Pin: origin bookworm-backports
+Pin-Priority: 100

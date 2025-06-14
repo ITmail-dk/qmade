@@ -43,6 +43,8 @@
 
 # Installation Start *_:*:_*:*:_*_*:*:_*::*_*::*_*:_*::*_*:*:_:*:*_*:*:_*:*_:*:#
 
+function start_installation() {
+
 # Set Echo colors
 # for c in {0..255}; do tput setaf $c; tput setaf $c | cat -v; echo =$c; done
 NC="\033[0m"
@@ -84,11 +86,48 @@ echo -e "${GREEN}      Or CTRL + C to cancel the installation"
 echo -e "${GREEN} "
 echo -e "${GREEN} ${NC}"
 
-# Check and Copy Default APT Sources List
-if [ ! -f /etc/apt/sources.list ]; then
-    sudo cp /usr/share/doc/apt/examples/sources.list /etc/apt/sources.list
+# 
+# QMADE Git clone install
+cd /tmp/
+
+# Check if the GIT is installed
+if ! dpkg -s git >/dev/null 2>&1; then
+    echo "git is not installed. Installing..."
+    sudo apt install -y git
 fi
-check_error "Copy Default APT Sources list"
+
+git clone https://github.com/ITmail-dk/qmade.git
+
+
+# Qtile Config file
+if [ ! -f ~/.config/qtile/config.py ]; then
+mkdir -p ~/.config/qtile/
+cat qmade/src/config/qtile-config.py > ~/.config/qtile/config.py
+else
+        echo "Qtile config file already exists."
+fi
+clear #Clear the screen
+check_error "Qtile Config file"
+
+
+# Add Wallpapers
+if [ ! -d ~/Wallpapers ]; then
+mkdir -p ~/Wallpapers
+cp qmade/wallpapers/* ~/Wallpapers/
+else
+	echo "Wallpapers folder already exists."
+fi
+
+
+# Check and Copy APT Sources List
+if [ ! -f /etc/apt/sources.list ]; then
+    sudo mv /etc/apt/sources.list /etc/apt/sources.list.bak
+fi
+
+sudo cp qmade/src/apt/* /etc/apt/
+
+check_error "Copy APT Sources list"
+
 
 # Sudoers ------------------------------------------------------------------------------------------------------------------------------------
 # Add User NOPASSWD to shutdown now and reboot
@@ -98,7 +137,7 @@ check_error "Sudo User NOPASSWD to shutdown now and reboot"
 # Set sudo password timeout
 echo "Defaults timestamp_timeout=25" | sudo tee -a /etc/sudoers.d/$USER && sudo visudo -c -f /etc/sudoers.d/$USER
 check_error "Set sudo password timeout"
-# -----------------------------------------------------------------------------------------------------------------------------------------
+# Sudoers ------------------------------------------------------------------------------------------------------------------------------------
 
 # APT Add - contrib non-free" to the sources list
 if [ -f /etc/apt/sources.list ]; then
@@ -1686,36 +1725,13 @@ clear #Clear the screen
 check_error "Kitty config file"
 
 
-# ---------------------------------------------------------------------------------------
-cd /tmp/
-# QMADE Git clone install
-git clone https://github.com/ITmail-dk/qmade
+# SDDM SDDM LOGIN WALLPAPER
 
-
-# Qtile Config file
-if [ ! -f ~/.config/qtile/config.py ]; then
-cat qmade/src/config/qtile-config.py > ~/.config/qtile/config.py
-else
-        echo "Qtile config file already exists."
-fi
-clear #Clear the screen
-check_error "Qtile Config file"
-
-
-# Add Wallpapers
-if [ ! -d ~/Wallpapers ]; then
-mkdir -p ~/Wallpapers
-cp qmade/wallpapers/* ~/Wallpapers/
-else
-	echo "Wallpapers folder already exists."
-fi
-
+sudo mkdir -p /usr/share/wallpapers
 sudo chmod 777 /usr/share/wallpapers
-sudo cp $(find qmade/wallpapers -type f -name "*.jpg" | shuf -n 1) /usr/share/wallpapers/login-wallpape.jpg
+sudo cp $(find /opt/qmade/wallpapers -type f -name "*.jpg" | shuf -n 1) /usr/share/wallpapers/login-wallpape.jpg
 sudo chmod 777 /usr/share/wallpapers/login-wallpape.jpg
 
-clear #Clear the screen
-check_error "Add Wallpapers"
 
 # SDDM New login wallpaper
 sudo chmod 777 /usr/share/sddm/themes/breeze
@@ -1723,7 +1739,7 @@ sudo chmod 777 /usr/share/sddm/themes/breeze/theme.conf
 
 NEW_LOGIN_WALLPAPER="/usr/share/wallpapers/login-wallpape.jpg"
 
-# Check if the file exists
+# Check if the breeze/theme.conf file exists
 if [ -f "/usr/share/sddm/themes/breeze/theme.conf" ]; then
     # Use sed to replace the background line
     sed -i "s|background=.*$|background=$NEW_LOGIN_WALLPAPER|" "/usr/share/sddm/themes/breeze/theme.conf"
@@ -1732,6 +1748,10 @@ else
     echo "Error: File /usr/share/sddm/themes/breeze/theme.conf not found"
 fi
 check_error "NEW SDDM LOGIN WALLPAPER"
+
+
+# ---------------------------------------------------------------------------------------
+cd /tmp/
 
 # FastFetch Install.
 FASTFETCH_VERSION=2.40.3
@@ -1857,3 +1877,29 @@ sudo reboot
 
 # Test Qtile config file.
 # Run qtileconfig-test-venv or qtileconfig-test for no python venv.
+
+# End of function start_installation
+}
+
+
+main() {
+    if [ -z "$1" ]; then
+        echo "Starting the installation."
+        start_installation
+    fi
+
+    case $1 in
+        the-function-name)
+            echo "Help..!"
+            ;;
+        the-function-name)
+            echo "Update QMADE."
+            ;;
+        *)
+            echo "Unknown function: $1. Available functions are: help, install and update-qmade"
+            exit 1
+            ;;
+    esac
+}
+
+main "$@"
