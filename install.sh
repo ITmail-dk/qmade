@@ -104,6 +104,10 @@ fi
 # QMADE git clone
 git clone https://github.com/ITmail-dk/qmade.git
 
+# qmade to usr/bin
+sudo cp qmade/install.sh /usr/bin/qmade
+sudo chmod +x /usr/bin/qmade
+
 
 # Qtile Config file
 if [ ! -f ~/.config/qtile/config.py ]; then
@@ -1847,6 +1851,7 @@ fi
 clear #Clear the screen
 check_error "NVIDIA driver installation"
 
+
 # ---------------------------------------------------------------------------------------
 # Install Done ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##
 # ---------------------------------------------------------------------------------------
@@ -1859,8 +1864,8 @@ sudo reboot
 # End of function start_installation
 }
 
-# Start of update function
-function update() {
+# Start of update_qmade function
+function update_qmade() {
 cd /opt
 
 if [ -d qtile_venv ]; then
@@ -1919,7 +1924,7 @@ fi
 
 echo "QMADE Update done ;-)"
 
-# End of update function
+# End of update_qmade function
 }
 
 
@@ -1935,8 +1940,9 @@ main() {
         the-function-name)
             echo "Help..!"
             ;;
-        the-function-name)
+        update)
             echo "Update QMADE."
+            update_qmade
             ;;
         *)
             echo "Unknown function: $1. Available functions are: help, install and update"
