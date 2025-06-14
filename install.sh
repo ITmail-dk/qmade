@@ -124,7 +124,7 @@ if [ ! -f /etc/apt/sources.list ]; then
     sudo mv /etc/apt/sources.list /etc/apt/sources.list.bak
 fi
 
-sudo cp qmade/src/apt/* /etc/apt/
+sudo cp -r qmade/src/apt/ /etc/apt/
 
 check_error "Copy APT Sources list"
 
