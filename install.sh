@@ -130,11 +130,11 @@ fi
 
 
 # Check and Copy APT Sources List
-if [ ! -f /etc/apt/sources.list ]; then
+if [ -f /etc/apt/sources.list ]; then
     sudo mv /etc/apt/sources.list /etc/apt/sources.list.bak
 fi
 
-sudo cp -r qmade/src/apt/ /etc/apt/
+sudo cp -r qmade/src/apt/* /etc/apt/
 
 check_error "Copy APT Sources list"
 
@@ -1927,7 +1927,9 @@ echo "QMADE Update done ;-)"
 # End of update_qmade function
 }
 
-
+function help_wiki() {
+echo "Help / WiKi for QMADE ;-)"
+}
 
 
 main() {
@@ -1937,15 +1939,16 @@ main() {
     fi
 
     case $1 in
-        the-function-name)
+        help)
             echo "Help..!"
+            help_wiki
             ;;
         update)
             echo "Update QMADE."
             update_qmade
             ;;
         *)
-            echo "Unknown function: $1. Available functions are: help, install and update"
+            echo "Unknown function: $1. Available functions are: help and update"
             exit 1
             ;;
     esac
