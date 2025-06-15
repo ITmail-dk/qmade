@@ -23,15 +23,26 @@ Default Modkey is the Windows key (**MOD4**) and **MOD1** is Alt Left.
 
 **WIN + B** = Opens a browser.
 
-**WIN + SHIFT + A** = Audio Control Panel in a ScratchPads.
+**WIN + E** = Thunar File Explorer.
+
+**WIN + SHIFT + E** = Yazi File Explorer in a ScratchPads.
 
 **WIN + CTRL + ALT + P** = Power Menu for shutdown, reboot and lock screen.
+
+**WIN + SHIFT + A** = Pavucontrol, Audio Control Panel.
+
+**WIN + ALT + A** = Toggle between two sources like speaker and headphones. (Setup in file ~/.audio-toggle)
 
 **WIN + CTRL + ALT + T** = Autogenerate a new background image and color theme, 
 from the Wallpaper folder in your home directory.
 
+
 For a quick reference to the keybindings used in Qmade, 
 check out the Qtile config file under Keybindings in "~/.config/qtile/config.py" to see them all.
+
+
+## Custom commands after installation
+- "qmade update" Updates Qtile + QMADE and the Python virtual environment,  and some fire properties for sddm.
 
 
 ## Information:
@@ -56,4 +67,4 @@ check out the Qtile config file under Keybindings in "~/.config/qtile/config.py"
 
 ## Roadmap:
 - Compositor: Wayland + XWayland
-- Audio: Better setup process and configuration
+- Audio: Needs work and better setup process and configuration

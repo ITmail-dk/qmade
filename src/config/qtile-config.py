@@ -139,6 +139,7 @@ keys = [
     Key([mod, "mod1", "control"], "a", lazy.spawn("audio-toggle"), desc='Audio Source Toggle'),
 
     # XF86 Audio & Brightness keys
+    Key([mod, "shift"], "a", lazy.spawn("pavucontrol"), desc='Audio Control Panel'),
     Key([], "XF86AudioRaiseVolume", lazy.spawn("wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%+"), desc='Volume Up'),
     Key([], "XF86AudioLowerVolume", lazy.spawn("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"), desc='Volume Down'),
     Key([], "XF86AudioMute", lazy.spawn("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"), desc='Volume Mute Toggle'),
@@ -189,7 +190,7 @@ groups = [
     Group("7", label="", layout="monadtall"),
     Group("8", label="", layout="monadtall"),
     Group("9", label="", layout="monadtall"),
-    Group("0", label="", layout="monadtall"),
+    Group("0", label="", layout="max),
 ]
 
 for i in groups:
@@ -220,7 +221,6 @@ for i in groups:
 keys.extend([
     Key([mod, "shift"], "Return", lazy.group['scratchpad'].dropdown_toggle('term')),
     Key([mod, "shift"], "e", lazy.group['scratchpad'].dropdown_toggle('file-explorer')),
-    Key([mod, "shift"], "a", lazy.group['scratchpad'].dropdown_toggle('audio')),
     Key([mod, "shift"], "n", lazy.group['scratchpad'].dropdown_toggle('notes')),
     Key([mod, "shift"], "m", lazy.group['scratchpad'].dropdown_toggle('music')),
 ])
