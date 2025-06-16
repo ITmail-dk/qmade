@@ -679,8 +679,8 @@ check_error "gsettings set color-scheme"
 sudo bash -c 'cat << "AUTONEWWALLPAPERANDCOLORSBIN" >> /usr/bin/auto-new-wallpaper-and-colors
 #!/usr/bin/env bash
 
-wal --cols16 darken -q -i ~/Wallpapers --backend haishoku
-# Backends: colorz, colorthief, fast_colorthief, okthief, schemer2, haishoku, modern_colorthief, wal
+wal --cols16 darken -q -i ~/Wallpapers --backend colorz
+# Backends: colorz, haishoku, wal, colorthief, fast_colorthief, okthief, schemer2, modern_colorthief
 
 notify-send -u low "Automatically new background and color theme" "Please wait while i find a new background image and some colors to match"
 
