@@ -219,7 +219,8 @@ for i in groups:
 
 # ScratchPad Keybindings
 keys.extend([
-    Key([mod, "shift"], "Return", lazy.group['scratchpad'].dropdown_toggle('term')),
+    Key([mod, "shift"], "Return", lazy.group['scratchpad'].dropdown_toggle('term1')),
+    Key([mod, "mod1", "control"], "Return", lazy.group['scratchpad'].dropdown_toggle('term2')),
     Key([mod, "shift"], "e", lazy.group['scratchpad'].dropdown_toggle('file-explorer')),
     Key([mod, "shift"], "n", lazy.group['scratchpad'].dropdown_toggle('notes')),
     Key([mod, "shift"], "m", lazy.group['scratchpad'].dropdown_toggle('music')),
@@ -227,7 +228,8 @@ keys.extend([
 
 # ScratchPads
 groups.append(ScratchPad("scratchpad", [
-    DropDown("term", "kitty --class=scratch", width=0.8, height=0.8, x=0.1, y=0.1, opacity=1),
+    DropDown("term1", "kitty --class=scratch", width=0.8, height=0.8, x=0.1, y=0.1, opacity=1),
+    DropDown("term2", "kitty --class=scratch", width=0.8, height=0.8, x=0.1, y=0.1, opacity=1),
     DropDown("file-explorer", "kitty --class=yazi -e yazi", width=0.8, height=0.8, x=0.1, y=0.1, opacity=1),
     DropDown("audio", "kitty --class=volume -e alsamixer", width=0.8, height=0.8, x=0.1, y=0.1, opacity=1),
     DropDown("notes", "notepadqq", width=0.6, height=0.6, x=0.2, y=0.2, opacity=1),

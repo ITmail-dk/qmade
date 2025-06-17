@@ -161,7 +161,7 @@ check_error "APT Update Nr. 2"
 sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install bash-completion xserver-xorg x11-utils xinit acl arandr autorandr picom fwupd colord mesa-utils htop wget curl git tmux numlockx kitty neovim xdg-utils cups cups-common lm-sensors fancontrol xbacklight brightnessctl unzip network-manager dnsutils dunst libnotify-bin notify-osd xsecurelock pm-utils rofi 7zip jq poppler-utils fd-find ripgrep zoxide imagemagick nsxiv mpv flameshot mc thunar gvfs gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq font-manager fontconfig fontconfig-config fonts-recommended fonts-liberation fonts-freefont-ttf fonts-noto-core libfontconfig1 pipewire pipewire-audio pipewire-alsa pipewire-pulse pipewire-jack wireplumber libspa-0.2-bluetooth pavucontrol alsa-utils qpwgraph sddm-theme-breeze sddm-theme-maui ffmpeg cmake remmina libreoffice
 
 # For packages that might be missing so it doesn't stop the big apt installation of packages or slow it down
-for i in policykit-1 policykit-1-gnome keynav; do
+for i in policykit-1 policykit-1-gnome keynav yt-dlp; do
   sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install $i
 done
 
@@ -275,6 +275,8 @@ echo 'alias qtileconfig-test="python3 ~/.config/qtile/config.py"' >> $BASHALIASF
 echo 'alias qtileconfig-test-venv="source /opt/qtile_venv/bin/activate && python3 ~/.config/qtile/config.py && deactivate"' >> $BASHALIASFILE
 echo 'alias autostart-edit="nano ~/.config/qtile/autostart.sh"' >> $BASHALIASFILE
 echo 'alias vi="nvim"' >> $BASHALIASFILE
+echo 'alias vim="nvim"' >> $BASHALIASFILE
+echo 'alias ytdl="yt-dlp -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best'"' >> $BASHALIASFILE
 
 clear #Clear the screen
 check_error "Alias echo"
