@@ -189,8 +189,8 @@ groups = [
     Group("6", label="", layout="monadtall"),
     Group("7", label="", layout="monadtall"),
     Group("8", label="", layout="monadtall"),
-    Group("9", label="", layout="monadtall"),
-    Group("0", label="", layout="max),
+    Group("9", label="", layout="max"),
+    Group("0", label="", layout="max"),
 ]
 
 for i in groups:
