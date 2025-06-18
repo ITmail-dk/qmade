@@ -63,7 +63,7 @@ check out the Qtile config file under Keybindings in "~/.config/qtile/config.py"
 - Cursors: Nordzy
 - Colors: PyWal 16 (From the Wallpaper)
 - Fonts: Noto & Jet Brains Mono + Roboto Mono (Nerd Fonts)
-
+- Screenshot tool: Flameshot
 
 ## Roadmap:
 - Compositor: Wayland + XWayland
