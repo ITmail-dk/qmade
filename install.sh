@@ -282,8 +282,10 @@ echo 'alias vim="nvim"' >> $BASHALIASFILE
 echo 'alias ytdl="yt-dlp -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best'"' >> $BASHALIASFILE
 
 clear #Clear the screen
-check_error "Alias echo"
+check_error "Bash Alias Echo"
 
+PROFILESFILE=~/.profile
+echo "export color_prompt=yes" >> $PROFILESFILE
 
 # Set User folders via xdg-user-dirs-update & xdg-mime default.
 # ls /usr/share/applications/ Find The Default run.: "xdg-mime query default inode/directory"
