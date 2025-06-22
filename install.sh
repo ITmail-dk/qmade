@@ -1862,8 +1862,6 @@ check_error "NVIDIA driver installation"
 # ---------------------------------------------------------------------------------------
 # Install Done ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##
 # ---------------------------------------------------------------------------------------
-clear #Clear the screen
-sudo reboot
 
 # Test Qtile config file.
 # Run qtileconfig-test-venv or qtileconfig-test for no python venv.
@@ -1970,7 +1968,7 @@ fi
 clear #Clear the screen
 check_error "NVIDIA driver installation"
 
-# End of unvidia_install_upgrad function
+# End of nvidia_install_upgrad function
 }
 
 
@@ -1983,6 +1981,8 @@ main() {
     if [ -z "$1" ]; then
         echo "Starting the installation."
         start_installation
+        clear
+        sudo reboot
     fi
 
     case $1 in
@@ -2013,4 +2013,4 @@ main() {
     esac
 }
 
-main "$@"
+main "$@
