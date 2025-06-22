@@ -90,7 +90,7 @@ echo -e "${GREEN} "
 echo -e "${GREEN} ${NC}"
 
 # Run APT Update
-sudo apt update
+sudo apt update || exit 1
 
 clear #Clear the screen
 check_error "APT Update Nr. 1"
@@ -1898,7 +1898,8 @@ deactivate
 
 sudo cp bin/qtile /usr/bin/
 sudo cp bin/wal /usr/bin/
-
+sudo cp qmade/install.sh /usr/bin/qmade
+sudo chmod +x /usr/bin/qmade
 
 # SDDM New login wallpaper
 sudo chmod 777 /usr/share/sddm/themes/breeze
