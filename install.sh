@@ -883,7 +883,9 @@ MPDCONFIG
   fi
   check_error "Nano config"
 
-  # Neovim config Start
+  # Neovim setup config Start
+  #git clone https://github.com/LazyVim/starter ~/.config/nvim
+  #rm -rf ~/.config/nvim/.git
 
   if [ ! -f ~/.config/nvim/init.vim ]; then
     mkdir -p ~/.config/nvim
@@ -1693,7 +1695,7 @@ KITTYCONFIG
 
   sudo mkdir -p /usr/share/wallpapers
   sudo chmod 777 /usr/share/wallpapers
-  sudo cp $(find /opt/qmade/wallpapers -type f -name "*.jpg" | shuf -n 1) /usr/share/wallpapers/login-wallpape.jpg
+  sudo cp $(find /tmp/qmade/wallpapers -type f -name "*.jpg" | shuf -n 1) /usr/share/wallpapers/login-wallpape.jpg
   sudo chmod 777 /usr/share/wallpapers/login-wallpape.jpg
 
   # SDDM New login wallpaper
@@ -1898,6 +1900,14 @@ function update_qmade() {
 }
 
 function nvidia_install_upgrade() {
+  check_error() {
+    if [ $? -ne 0 ]; then
+      echo -e "${RED} An error occurred during installation and has been stopped. ${NC}"
+      echo -e "${RED} Or you have pressed CTRL + C to cancel. ${NC}"
+      echo -e "${RED} Error occurred during $1 ${NC}"
+      exit 1
+    fi
+  }
   echo "Nvidia install / Update."
   if lspci | grep -i nvidia; then
     echo "Installing required packages..."
@@ -1933,7 +1943,7 @@ function nvidia_install_upgrade() {
   fi
   clear #Clear the screen
   check_error "NVIDIA driver installation"
-
+  echo "Nvidia Done"
   # End of nvidia_install_upgrad function
 }
 
