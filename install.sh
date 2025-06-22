@@ -1950,27 +1950,29 @@ main() {
 
     case $1 in
         help)
-            echo "Help..!"
-            help_wiki
-            ;;
+		echo "Help..!"
+		help_wiki
+		;;
         update)
-            echo "Update QMADE."
-            update_qmade
-            ;;
+		echo "Update QMADE."
+		update_qmade
+		;;
 	system-update)
 		echo "APT Update / Upgrade + QTILE / QMADE Upgrade."
 		sudo apt update && sudo apt upgrade -y && sudo apt clean && sudo apt autoremove -y
 		update_qmade
+		nvidia_install_upgrade
 		;;
 	system-dist-upgrade)
+		echo "Full System Dist Update / Upgrade + QTILE & QMADE."
 		sudo apt update && sudo apt full-upgrade -y && sudo apt dist-upgrade
 		update_qmade
 		nvidia_install_upgrade
 		;;
         *)
-            echo "Unknown function: $1. Available functions are: help and update"
-            exit 1
-            ;;
+		echo "Unknown function: $1. Available functions are: help, update, system-update and system-dist-upgrade"
+		exit 1
+		;;
     esac
 }
 
