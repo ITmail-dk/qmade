@@ -1863,6 +1863,8 @@ clear #Clear the screen
 check_error "NVIDIA driver installation"
 }
 
+nvidia_install_upgrade
+
 # ---------------------------------------------------------------------------------------
 # Install Done ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##
 # ---------------------------------------------------------------------------------------
@@ -1945,7 +1947,6 @@ main() {
     if [ -z "$1" ]; then
         echo "Starting the installation."
         start_installation
-	nvidia_install_upgrade
     fi
 
     case $1 in
@@ -1959,14 +1960,14 @@ main() {
 		;;
 	system-update)
 		echo "APT Update / Upgrade + QTILE / QMADE Upgrade."
-		sudo apt update && sudo apt upgrade -y && sudo apt clean && sudo apt autoremove -y
-		update_qmade
+		sudo apt update && sudo apt upgrade -y && sudo apt clean && sudo apt autoremove -y && \
+		update_qmade && \
 		nvidia_install_upgrade
 		;;
 	system-dist-upgrade)
 		echo "Full System Dist Update / Upgrade + QTILE & QMADE."
-		sudo apt update && sudo apt full-upgrade -y && sudo apt dist-upgrade
-		update_qmade
+		sudo apt update && sudo apt full-upgrade -y && sudo apt dist-upgrade && \
+		update_qmade && \
 		nvidia_install_upgrade
 		;;
         *)
