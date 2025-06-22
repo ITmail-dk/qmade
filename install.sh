@@ -48,277 +48,268 @@
 
 function start_installation() {
 
-# Set Echo colors
-# for c in {0..255}; do tput setaf $c; tput setaf $c | cat -v; echo =$c; done
-NC="\033[0m"
-RED="\033[0;31m"
-RED2="\033[38;5;196m"
-GREEN="\033[0;32m"
-YELLOW="\033[0;33m"
-BLUE="\033[0;94m"
+  # Set Echo colors
+  # for c in {0..255}; do tput setaf $c; tput setaf $c | cat -v; echo =$c; done
+  NC="\033[0m"
+  RED="\033[0;31m"
+  RED2="\033[38;5;196m"
+  GREEN="\033[0;32m"
+  YELLOW="\033[0;33m"
+  BLUE="\033[0;94m"
 
+  # Function to check and exit on error # check_error "TXT"
+  check_error() {
+    if [ $? -ne 0 ]; then
+      echo -e "${RED} An error occurred during installation and has been stopped. ${NC}"
+      echo -e "${RED} Or you have pressed CTRL + C to cancel. ${NC}"
+      echo -e "${RED} Error occurred during $1 ${NC}"
+      exit 1
+    fi
+  }
 
-# Function to check and exit on error # check_error "TXT"
-check_error() {
-  if [ $? -ne 0 ]; then
-    echo -e "${RED} An error occurred during installation and has been stopped. ${NC}"
-    echo -e "${RED} Or you have pressed CTRL + C to cancel. ${NC}"
-    echo -e "${RED} Error occurred during $1 ${NC}"
-    exit 1
-  fi
-}
-
-clear #Clear the screen
-# Check if it's a Debian system installation and get the version codename.
-if [ -f /etc/debian_version ]; then
+  clear #Clear the screen
+  # Check if it's a Debian system installation and get the version codename.
+  if [ -f /etc/debian_version ]; then
     . /etc/os-release #Get the VERSION_CODENAME
     VERSION_CODENAME_SHOULD_NOT_BE=trixie
-else
+  else
     echo -e "${RED} This installation should only be run on a Debian Linux System. ${NC}"
     echo -e "${RED} See more at https://github.com/ITmail-dk/qmade/ ${NC}"
     exit 1
-fi
+  fi
 
+  echo -e "${GREEN} ${NC}"
+  echo -e "${GREEN} "
+  echo -e "${GREEN}      Starting the QMADE installation"
+  echo -e "${GREEN}      See more info at https://github.com/ITmail-dk/qmade/"
+  echo -e "${GREEN}      Enter your user password, to continue if necessary"
+  echo -e "${GREEN}      Or CTRL + C to cancel the installation"
+  echo -e "${GREEN} "
+  echo -e "${GREEN} ${NC}"
 
-echo -e "${GREEN} ${NC}"
-echo -e "${GREEN} "
-echo -e "${GREEN}      Starting the QMADE installation"
-echo -e "${GREEN}      See more info at https://github.com/ITmail-dk/qmade/"
-echo -e "${GREEN}      Enter your user password, to continue if necessary"
-echo -e "${GREEN}      Or CTRL + C to cancel the installation"
-echo -e "${GREEN} "
-echo -e "${GREEN} ${NC}"
+  # Run APT Update
+  sudo apt update || exit 1
 
-# Run APT Update
-sudo apt update || exit 1
+  clear #Clear the screen
+  check_error "APT Update Nr. 1"
 
-clear #Clear the screen
-check_error "APT Update Nr. 1"
+  # QMADE Git install + clone
+  cd /tmp/
 
-# QMADE Git install + clone
-cd /tmp/
-
-# Check if the GIT is installed
-if ! dpkg -s git >/dev/null 2>&1; then
+  # Check if the GIT is installed
+  if ! dpkg -s git >/dev/null 2>&1; then
     echo "Git is not installed, Installing git now..."
     sudo DEBIAN_FRONTEND=noninteractive apt install -y git
-fi
+  fi
 
-# QMADE git clone
-git clone https://github.com/ITmail-dk/qmade.git
+  # QMADE git clone
+  git clone https://github.com/ITmail-dk/qmade.git
 
-# qmade to usr/bin
-sudo cp qmade/install.sh /usr/bin/qmade
-sudo chmod +x /usr/bin/qmade
+  # qmade to usr/bin
+  sudo cp qmade/install.sh /usr/bin/qmade
+  sudo chmod +x /usr/bin/qmade
 
+  # Qtile Config file
+  if [ ! -f ~/.config/qtile/config.py ]; then
+    mkdir -p ~/.config/qtile/
+    cat qmade/src/config/qtile-config.py >~/.config/qtile/config.py
+  else
+    echo "Qtile config file already exists."
+  fi
+  clear #Clear the screen
+  check_error "Qtile Config file"
 
-# Qtile Config file
-if [ ! -f ~/.config/qtile/config.py ]; then
-mkdir -p ~/.config/qtile/
-cat qmade/src/config/qtile-config.py > ~/.config/qtile/config.py
-else
-        echo "Qtile config file already exists."
-fi
-clear #Clear the screen
-check_error "Qtile Config file"
+  # Add Wallpapers
+  if [ ! -d ~/Wallpapers ]; then
+    mkdir -p ~/Wallpapers
+    cp qmade/wallpapers/* ~/Wallpapers/
+  else
+    echo "Wallpapers folder already exists."
+  fi
 
-
-# Add Wallpapers
-if [ ! -d ~/Wallpapers ]; then
-mkdir -p ~/Wallpapers
-cp qmade/wallpapers/* ~/Wallpapers/
-else
-	echo "Wallpapers folder already exists."
-fi
-
-
-# Check and Copy APT Sources List
-if [ -f /etc/apt/sources.list ]; then
+  # Check and Copy APT Sources List
+  if [ -f /etc/apt/sources.list ]; then
     sudo mv /etc/apt/sources.list /etc/apt/sources.list.bak
-fi
+  fi
 
-sudo cp -r qmade/src/apt/* /etc/apt/
+  sudo cp -r qmade/src/apt/* /etc/apt/
 
-check_error "Copy APT Sources list"
+  check_error "Copy APT Sources list"
 
+  # Sudoers ------------------------------------------------------------------------------------------------------------------------------------
+  # Add User NOPASSWD to shutdown now and reboot
+  echo "$USER ALL=(ALL) NOPASSWD: /sbin/shutdown now, /sbin/reboot, /sbin/pm-suspend" | sudo tee -a /etc/sudoers.d/$USER && sudo visudo -c -f /etc/sudoers.d/$USER
+  check_error "Sudo User NOPASSWD to shutdown now and reboot"
 
-# Sudoers ------------------------------------------------------------------------------------------------------------------------------------
-# Add User NOPASSWD to shutdown now and reboot
-echo "$USER ALL=(ALL) NOPASSWD: /sbin/shutdown now, /sbin/reboot, /sbin/pm-suspend" | sudo tee -a /etc/sudoers.d/$USER && sudo visudo -c -f /etc/sudoers.d/$USER
-check_error "Sudo User NOPASSWD to shutdown now and reboot"
+  # Set sudo password timeout
+  echo "Defaults timestamp_timeout=25" | sudo tee -a /etc/sudoers.d/$USER && sudo visudo -c -f /etc/sudoers.d/$USER
+  check_error "Set sudo password timeout"
+  # Sudoers ------------------------------------------------------------------------------------------------------------------------------------
 
-# Set sudo password timeout
-echo "Defaults timestamp_timeout=25" | sudo tee -a /etc/sudoers.d/$USER && sudo visudo -c -f /etc/sudoers.d/$USER
-check_error "Set sudo password timeout"
-# Sudoers ------------------------------------------------------------------------------------------------------------------------------------
+  clear #Clear the screen
 
-clear #Clear the screen
+  sudo apt update
 
-sudo apt update
+  clear #Clear the screen
+  check_error "APT Update Nr. 2"
 
-clear #Clear the screen
-check_error "APT Update Nr. 2"
+  # -------------------------------------------------------------------------------------------------
+  # Core System APT install
+  sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install bash-completion xserver-xorg x11-utils xinit acl arandr autorandr picom fwupd colord mesa-utils htop wget curl git tmux numlockx kitty neovim xdg-utils cups cups-common lm-sensors fancontrol xbacklight brightnessctl unzip network-manager dnsutils dunst libnotify-bin notify-osd xsecurelock pm-utils rofi 7zip jq poppler-utils fd-find ripgrep zoxide imagemagick nsxiv mpv flameshot mc thunar gvfs gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq font-manager fontconfig fontconfig-config fonts-recommended fonts-liberation fonts-freefont-ttf fonts-noto-core libfontconfig1 pipewire pipewire-audio pipewire-alsa pipewire-pulse pipewire-jack wireplumber libspa-0.2-bluetooth pavucontrol alsa-utils qpwgraph sddm-theme-breeze sddm-theme-maui ffmpeg cmake remmina libreoffice linux-cpupower
 
-# -------------------------------------------------------------------------------------------------
-# Core System APT install
-sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install bash-completion xserver-xorg x11-utils xinit acl arandr autorandr picom fwupd colord mesa-utils htop wget curl git tmux numlockx kitty neovim xdg-utils cups cups-common lm-sensors fancontrol xbacklight brightnessctl unzip network-manager dnsutils dunst libnotify-bin notify-osd xsecurelock pm-utils rofi 7zip jq poppler-utils fd-find ripgrep zoxide imagemagick nsxiv mpv flameshot mc thunar gvfs gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq font-manager fontconfig fontconfig-config fonts-recommended fonts-liberation fonts-freefont-ttf fonts-noto-core libfontconfig1 pipewire pipewire-audio pipewire-alsa pipewire-pulse pipewire-jack wireplumber libspa-0.2-bluetooth pavucontrol alsa-utils qpwgraph sddm-theme-breeze sddm-theme-maui ffmpeg cmake remmina libreoffice linux-cpupower
+  # For packages that might be missing so it doesn't stop the big apt installation of packages or slow it down
+  for i in policykit-1 policykit-1-gnome keynav yt-dlp; do
+    sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install $i
+  done
 
-# For packages that might be missing so it doesn't stop the big apt installation of packages or slow it down
-for i in policykit-1 policykit-1-gnome keynav yt-dlp; do
-  sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install $i
-done
+  sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install linux-headers-$(uname -r)
+  sudo DEBIAN_FRONTEND=noninteractive apt -y install sddm --no-install-recommends
+  check_error "Core System APT install"
 
-sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install linux-headers-$(uname -r)
-sudo DEBIAN_FRONTEND=noninteractive apt -y install sddm --no-install-recommends
-check_error "Core System APT install"
+  # APT install extra packages
+  #sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install
 
-# APT install extra packages
-#sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install 
+  clear #Clear the screen
+  check_error "APT install extra packages"
 
-clear #Clear the screen
-check_error "APT install extra packages"
+  # Google Chrome install.
+  cd /tmp/ && wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && sudo DEBIAN_FRONTEND=noninteractive apt install -y /tmp/google-chrome-stable_current_amd64.deb && rm google-chrome-stable_current_amd64.deb
+  clear #Clear the screen
+  check_error "Google Chrome install"
 
-# Google Chrome install.
-cd /tmp/ && wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && sudo DEBIAN_FRONTEND=noninteractive apt install -y /tmp/google-chrome-stable_current_amd64.deb && rm google-chrome-stable_current_amd64.deb
-clear #Clear the screen
-check_error "Google Chrome install"
+  # Network Share Components
+  sudo DEBIAN_FRONTEND=noninteractive apt install -y ceph-common smbclient nfs-common && echo "# CEPH" | sudo tee -a /etc/fstab && echo "#:/  /mnt/cephfs ceph    name=clientNAME,noatime,_netdev    0       0" | sudo tee -a /etc/fstab
+  clear #Clear the screen
+  check_error "Network Share Components"
 
-# Network Share Components
-sudo DEBIAN_FRONTEND=noninteractive apt install -y ceph-common smbclient nfs-common && echo "# CEPH" | sudo tee -a /etc/fstab && echo "#:/  /mnt/cephfs ceph    name=clientNAME,noatime,_netdev    0       0" | sudo tee -a /etc/fstab
-clear #Clear the screen
-check_error "Network Share Components"
-
-# Check if the CPU is a QEMU Virtual CPU using lscpu
-if lscpu | grep -iq "QEMU"; then
+  # Check if the CPU is a QEMU Virtual CPU using lscpu
+  if lscpu | grep -iq "QEMU"; then
     echo "QEMU Virtual CPU detected. Installing xrdp and restarting service..."
     sudo apt update
     sudo DEBIAN_FRONTEND=noninteractive apt install -y xrdp
     sudo systemctl restart xrdp.service
-fi
-clear #Clear the screen
-check_error "Check if the CPU is a QEMU Virtual CPU and install xrdp"
+  fi
+  clear #Clear the screen
+  check_error "Check if the CPU is a QEMU Virtual CPU and install xrdp"
 
-# Check for Bluetooth hardware using lsusb
-if lsusb | grep -iq bluetooth; then
+  # Check for Bluetooth hardware using lsusb
+  if lsusb | grep -iq bluetooth; then
     echo "Bluetooth detected, Installing required packages..."
     sudo DEBIAN_FRONTEND=noninteractive apt install -y bluetooth bluez bluez-cups bluez-obexd bluez-meshd pulseaudio-module-bluetooth bluez-firmware blueman
-fi
-clear #Clear the screen
-check_error "Check for Bluetooth hardware and install"
+  fi
+  clear #Clear the screen
+  check_error "Check for Bluetooth hardware and install"
 
-# Check for Logitech hardware using lsusb
-# Solaar - Logitech Unifying Receiver - Accessory management for Linux.
-if lsusb | grep -iq Logitech; then
+  # Check for Logitech hardware using lsusb
+  # Solaar - Logitech Unifying Receiver - Accessory management for Linux.
+  if lsusb | grep -iq Logitech; then
     echo "Logitech detected, Installing required packages..."
     sudo DEBIAN_FRONTEND=noninteractive apt install -y solaar
-fi
-clear #Clear the screen
-check_error "Check for Logitech hardware and install"
+  fi
+  clear #Clear the screen
+  check_error "Check for Logitech hardware and install"
 
-# Audio Start - https://alsa.opensrc.org - https://wiki.debian.org/ALSA
-# See hardware run: "pacmd list-sinks" or "lspci | grep -i audio" or... sudo dmesg  | grep 'snd\|firmware\|audio'
-# Run.: "pw-cli info" provides detailed information about the PipeWire nodes and devices, including ALSA devices.
-# Test file run: "aplay /usr/share/sounds/alsa/Front_Center.wav"
-# sudo adduser $USER audio
+  # Audio Start - https://alsa.opensrc.org - https://wiki.debian.org/ALSA
+  # See hardware run: "pacmd list-sinks" or "lspci | grep -i audio" or... sudo dmesg  | grep 'snd\|firmware\|audio'
+  # Run.: "pw-cli info" provides detailed information about the PipeWire nodes and devices, including ALSA devices.
+  # Test file run: "aplay /usr/share/sounds/alsa/Front_Center.wav"
+  # sudo adduser $USER audio
 
-# PipeWire Sound Server "Audio" - https://pipewire.org/
+  # PipeWire Sound Server "Audio" - https://pipewire.org/
 
+  # More Audio tools
+  # sudo DEBIAN_FRONTEND=noninteractive apt install -y alsa-tools
 
+  # sudo alsactl init
 
-# More Audio tools
-# sudo DEBIAN_FRONTEND=noninteractive apt install -y alsa-tools
+  clear #Clear the screen
+  check_error "Audio Core System APT install"
 
-# sudo alsactl init
+  # CPU Microcode install
+  export LC_ALL=C # All subsequent command output will be in English
+  CPUVENDOR=$(lscpu | grep "Vendor ID:" | awk '{print $3}')
 
-clear #Clear the screen
-check_error "Audio Core System APT install"
-
-
-# CPU Microcode install
-export LC_ALL=C # All subsequent command output will be in English
-CPUVENDOR=$(lscpu | grep "Vendor ID:" | awk '{print $3}')
-
-if [ "$CPUVENDOR" == "GenuineIntel" ]; then
+  if [ "$CPUVENDOR" == "GenuineIntel" ]; then
     if ! dpkg -s intel-microcode >/dev/null 2>&1; then
-    sudo DEBIAN_FRONTEND=noninteractive apt install -y intel-microcode
+      sudo DEBIAN_FRONTEND=noninteractive apt install -y intel-microcode
     fi
-else
+  else
     echo -e "${GREEN} Intel Microcode OK ${NC}"
-fi
+  fi
 
-if [ "$CPUVENDOR" == "AuthenticAMD" ]; then
+  if [ "$CPUVENDOR" == "AuthenticAMD" ]; then
     if ! dpkg -s amd64-microcode >/dev/null 2>&1; then
-    sudo DEBIAN_FRONTEND=noninteractive apt install -y amd64-microcode
+      sudo DEBIAN_FRONTEND=noninteractive apt install -y amd64-microcode
     fi
-else
+  else
     echo -e "${GREEN} Amd64 Microcode OK ${NC}"
-fi
-unset LC_ALL # unset the LC_ALL=C
+  fi
+  unset LC_ALL # unset the LC_ALL=C
 
-clear #Clear the screen
-check_error "CPU Microcode install"
+  clear #Clear the screen
+  check_error "CPU Microcode install"
 
-# Alias echo to ~/.bashrc or ~/.bash_aliases
-BASHALIASFILE=~/.bashrc
+  # Alias echo to ~/.bashrc or ~/.bash_aliases
+  BASHALIASFILE=~/.bashrc
 
-echo 'alias ls="ls --color=auto --group-directories-first -v -lah"' >> $BASHALIASFILE
-echo 'alias ll="ls --color=auto --group-directories-first -v -lah"' >> $BASHALIASFILE
+  echo 'alias ls="ls --color=auto --group-directories-first -v -lah"' >>$BASHALIASFILE
+  echo 'alias ll="ls --color=auto --group-directories-first -v -lah"' >>$BASHALIASFILE
 
-echo 'alias df="df -h"' >> $BASHALIASFILE
+  echo 'alias df="df -h"' >>$BASHALIASFILE
 
-echo 'alias neofetch="fastfetch"' >> $BASHALIASFILE
+  echo 'alias neofetch="fastfetch"' >>$BASHALIASFILE
 
-echo 'alias upup="sudo apt update && sudo apt upgrade -y && sudo apt clean && sudo apt autoremove -y"' >> $BASHALIASFILE
+  echo 'alias upup="sudo apt update && sudo apt upgrade -y && sudo apt clean && sudo apt autoremove -y"' >>$BASHALIASFILE
 
-echo 'bind '"'"'"\C-f":"open "$(fzf)"\n"'"'" >> $BASHALIASFILE
-echo 'alias lsman="compgen -c | fzf | xargs man"' >> $BASHALIASFILE
+  echo 'bind '"'"'"\C-f":"open "$(fzf)"\n"'"'" >>$BASHALIASFILE
+  echo 'alias lsman="compgen -c | fzf | xargs man"' >>$BASHALIASFILE
 
-echo 'alias qtileconfig="nano ~/.config/qtile/config.py"' >> $BASHALIASFILE
-echo 'alias qtileconfig-test="python3 ~/.config/qtile/config.py"' >> $BASHALIASFILE
-echo 'alias qtileconfig-test-venv="source /opt/qtile_venv/bin/activate && python3 ~/.config/qtile/config.py && deactivate"' >> $BASHALIASFILE
-echo 'alias autostart-edit="nano ~/.config/qtile/autostart.sh"' >> $BASHALIASFILE
-echo 'alias vi="nvim"' >> $BASHALIASFILE
-echo 'alias vim="nvim"' >> $BASHALIASFILE
-echo 'alias ytdl="yt-dlp -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best'"' >> $BASHALIASFILE
+  echo 'alias qtileconfig="nano ~/.config/qtile/config.py"' >>$BASHALIASFILE
+  echo 'alias qtileconfig-test="python3 ~/.config/qtile/config.py"' >>$BASHALIASFILE
+  echo 'alias qtileconfig-test-venv="source /opt/qtile_venv/bin/activate && python3 ~/.config/qtile/config.py && deactivate"' >>$BASHALIASFILE
+  echo 'alias autostart-edit="nano ~/.config/qtile/autostart.sh"' >>$BASHALIASFILE
+  echo 'alias vi="nvim"' >>$BASHALIASFILE
+  echo 'alias vim="nvim"' >>$BASHALIASFILE
+  echo 'alias ytdl="yt-dlp -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best'"' >>$BASHALIASFILE
 
-clear #Clear the screen
-check_error "Bash Alias Echo"
+  clear #Clear the screen
+  check_error "Bash Alias Echo"
 
-PROFILESFILE=~/.profile
-echo "export color_prompt=yes" >> $PROFILESFILE
+  PROFILESFILE=~/.profile
+  echo "export color_prompt=yes" >>$PROFILESFILE
 
-# Set User folders via xdg-user-dirs-update & xdg-mime default.
-# ls /usr/share/applications/ Find The Default run.: "xdg-mime query default inode/directory"
+  # Set User folders via xdg-user-dirs-update & xdg-mime default.
+  # ls /usr/share/applications/ Find The Default run.: "xdg-mime query default inode/directory"
 
-xdg-user-dirs-update
+  xdg-user-dirs-update
 
-xdg-mime default kitty.desktop text/x-shellscript
-xdg-mime default nsxiv.desktop image/jpeg
-xdg-mime default nsxiv.desktop image/png
-xdg-mime default thunar.desktop inode/directory
+  xdg-mime default kitty.desktop text/x-shellscript
+  xdg-mime default nsxiv.desktop image/jpeg
+  xdg-mime default nsxiv.desktop image/png
+  xdg-mime default thunar.desktop inode/directory
 
-mkdir -p ~/Screenshots
+  mkdir -p ~/Screenshots
 
-check_error "xdg-user-dirs-update and xdg-mime"
+  check_error "xdg-user-dirs-update and xdg-mime"
 
-sudo rm /usr/share/sddm/faces/.face.icon
-sudo rm /usr/share/sddm/faces/root.face.icon
+  sudo rm /usr/share/sddm/faces/.face.icon
+  sudo rm /usr/share/sddm/faces/root.face.icon
 
-sudo wget -O /usr/share/sddm/faces/root.face.icon https://github.com/ITmail-dk/qmade/blob/main/src/home/root.face.icon?raw=true
-sudo wget -O /usr/share/sddm/faces/.face.icon https://github.com/ITmail-dk/qmade/blob/main/src/home/.face.icon?raw=true
-wget -O ~/.face.icon https://github.com/ITmail-dk/qmade/blob/main/src/home/.face.icon?raw=true
+  sudo wget -O /usr/share/sddm/faces/root.face.icon https://github.com/ITmail-dk/qmade/blob/main/src/home/root.face.icon?raw=true
+  sudo wget -O /usr/share/sddm/faces/.face.icon https://github.com/ITmail-dk/qmade/blob/main/src/home/.face.icon?raw=true
+  wget -O ~/.face.icon https://github.com/ITmail-dk/qmade/blob/main/src/home/.face.icon?raw=true
 
-setfacl -m u:sddm:x ~/
-setfacl -m u:sddm:r ~/.face.icon
+  setfacl -m u:sddm:x ~/
+  setfacl -m u:sddm:r ~/.face.icon
 
-sudo setfacl -m u:sddm:x /usr/share/sddm/faces/
-sudo setfacl -m u:sddm:r /usr/share/sddm/faces/.face.icon
-sudo setfacl -m u:sddm:r /usr/share/sddm/faces/root.face.icon
+  sudo setfacl -m u:sddm:x /usr/share/sddm/faces/
+  sudo setfacl -m u:sddm:r /usr/share/sddm/faces/.face.icon
+  sudo setfacl -m u:sddm:r /usr/share/sddm/faces/root.face.icon
 
-check_error "Set User .face.icon file"
+  check_error "Set User .face.icon file"
 
-sudo mkdir -p /etc/sddm.conf.d
-sudo bash -c 'cat << "SDDMCONFIG" >> /etc/sddm.conf.d/default.conf
+  sudo mkdir -p /etc/sddm.conf.d
+  sudo bash -c 'cat << "SDDMCONFIG" >> /etc/sddm.conf.d/default.conf
 [Theme]
 # Set Current theme "name" breeze, maui
 Current=breeze
@@ -331,62 +322,60 @@ EnableHiDPI=true
 
 SDDMCONFIG'
 
-# Set login wallpape under background=/ in /usr/share/sddm/themes/breeze/theme.conf
-#/usr/share/wallpapers/login-wallpape.jpg
+  # Set login wallpape under background=/ in /usr/share/sddm/themes/breeze/theme.conf
+  #/usr/share/wallpapers/login-wallpape.jpg
 
-clear #Clear the screen
-check_error "Setup SDDM Login"
+  clear #Clear the screen
+  check_error "Setup SDDM Login"
 
-# Midnight-Commander ini file
-mkdir -p ~/.config/mc
-cat << "MCINI" > ~/.config/mc/ini
+  # Midnight-Commander ini file
+  mkdir -p ~/.config/mc
+  cat <<"MCINI" >~/.config/mc/ini
 [Midnight-Commander]
 skin=nicedark
 
 MCINI
-check_error "Setup Midnight-Commander ini file"
+  check_error "Setup Midnight-Commander ini file"
 
-# Qtile Core Dependencies apt install
-sudo DEBIAN_FRONTEND=noninteractive apt install -y feh python3-full python3-pip python3-venv pipx libxkbcommon-dev libxkbcommon-x11-dev libcairo2-dev pkg-config
-clear #Clear the screen
-check_error "Qtile Core Dependencies apt install"
+  # Qtile Core Dependencies apt install
+  sudo DEBIAN_FRONTEND=noninteractive apt install -y feh python3-full python3-pip python3-venv pipx libxkbcommon-dev libxkbcommon-x11-dev libcairo2-dev pkg-config
+  clear #Clear the screen
+  check_error "Qtile Core Dependencies apt install"
 
-# Install Qtile from source via github and Pip
-cd ~
-mkdir -p ~/.local/bin
-mkdir -p ~/.local/src
+  # Install Qtile from source via github and Pip
+  cd ~
+  mkdir -p ~/.local/bin
+  mkdir -p ~/.local/src
 
+  # Python3 venv Qtile install
+  # Upgrade run: python3 -m venv --upgrade qtile_venv
 
-# Python3 venv Qtile install
-# Upgrade run: python3 -m venv --upgrade qtile_venv
+  cd /opt/
+  sudo python3 -m venv qtile_venv
+  sudo chmod -R 777 /opt/qtile_venv
+  cd /opt/qtile_venv
 
-cd /opt/
-sudo python3 -m venv qtile_venv
-sudo chmod -R 777 /opt/qtile_venv
-cd /opt/qtile_venv
-
-if [ -d qtile ]; then
+  if [ -d qtile ]; then
     sudo rm -rf qtile
-fi
+  fi
 
-git clone https://github.com/qtile/qtile.git
+  git clone https://github.com/qtile/qtile.git
 
-source /opt/qtile_venv/bin/activate
-pip install dbus-next psutil wheel pyxdg
-pip install -r qtile/requirements.txt
-bin/pip install qtile/.
-# PyWAL install via pip3 for auto-generated color themes
-pip3 install pywal16[all]
-deactivate
+  source /opt/qtile_venv/bin/activate
+  pip install dbus-next psutil wheel pyxdg
+  pip install -r qtile/requirements.txt
+  bin/pip install qtile/.
+  # PyWAL install via pip3 for auto-generated color themes
+  pip3 install pywal16[all]
+  deactivate
 
-sudo cp bin/qtile /usr/bin/
-sudo cp bin/wal /usr/bin/
-clear #Clear the screen
-check_error "Install Qtile and PyWAL from qtile_venv"
+  sudo cp bin/qtile /usr/bin/
+  sudo cp bin/wal /usr/bin/
+  clear #Clear the screen
+  check_error "Install Qtile and PyWAL from qtile_venv"
 
-
-mkdir -p ~/.cache/wal
-cat << "PYWALCOLORSJSON" > ~/.cache/wal/colors.json
+  mkdir -p ~/.cache/wal
+  cat <<"PYWALCOLORSJSON" >~/.cache/wal/colors.json
 {
     "checksum": "85abc768e55abc92396e0c76280093cc",
     "wallpaper": "/home/mara/Wallpapers/default_wallpaper.jpg",
@@ -418,12 +407,12 @@ cat << "PYWALCOLORSJSON" > ~/.cache/wal/colors.json
 }
 
 PYWALCOLORSJSON
-clear #Clear the screen
-check_error "pywal colors json"
+  clear #Clear the screen
+  check_error "pywal colors json"
 
-mkdir -p ~/.config/kitty/themes
-mkdir -p ~/.cache/wal/
-cat << "PYWALCOLORSKITTY" > ~/.cache/wal/colors-kitty.conf
+  mkdir -p ~/.config/kitty/themes
+  mkdir -p ~/.cache/wal/
+  cat <<"PYWALCOLORSKITTY" >~/.cache/wal/colors-kitty.conf
 foreground         #c0c1c2
 background         #06080b
 background_opacity 0.98
@@ -457,11 +446,11 @@ color15      #c0c1c2
 
 PYWALCOLORSKITTY
 
-ln -s ~/.cache/wal/colors-kitty.conf ~/.config/kitty/themes/current-theme.conf
+  ln -s ~/.cache/wal/colors-kitty.conf ~/.config/kitty/themes/current-theme.conf
 
-# PyWal kitty template
-mkdir -p ~/.config/wal/templates/
-cat << "PYWALCOLORSTEMPALETKITTY" > ~/.config/wal/templates/colors-kitty.conf
+  # PyWal kitty template
+  mkdir -p ~/.config/wal/templates/
+  cat <<"PYWALCOLORSTEMPALETKITTY" >~/.config/wal/templates/colors-kitty.conf
 foreground         {foreground}
 background         {background}
 background_opacity 0.98
@@ -494,10 +483,10 @@ color7       {color7}
 color15      {color15}
 
 PYWALCOLORSTEMPALETKITTY
-clear #Clear the screen
-check_error "pywal colors kitty"
+  clear #Clear the screen
+  check_error "pywal colors kitty"
 
-cat << "PYWALCOLORSTEMPALETROFI" > ~/.config/wal/templates/colors-rofi-dark.rasi
+  cat <<"PYWALCOLORSTEMPALETROFI" >~/.config/wal/templates/colors-rofi-dark.rasi
 * {{
     active-background: {color2};
     active-foreground: @foreground;
@@ -673,17 +662,16 @@ cat << "PYWALCOLORSTEMPALETROFI" > ~/.config/wal/templates/colors-rofi-dark.rasi
 }}
 
 PYWALCOLORSTEMPALETROFI
-clear #Clear the screen
-check_error "pywal colors rofi"
+  clear #Clear the screen
+  check_error "pywal colors rofi"
 
-# Set xdg-desktop-portal prefer dark mode.
-gsettings set org.gnome.desktop.interface color-scheme prefer-dark
-clear #Clear the screen
-check_error "gsettings set color-scheme"
+  # Set xdg-desktop-portal prefer dark mode.
+  gsettings set org.gnome.desktop.interface color-scheme prefer-dark
+  clear #Clear the screen
+  check_error "gsettings set color-scheme"
 
-
-# auto-new-wallpaper-and-colors BIN
-sudo bash -c 'cat << "AUTONEWWALLPAPERANDCOLORSBIN" >> /usr/bin/auto-new-wallpaper-and-colors
+  # auto-new-wallpaper-and-colors BIN
+  sudo bash -c 'cat << "AUTONEWWALLPAPERANDCOLORSBIN" >> /usr/bin/auto-new-wallpaper-and-colors
 #!/usr/bin/env bash
 
 wal --cols16 darken -q -i ~/Wallpapers --backend colorz
@@ -700,22 +688,20 @@ notify-send -u low "Automatically new background and color theme" "The backgroun
 
 AUTONEWWALLPAPERANDCOLORSBIN'
 
-sudo chmod +x /usr/bin/auto-new-wallpaper-and-colors
-clear #Clear the screen
-check_error "auto-new-wallpaper-and-colors bin"
+  sudo chmod +x /usr/bin/auto-new-wallpaper-and-colors
+  clear #Clear the screen
+  check_error "auto-new-wallpaper-and-colors bin"
 
+  #Midnight Commander
+  mkdir -p ~/.config/mc
+  echo "skin=dark" >>~/.config/mc/ini
+  clear #Clear the screen
+  check_error "Midnight Commander config"
 
-#Midnight Commander
-mkdir -p ~/.config/mc
-echo "skin=dark" >> ~/.config/mc/ini
-clear #Clear the screen
-check_error "Midnight Commander config"
+  # ------------------------------------------------------------------------
 
-
-# ------------------------------------------------------------------------
-
-sudo mkdir -p /usr/share/xsessions/
-sudo bash -c 'cat << "QTILEDESKTOP" >> /usr/share/xsessions/qtile.desktop
+  sudo mkdir -p /usr/share/xsessions/
+  sudo bash -c 'cat << "QTILEDESKTOP" >> /usr/share/xsessions/qtile.desktop
 [Desktop Entry]
 Name=Qtile
 Comment=Qtile Session
@@ -724,16 +710,16 @@ Type=Application
 Keywords=wm;tiling
 QTILEDESKTOP'
 
-# Add to user .xsession
-echo "exec /usr/bin/qtile start" > ~/.xsession
-echo "exec /usr/bin/qtile start" | sudo tee -a "/etc/skel/.xsession" > /dev/null
-clear #Clear the screen
-check_error "Add Qtile .xsession"
+  # Add to user .xsession
+  echo "exec /usr/bin/qtile start" >~/.xsession
+  echo "exec /usr/bin/qtile start" | sudo tee -a "/etc/skel/.xsession" >/dev/null
+  clear #Clear the screen
+  check_error "Add Qtile .xsession"
 
-# Qtile Autostart.sh file
-mkdir -p ~/.config/qtile/
-if [ ! -f ~/.config/qtile/autostart.sh ]; then
-cat << "QTILEAUTOSTART" > ~/.config/qtile/autostart.sh
+  # Qtile Autostart.sh file
+  mkdir -p ~/.config/qtile/
+  if [ ! -f ~/.config/qtile/autostart.sh ]; then
+    cat <<"QTILEAUTOSTART" >~/.config/qtile/autostart.sh
 #!/usr/bin/env bash
 # Picom - https://manpages.debian.org/stable/picom/picom.1.en.html
 pgrep -x picom > /dev/null || picom --backend xrender --vsync --no-fading-openclose --no-fading-destroyed-argb &
@@ -769,50 +755,47 @@ fi
 
 QTILEAUTOSTART
 
-chmod +x ~/.config/qtile/autostart.sh
+    chmod +x ~/.config/qtile/autostart.sh
 
-else
-	echo "File autostart.sh already exists."
-fi
-clear #Clear the screen
-check_error "Qtile Autostart.sh file"
+  else
+    echo "File autostart.sh already exists."
+  fi
+  clear #Clear the screen
+  check_error "Qtile Autostart.sh file"
 
-
-# Synaptics devices
-if grep -iq 'synaptics|synap' /proc/bus/input/devices; then
+  # Synaptics devices
+  if grep -iq 'synaptics|synap' /proc/bus/input/devices; then
     echo "Synaptics touchpad detected. Installing xserver-xorg-input-synaptics and configuring autostart..."
     sudo DEBIAN_FRONTEND=noninteractive apt install -y xserver-xorg-input-synaptics
     check_error "Failed to install xserver-xorg-input-synaptics"
 
-    cat << EOF | tee -a "~/.config/qtile/autostart.sh" > /dev/null
+    cat <<EOF | tee -a "~/.config/qtile/autostart.sh" >/dev/null
 # Synaptics - Touchpad left click and right click.
 synclient TapButton1=1 TapButton2=3 &
 EOF
-fi
-clear #Clear the screen
-check_error "Add Synaptics Autostart.sh file"
+  fi
+  clear #Clear the screen
+  check_error "Add Synaptics Autostart.sh file"
 
-
-# APT install under Unstable and Testing
-if [[ "$VERSION_CODENAME" == "$VERSION_CODENAME_SHOULD_NOT_BE" ]]; then
-	echo "Your version of Debian is not compatible with This package"
-else
+  # APT install under Unstable and Testing
+  if [[ "$VERSION_CODENAME" == "$VERSION_CODENAME_SHOULD_NOT_BE" ]]; then
+    echo "Your version of Debian is not compatible with This package"
+  else
     sudo DEBIAN_FRONTEND=noninteractive apt install -y freerdp2-x11 libfreerdp-client2-2 libfreerdp2-2 libwinpr2-2
-	sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install xautolock speedcrunch fonts-arkpandora
+    sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install xautolock speedcrunch fonts-arkpandora
     echo "# Lock the computer automatically after X time of minutes, using xautolock and xsecurelock." | tee -a ~/.config/qtile/autostart.sh
     echo 'xautolock -time 120 -locker "xsecurelock" -detectsleep -secure &' | tee -a ~/.config/qtile/autostart.sh
-fi
-clear #Clear the screen
-check_error "APT install under Unstable and Testing"
+  fi
+  clear #Clear the screen
+  check_error "APT install under Unstable and Testing"
 
+  # MPD Setup & config START
 
-# MPD Setup & config START
-
-mkdir -p ~/.config/mpd/playlists
-mkdir -p ~/.local/state/mpd
-if [ ! -f ~/.config/mpd/mpd.conf ]; then
-touch ~/.config/mpd/database
-cat << MPDCONFIG > ~/.config/mpd/mpd.conf
+  mkdir -p ~/.config/mpd/playlists
+  mkdir -p ~/.local/state/mpd
+  if [ ! -f ~/.config/mpd/mpd.conf ]; then
+    touch ~/.config/mpd/database
+    cat <<MPDCONFIG >~/.config/mpd/mpd.conf
 # ~/.config/mpd/mpd.conf or /etc/mpd.conf
 # Example: /usr/share/doc/mpd/mpdconf.example
 
@@ -870,42 +853,41 @@ audio_output {
 
 MPDCONFIG
 
-else
-	echo "mpd.conf already exists."
-fi
+  else
+    echo "mpd.conf already exists."
+  fi
 
-# sudo systemctl enable mpd
-#systemctl enable --now --user mpd.service
-#systemctl enable --now --user mpd
-# systemctl status mpd.service
+  # sudo systemctl enable mpd
+  #systemctl enable --now --user mpd.service
+  #systemctl enable --now --user mpd
+  # systemctl status mpd.service
 
-#systemctl enable --now --user mpd.socket
-#systemctl enable --now --user mpd.service
+  #systemctl enable --now --user mpd.socket
+  #systemctl enable --now --user mpd.service
 
-# mpd --version
-# mpd --stderr --no-daemon --verbose
-# aplay --list-pcm
-clear #Clear the screen
-check_error "MPD Setup & config"
+  # mpd --version
+  # mpd --stderr --no-daemon --verbose
+  # aplay --list-pcm
+  clear #Clear the screen
+  check_error "MPD Setup & config"
 
-# Nano config START
-if [ ! -f ~/.nanorc ]; then
+  # Nano config START
+  if [ ! -f ~/.nanorc ]; then
     cp /etc/nanorc ~/.nanorc
     #sed -i 's/^# set linenumbers/set linenumbers/' ~/.nanorc
     sed -i 's/^# set minibar/set minibar/' ~/.nanorc
     sed -i 's/^# set softwrap/set softwrap/' ~/.nanorc
     sed -i 's/^# set atblanks/set atblanks/' ~/.nanorc
-else
-	echo "File .nanorc already exists."
-fi
-check_error "Nano config"
+  else
+    echo "File .nanorc already exists."
+  fi
+  check_error "Nano config"
 
+  # Neovim config Start
 
-# Neovim config Start
-
-if [ ! -f ~/.config/nvim/init.vim ]; then
-mkdir -p ~/.config/nvim
-cat << "NEOVIMCONFIG" > ~/.config/nvim/init.vim
+  if [ ! -f ~/.config/nvim/init.vim ]; then
+    mkdir -p ~/.config/nvim
+    cat <<"NEOVIMCONFIG" >~/.config/nvim/init.vim
 syntax on
 set number
 set numberwidth=5
@@ -913,17 +895,17 @@ set relativenumber
 set ignorecase
 NEOVIMCONFIG
 
-else
-	echo "Neovim config file already exists."
-fi
-clear #Clear the screen
-check_error "Neovim config"
+  else
+    echo "Neovim config file already exists."
+  fi
+  clear #Clear the screen
+  check_error "Neovim config"
 
-# Kitty theme.conf Start
+  # Kitty theme.conf Start
 
-if [ ! -f ~/.cache/wal/colors-kitty.conf ]; then
-mkdir -p ~/.cache/wal
-cat << "KITTYTHEMECONF" > ~/.cache/wal/colors-kitty.conf
+  if [ ! -f ~/.cache/wal/colors-kitty.conf ]; then
+    mkdir -p ~/.cache/wal
+    cat <<"KITTYTHEMECONF" >~/.cache/wal/colors-kitty.conf
 background #1e3143
 foreground #cec7bc
 color0 #1e3143
@@ -945,79 +927,78 @@ color15 #cec7bc
 
 KITTYTHEMECONF
 
-else
-	echo "kittytheme.conf file already exists."
-fi
-clear #Clear the screen
-check_error "Kitty config"
+  else
+    echo "kittytheme.conf file already exists."
+  fi
+  clear #Clear the screen
+  check_error "Kitty config"
 
-# Tmux config Start
+  # Tmux config Start
 
-if [ ! -f ~/.config/tmux/tmux.conf ]; then
-mkdir -p ~/.config/tmux
-cat << "TMUXCONFIG" > ~/.config/tmux/tmux.conf
+  if [ ! -f ~/.config/tmux/tmux.conf ]; then
+    mkdir -p ~/.config/tmux
+    cat <<"TMUXCONFIG" >~/.config/tmux/tmux.conf
 unbind r
 bind r source-file ~/.config/tmux/tmux.conf
 
 TMUXCONFIG
 
-else
-	echo "Tmux config file already exists."
-fi
-clear #Clear the screen
-check_error "Tmux config"
+  else
+    echo "Tmux config file already exists."
+  fi
+  clear #Clear the screen
+  check_error "Tmux config"
 
-# -------------------------------------------------------------------------------------------------
+  # -------------------------------------------------------------------------------------------------
 
-#echo -e "${YELLOW} Xresources config Start ${NC}"
+  #echo -e "${YELLOW} Xresources config Start ${NC}"
 
-#if [ ! -f ~/.Xresources ]; then
+  #if [ ! -f ~/.Xresources ]; then
 
-#cat << "XRCONFIG" > ~/.Xresources
+  #cat << "XRCONFIG" > ~/.Xresources
 
-#XRCONFIG
+  #XRCONFIG
 
-#else
-#	echo ".Xresources config file already exists."
-#fi
+  #else
+  #	echo ".Xresources config file already exists."
+  #fi
 
+  # Themes START
+  # Nerd Fonts - https://www.nerdfonts.com/font-downloads - https://www.nerdfonts.com/cheat-sheet
+  # RUN "fc-list" to list the fonts install on the system.
+  if [ ! -d /usr/share/fonts ]; then
+    sudo mkdir -p /usr/share/fonts
 
-# Themes START
-# Nerd Fonts - https://www.nerdfonts.com/font-downloads - https://www.nerdfonts.com/cheat-sheet
-# RUN "fc-list" to list the fonts install on the system.
-if [ ! -d /usr/share/fonts ]; then
-sudo mkdir -p /usr/share/fonts
+  else
+    echo "fonts folder already exists."
+  fi
 
-else
-	echo "fonts folder already exists."
-fi
+  #JetBrainsMono (The default front in the configuration)
+  curl -OL "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip"
+  sudo unzip -n "JetBrainsMono.zip" -d "/usr/share/fonts/JetBrainsMono/"
+  rm JetBrainsMono.zip
+  sudo rm -f /usr/share/fonts/JetBrainsMono/*.md
+  sudo rm -f /usr/share/fonts/JetBrainsMono/*.txt
+  sudo rm -f /usr/share/fonts/JetBrainsMono/LICENSE
 
-#JetBrainsMono (The default front in the configuration)
-curl -OL "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip"
-sudo unzip -n "JetBrainsMono.zip" -d "/usr/share/fonts/JetBrainsMono/"
-rm JetBrainsMono.zip
-sudo rm -f /usr/share/fonts/JetBrainsMono/*.md
-sudo rm -f /usr/share/fonts/JetBrainsMono/*.txt
-sudo rm -f /usr/share/fonts/JetBrainsMono/LICENSE
+  #RobotoMono
+  curl -OL "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/RobotoMono.zip"
+  sudo unzip -n "RobotoMono.zip" -d "/usr/share/fonts/RobotoMono/"
+  rm RobotoMono.zip
+  sudo rm -f /usr/share/fonts/RobotoMono/*.md
+  sudo rm -f /usr/share/fonts/RobotoMono/*.txt
+  sudo rm -f /usr/share/fonts/RobotoMono/LICENSE
 
-#RobotoMono
-curl -OL "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/RobotoMono.zip"
-sudo unzip -n "RobotoMono.zip" -d "/usr/share/fonts/RobotoMono/"
-rm RobotoMono.zip
-sudo rm -f /usr/share/fonts/RobotoMono/*.md
-sudo rm -f /usr/share/fonts/RobotoMono/*.txt
-sudo rm -f /usr/share/fonts/RobotoMono/LICENSE
+  sudo rm -f /usr/share/fonts/*.md
+  sudo rm -f /usr/share/fonts/*.txt
+  sudo rm -f /usr/share/fonts/LICENSE
+  clear #Clear the screen
+  check_error "Themes Nerd Fonts"
 
-sudo rm -f /usr/share/fonts/*.md
-sudo rm -f /usr/share/fonts/*.txt
-sudo rm -f /usr/share/fonts/LICENSE
-clear #Clear the screen
-check_error "Themes Nerd Fonts"
-
-# Set the default font family to Noto in the /etc/fonts/local.conf file.
-if [ ! -f /etc/fonts/local.conf ]; then
-sudo mkdir -p  /etc/fonts
-sudo bash -c 'cat << "FONTSLOCALCONFIG" >> /etc/fonts/local.conf
+  # Set the default font family to Noto in the /etc/fonts/local.conf file.
+  if [ ! -f /etc/fonts/local.conf ]; then
+    sudo mkdir -p /etc/fonts
+    sudo bash -c 'cat << "FONTSLOCALCONFIG" >> /etc/fonts/local.conf
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE fontconfig SYSTEM "fonts.dtd">
 <fontconfig>
@@ -1044,77 +1025,73 @@ sudo bash -c 'cat << "FONTSLOCALCONFIG" >> /etc/fonts/local.conf
 
 FONTSLOCALCONFIG'
 
-else
-	echo "fonts local.conf file already exists."
-fi
-clear #Clear the screen
-check_error "Themes Fonts local.conf"
+  else
+    echo "fonts local.conf file already exists."
+  fi
+  clear #Clear the screen
+  check_error "Themes Fonts local.conf"
 
-
-if [ -d /usr/share/xsessions/ ]; then
+  if [ -d /usr/share/xsessions/ ]; then
     find /usr/share/xsessions/ -name plasma* -exec sudo rm -f {} \;
     sudo update-alternatives --remove x-session-manager /usr/bin/startplasma-x11
-fi
-if [ -d /usr/share/wayland-sessions/ ]; then
+  fi
+  if [ -d /usr/share/wayland-sessions/ ]; then
     find /usr/share/wayland-sessions/ -name plasma* -exec sudo rm -f {} \;
     sudo update-alternatives --remove x-session-manager /usr/bin/startplasma-x11
-fi
+  fi
 
-check_error "Remove plasma sessions .desktop"
+  check_error "Remove plasma sessions .desktop"
 
+  sudo rm -rf /tmp/EliverLara-Nordic
+  sudo git clone https://github.com/EliverLara/Nordic /tmp/EliverLara-Nordic
+  sudo cp -r /tmp/EliverLara-Nordic /usr/share/themes/
 
-sudo rm -rf /tmp/EliverLara-Nordic
-sudo git clone https://github.com/EliverLara/Nordic /tmp/EliverLara-Nordic
-sudo cp -r /tmp/EliverLara-Nordic /usr/share/themes/
+  sudo mkdir -p /usr/share/sddm/themes/Nordic-darker/
+  sudo cp -r /tmp/EliverLara-Nordic/kde/sddm/Nordic-darker/* /usr/share/sddm/themes/Nordic-darker/
 
-sudo mkdir -p /usr/share/sddm/themes/Nordic-darker/
-sudo cp -r /tmp/EliverLara-Nordic/kde/sddm/Nordic-darker/* /usr/share/sddm/themes/Nordic-darker/
+  # Nordzy-cursors --------------------------------------------------------
 
+  # https://github.com/alvatip/Nordzy-cursors
 
-# Nordzy-cursors --------------------------------------------------------
-
-# https://github.com/alvatip/Nordzy-cursors
-
-cd /tmp/
-if [ -d Nordzy-cursors ]; then
+  cd /tmp/
+  if [ -d Nordzy-cursors ]; then
     sudo rm -rf Nordzy-cursors
-fi
+  fi
 
-git clone https://github.com/alvatip/Nordzy-cursors
-cd Nordzy-cursors
-sudo ./install.sh
-cd /tmp/
+  git clone https://github.com/alvatip/Nordzy-cursors
+  cd Nordzy-cursors
+  sudo ./install.sh
+  cd /tmp/
 
-# .Xresources
-# Xcursor.theme: Nordzy-cursors
-# Xcursor.size: 22
+  # .Xresources
+  # Xcursor.theme: Nordzy-cursors
+  # Xcursor.size: 22
 
-# Nordzy-icon --------------------------------------------------------
-# https://github.com/alvatip/Nordzy-icon
+  # Nordzy-icon --------------------------------------------------------
+  # https://github.com/alvatip/Nordzy-icon
 
-cd /tmp/
+  cd /tmp/
 
-if [ -d Nordzy-icon ]; then
+  if [ -d Nordzy-icon ]; then
     sudo rm -rf Nordzy-icon
-fi
+  fi
 
-git clone https://github.com/alvatip/Nordzy-icon
-cd Nordzy-icon/
-sudo ./install.sh
-cd /tmp/
+  git clone https://github.com/alvatip/Nordzy-icon
+  cd Nordzy-icon/
+  sudo ./install.sh
+  cd /tmp/
 
+  # GTK Settings START --------------------------------------------------------
+  # /etc/gtk-3.0/settings.ini
+  # https://docs.gtk.org/gtk4/property.Settings.gtk-cursor-theme-name.html
+  if [ ! -d /etc/gtk-3.0 ]; then
+    sudo kdir -p /etc/gtk-3.0
 
-# GTK Settings START --------------------------------------------------------
-# /etc/gtk-3.0/settings.ini
-# https://docs.gtk.org/gtk4/property.Settings.gtk-cursor-theme-name.html
-if [ ! -d /etc/gtk-3.0 ]; then
-sudo kdir -p /etc/gtk-3.0
+  else
+    echo "/etc/gtk-3.0 already exists."
+  fi
 
-else
-	echo "/etc/gtk-3.0 already exists."
-fi
-
-sudo bash -c 'cat << "GTK3SETTINGS" >> /etc/gtk-3.0/settings.ini
+  sudo bash -c 'cat << "GTK3SETTINGS" >> /etc/gtk-3.0/settings.ini
 [Settings]
 gtk-theme-name=EliverLara-Nordic
 gtk-fallback-icon-theme=default
@@ -1128,14 +1105,14 @@ gtk-enable-event-sounds=0
 gtk-enable-input-feedback-sounds=0
 GTK3SETTINGS'
 
-if [ ! -d /etc/gtk-4.0 ]; then
-sudo mkdir -p /etc/gtk-4.0
+  if [ ! -d /etc/gtk-4.0 ]; then
+    sudo mkdir -p /etc/gtk-4.0
 
-else
-	echo "/etc/gtk-4.0 already exists."
-fi
+  else
+    echo "/etc/gtk-4.0 already exists."
+  fi
 
-sudo bash -c 'cat << "GTK4SETTINGS" >> /etc/gtk-4.0/settings.ini
+  sudo bash -c 'cat << "GTK4SETTINGS" >> /etc/gtk-4.0/settings.ini
 [Settings]
 gtk-theme-name=EliverLara-Nordic
 gtk-fallback-icon-theme=default
@@ -1149,21 +1126,21 @@ gtk-enable-event-sounds=0
 gtk-enable-input-feedback-sounds=0
 GTK4SETTINGS'
 
+  sudo sed -i 's/Adwaita/Nordzy-cursors/g' /usr/share/icons/default/index.theme
 
-sudo sed -i 's/Adwaita/Nordzy-cursors/g' /usr/share/icons/default/index.theme
+  # GTK Settings END --------------------------
 
-# GTK Settings END --------------------------
+  sudo fc-cache -fv
+  clear #Clear the screen
+  check_error "GTK Settings & Fonts"
 
-sudo fc-cache -fv
-clear #Clear the screen
-check_error "GTK Settings & Fonts"
+  # -------------------------------------------------------------------------------------------------
 
-# -------------------------------------------------------------------------------------------------
+  # xrandr-set-max + Xsession START
 
-# xrandr-set-max + Xsession START
-
-if [ ! -f /usr/bin/xrandr-set-max ]; then
-xrandrsetmaxcontent=$(cat << "XRANDRSETMAX"
+  if [ ! -f /usr/bin/xrandr-set-max ]; then
+    xrandrsetmaxcontent=$(
+      cat <<"XRANDRSETMAX"
 #!/usr/bin/env bash
 
 # Get the names of all connected displays
@@ -1178,45 +1155,45 @@ for display in $displays; do
     xrandr --output "$display" --mode "$max_resolution"
 done
 XRANDRSETMAX
-)
+    )
 
-# Write the script content to the target file using sudo
-echo "$xrandrsetmaxcontent" | sudo tee /usr/bin/xrandr-set-max >/dev/null
+    # Write the script content to the target file using sudo
+    echo "$xrandrsetmaxcontent" | sudo tee /usr/bin/xrandr-set-max >/dev/null
 
-# SDDM Before Login - /usr/share/sddm/scripts/Xsetup and After Login - /usr/share/sddm/scripts/Xsession
-#sudo sed -i '$a\. /usr/bin/xrandr-set-max' /usr/share/sddm/scripts/Xsetup
-#sudo sed -i '$a\. /usr/bin/xrandr-set-max' /usr/share/sddm/scripts/Xsession #Old
+    # SDDM Before Login - /usr/share/sddm/scripts/Xsetup and After Login - /usr/share/sddm/scripts/Xsession
+    #sudo sed -i '$a\. /usr/bin/xrandr-set-max' /usr/share/sddm/scripts/Xsetup
+    #sudo sed -i '$a\. /usr/bin/xrandr-set-max' /usr/share/sddm/scripts/Xsession #Old
 
-sudo chmod +x /usr/bin/xrandr-set-max
+    sudo chmod +x /usr/bin/xrandr-set-max
 
-else
-	echo "xrandr-set-max already exists."
-fi
+  else
+    echo "xrandr-set-max already exists."
+  fi
 
-#if [ ! -f /etc/X11/Xsession.d/90_xrandr-set-max ]; then
-#    sudo cp /usr/bin/xrandr-set-max /etc/X11/Xsession.d/90_xrandr-set-max
-#    # Run at Login /etc/X11/Xsession.d/FILENAME
-#else
-#	echo "/etc/X11/Xsession.d/90_xrandr-set-max already exists."
-#fi
+  #if [ ! -f /etc/X11/Xsession.d/90_xrandr-set-max ]; then
+  #    sudo cp /usr/bin/xrandr-set-max /etc/X11/Xsession.d/90_xrandr-set-max
+  #    # Run at Login /etc/X11/Xsession.d/FILENAME
+  #else
+  #	echo "/etc/X11/Xsession.d/90_xrandr-set-max already exists."
+  #fi
 
-clear #Clear the screen
-check_error "xrandr-set-max file"
-# -------------------------------------------------------------------------------------------------
+  clear #Clear the screen
+  check_error "xrandr-set-max file"
+  # -------------------------------------------------------------------------------------------------
 
-# -------------------------------------------------------------------------------------------------
+  # -------------------------------------------------------------------------------------------------
 
-# Rofi Run menu START
-if [ ! -d ~/.config/rofi ]; then
-mkdir -p ~/.config/rofi
+  # Rofi Run menu START
+  if [ ! -d ~/.config/rofi ]; then
+    mkdir -p ~/.config/rofi
 
-else
-	echo "Rofi folder already exists."
-fi
+  else
+    echo "Rofi folder already exists."
+  fi
 
-if [ ! -f ~/.config/rofi/config.rasi ]; then
-#touch ~/.config/rofi/config.rasi
-cat << "ROFICONFIG" > ~/.config/rofi/config.rasi
+  if [ ! -f ~/.config/rofi/config.rasi ]; then
+    #touch ~/.config/rofi/config.rasi
+    cat <<"ROFICONFIG" >~/.config/rofi/config.rasi
 configuration {
   display-drun: "Applications:";
   display-window: "Windows:";
@@ -1233,16 +1210,15 @@ configuration {
 
 ROFICONFIG
 
-else
-	echo "Rofi config file already exists."
-fi
+  else
+    echo "Rofi config file already exists."
+  fi
 
+  # Rofi Wifi menu
+  # https://github.com/ericmurphyxyz/rofi-wifi-menu/tree/master
 
-# Rofi Wifi menu
-# https://github.com/ericmurphyxyz/rofi-wifi-menu/tree/master
-
-if [ ! -f ~/.config/rofi/rofi-wifi-menu.sh ]; then
-cat << "ROFIWIFI" > ~/.config/rofi/rofi-wifi-menu.sh
+  if [ ! -f ~/.config/rofi/rofi-wifi-menu.sh ]; then
+    cat <<"ROFIWIFI" >~/.config/rofi/rofi-wifi-menu.sh
 #!/usr/bin/env bash
 
 notify-send "Getting list of available Wi-Fi networks..."
@@ -1284,17 +1260,17 @@ fi
 
 ROFIWIFI
 
-chmod +x ~/.config/rofi/rofi-wifi-menu.sh
+    chmod +x ~/.config/rofi/rofi-wifi-menu.sh
 
-else
-	echo "Rofi WiFi menu file already exists."
-fi
-clear #Clear the screen
-check_error "Rofi Run menu"
+  else
+    echo "Rofi WiFi menu file already exists."
+  fi
+  clear #Clear the screen
+  check_error "Rofi Run menu"
 
-if [ ! -f ~/.config/rofi/powermenu.sh ]; then
-mkdir -p  ~/.config/rofi
-cat << "ROFIPOWERMENU" > ~/.config/rofi/powermenu.sh
+  if [ ! -f ~/.config/rofi/powermenu.sh ]; then
+    mkdir -p ~/.config/rofi
+    cat <<"ROFIPOWERMENU" >~/.config/rofi/powermenu.sh
 #!/usr/bin/env bash
 chosen=$(printf "󰒲  Suspend System\n  System Shutdown\n󰤄  Hibernate System\n  Lockdown Mode\n  Reboot" | rofi -dmenu -i -theme-str '@import "powermenu.rasi"')
 
@@ -1309,17 +1285,17 @@ esac
 
 ROFIPOWERMENU
 
-else
-	echo "powermenu.sh file already exists."
-fi
+  else
+    echo "powermenu.sh file already exists."
+  fi
 
-chmod +x ~/.config/rofi/powermenu.sh
-clear #Clear the screen
-check_error "Rofi Powermenu"
+  chmod +x ~/.config/rofi/powermenu.sh
+  clear #Clear the screen
+  check_error "Rofi Powermenu"
 
-if [ ! -f ~/.config/rofi/powermenu.rasi ]; then
-mkdir -p  ~/.config/rofi
-cat << "ROFIPOWERMENURASI" > ~/.config/rofi/powermenu.rasi
+  if [ ! -f ~/.config/rofi/powermenu.rasi ]; then
+    mkdir -p ~/.config/rofi
+    cat <<"ROFIPOWERMENURASI" >~/.config/rofi/powermenu.rasi
 
 inputbar {
   children: [entry];
@@ -1331,16 +1307,16 @@ listview {
 
 ROFIPOWERMENURASI
 
-else
-	echo "powermenu.rasi file already exists."
-fi
-clear #Clear the screen
-check_error "Rofi Powermenu rasi"
+  else
+    echo "powermenu.rasi file already exists."
+  fi
+  clear #Clear the screen
+  check_error "Rofi Powermenu rasi"
 
-# Add xfce4 file helpers
-if [ ! -f ~/.config/xfce4/helpers.rc ]; then
-mkdir -p ~/.config/xfce4
-cat << "XFCE4HELPER" > ~/.config/xfce4/helpers.rc
+  # Add xfce4 file helpers
+  if [ ! -f ~/.config/xfce4/helpers.rc ]; then
+    mkdir -p ~/.config/xfce4
+    cat <<"XFCE4HELPER" >~/.config/xfce4/helpers.rc
 FileManager=Thunar
 TerminalEmulator=kitty
 WebBrowser=google-chrome
@@ -1348,33 +1324,33 @@ MailReader=
 
 XFCE4HELPER
 
-else
-	echo "xfce4 helper config file already exists."
-fi
-clear #Clear the screen
-check_error "xfce4 helpers.rc"
+  else
+    echo "xfce4 helper config file already exists."
+  fi
+  clear #Clear the screen
+  check_error "xfce4 helpers.rc"
 
-# Add kitty to open nvim and vim.
-if [ -f /usr/share/applications/nvim.desktop ]; then
-sudo sed -i 's/Exec=nvim %F/Exec=kitty -e nvim %F/' /usr/share/applications/nvim.desktop
-else
-	echo "no nvim.desktop file"
-fi
+  # Add kitty to open nvim and vim.
+  if [ -f /usr/share/applications/nvim.desktop ]; then
+    sudo sed -i 's/Exec=nvim %F/Exec=kitty -e nvim %F/' /usr/share/applications/nvim.desktop
+  else
+    echo "no nvim.desktop file"
+  fi
 
-if [ -f /usr/share/applications/vim.desktop ]; then
-sudo sed -i 's/Exec=vim %F/Exec=kitty -e vim %F/' /usr/share/applications/vim.desktop
-else
-	echo "no vim.desktop file"
-fi
-clear #Clear the screen
-check_error "Add kitty to open nvim and vim"
+  if [ -f /usr/share/applications/vim.desktop ]; then
+    sudo sed -i 's/Exec=vim %F/Exec=kitty -e vim %F/' /usr/share/applications/vim.desktop
+  else
+    echo "no vim.desktop file"
+  fi
+  clear #Clear the screen
+  check_error "Add kitty to open nvim and vim"
 
-# # # # # # # # # # #
-# Kitty config file.
+  # # # # # # # # # # #
+  # Kitty config file.
 
-if [ ! -f ~/.config/kitty/kitty.conf ]; then
-mkdir -p ~/.config/kitty/themes
-cat << "KITTYCONFIG" > ~/.config/kitty/kitty.conf
+  if [ ! -f ~/.config/kitty/kitty.conf ]; then
+    mkdir -p ~/.config/kitty/themes
+    cat <<"KITTYCONFIG" >~/.config/kitty/kitty.conf
 # A default configuration file can also be generated by running:
 # kitty +runpy 'from kitty.config import *; print(commented_out_default_config())'
 #
@@ -1707,56 +1683,52 @@ include ~/.cache/wal/colors-kitty.conf
 
 KITTYCONFIG
 
-else
-	echo "Kitty config already exists."
-fi
-clear #Clear the screen
-check_error "Kitty config file"
+  else
+    echo "Kitty config already exists."
+  fi
+  clear #Clear the screen
+  check_error "Kitty config file"
 
+  # SDDM SDDM LOGIN WALLPAPER
 
-# SDDM SDDM LOGIN WALLPAPER
+  sudo mkdir -p /usr/share/wallpapers
+  sudo chmod 777 /usr/share/wallpapers
+  sudo cp $(find /opt/qmade/wallpapers -type f -name "*.jpg" | shuf -n 1) /usr/share/wallpapers/login-wallpape.jpg
+  sudo chmod 777 /usr/share/wallpapers/login-wallpape.jpg
 
-sudo mkdir -p /usr/share/wallpapers
-sudo chmod 777 /usr/share/wallpapers
-sudo cp $(find /opt/qmade/wallpapers -type f -name "*.jpg" | shuf -n 1) /usr/share/wallpapers/login-wallpape.jpg
-sudo chmod 777 /usr/share/wallpapers/login-wallpape.jpg
+  # SDDM New login wallpaper
+  sudo chmod 777 /usr/share/sddm/themes/breeze
+  sudo chmod 777 /usr/share/sddm/themes/breeze/theme.conf
 
+  NEW_LOGIN_WALLPAPER="/usr/share/wallpapers/login-wallpape.jpg"
 
-# SDDM New login wallpaper
-sudo chmod 777 /usr/share/sddm/themes/breeze
-sudo chmod 777 /usr/share/sddm/themes/breeze/theme.conf
-
-NEW_LOGIN_WALLPAPER="/usr/share/wallpapers/login-wallpape.jpg"
-
-# Check if the breeze/theme.conf file exists
-if [ -f "/usr/share/sddm/themes/breeze/theme.conf" ]; then
+  # Check if the breeze/theme.conf file exists
+  if [ -f "/usr/share/sddm/themes/breeze/theme.conf" ]; then
     # Use sed to replace the background line
     sed -i "s|background=.*$|background=$NEW_LOGIN_WALLPAPER|" "/usr/share/sddm/themes/breeze/theme.conf"
     echo "Updated background image in /usr/share/sddm/themes/breeze/theme.conf"
-else
+  else
     echo "Error: File /usr/share/sddm/themes/breeze/theme.conf not found"
-fi
-check_error "NEW SDDM LOGIN WALLPAPER"
+  fi
+  check_error "NEW SDDM LOGIN WALLPAPER"
 
+  # ---------------------------------------------------------------------------------------
+  cd /tmp/
 
-# ---------------------------------------------------------------------------------------
-cd /tmp/
+  # FastFetch Install.
+  FASTFETCH_VERSION=2.40.3
+  wget https://github.com/fastfetch-cli/fastfetch/releases/download/$FASTFETCH_VERSION/fastfetch-linux-amd64.deb && sudo dpkg -i fastfetch-linux-amd64.deb && rm fastfetch-linux-amd64.deb
+  clear #Clear the screen
+  check_error "FastFetch install"
 
-# FastFetch Install.
-FASTFETCH_VERSION=2.40.3
-wget https://github.com/fastfetch-cli/fastfetch/releases/download/$FASTFETCH_VERSION/fastfetch-linux-amd64.deb && sudo dpkg -i fastfetch-linux-amd64.deb && rm fastfetch-linux-amd64.deb
-clear #Clear the screen
-check_error "FastFetch install"
+  # WaterFox install - https://www.waterfox.net/download/
+  WATERFOX_VERSION=6.5.7
+  wget -O waterfox.tar.bz2 https://cdn1.waterfox.net/waterfox/releases/$WATERFOX_VERSION/Linux_x86_64/waterfox-$WATERFOX_VERSION.tar.bz2
+  tar -xvf waterfox.tar.bz2
+  sudo mv waterfox /opt/
+  sudo chown -R root:root /opt/waterfox/
 
-
-# WaterFox install - https://www.waterfox.net/download/
-WATERFOX_VERSION=6.5.7
-wget -O waterfox.tar.bz2 https://cdn1.waterfox.net/waterfox/releases/$WATERFOX_VERSION/Linux_x86_64/waterfox-$WATERFOX_VERSION.tar.bz2
-tar -xvf waterfox.tar.bz2
-sudo mv waterfox /opt/
-sudo chown -R root:root /opt/waterfox/
-
-cat << EOF | sudo tee "/usr/share/applications/waterfox.desktop" > /dev/null
+  cat <<EOF | sudo tee "/usr/share/applications/waterfox.desktop" >/dev/null
 [Desktop Entry]
 Name=Waterfox
 Exec=/opt/waterfox/waterfox
@@ -1765,65 +1737,61 @@ Type=Application
 Categories=Network;WebBrowser;
 EOF
 
-sudo ln -s /opt/waterfox/waterfox /usr/bin/waterfox
+  sudo ln -s /opt/waterfox/waterfox /usr/bin/waterfox
 
-clear #Clear the screen
-check_error "WaterFox install"
+  clear #Clear the screen
+  check_error "WaterFox install"
 
+  # Yazi File Manager
+  # https://github.com/sxyazi/yazi/releases/latest
+  YAZI_VERSION=v25.4.8
+  wget https://github.com/sxyazi/yazi/releases/download/$YAZI_VERSION/yazi-x86_64-unknown-linux-musl.zip
+  unzip yazi-x86_64-unknown-linux-musl.zip
+  sudo cp yazi-x86_64-unknown-linux-musl/yazi /usr/bin/
+  sudo chown root:root /usr/bin/yazi
+  sudo chmod +x /usr/bin/yazi
 
-# Yazi File Manager
-# https://github.com/sxyazi/yazi/releases/latest
-YAZI_VERSION=v25.4.8
-wget https://github.com/sxyazi/yazi/releases/download/$YAZI_VERSION/yazi-x86_64-unknown-linux-musl.zip
-unzip yazi-x86_64-unknown-linux-musl.zip
-sudo cp yazi-x86_64-unknown-linux-musl/yazi /usr/bin/
-sudo chown root:root /usr/bin/yazi
-sudo chmod +x /usr/bin/yazi
+  clear #Clear the screen
+  check_error "Yazi File Manager install"
 
-clear #Clear the screen
-check_error "Yazi File Manager install"
-
-
-# Systemctl enable --user
-# See list run: systemctl list-unit-files --state=enabled
-if [ $(whoami) != "root" ]; then
+  # Systemctl enable --user
+  # See list run: systemctl list-unit-files --state=enabled
+  if [ $(whoami) != "root" ]; then
     # Sound systemctl enable --user
     systemctl enable --user --now pipewire.socket pipewire-pulse.socket wireplumber.service
-else
-    echo "#!/usr/bin/env bash" >> ~/.first-login-user-setup
-    echo "systemctl enable --user --now pipewire.socket pipewire-pulse.socket wireplumber.service" >> ~/.first-login-user-setup
-fi
-check_error "Systemctl enable for user"
+  else
+    echo "#!/usr/bin/env bash" >>~/.first-login-user-setup
+    echo "systemctl enable --user --now pipewire.socket pipewire-pulse.socket wireplumber.service" >>~/.first-login-user-setup
+  fi
+  check_error "Systemctl enable for user"
 
+  # LM-Sensors config
+  sudo sensors-detect --auto
 
-# LM-Sensors config
-sudo sensors-detect --auto
-
-# Remove .first-login file --------------------------------------------------------------
-if [ -f ~/.first-login ]; then
+  # Remove .first-login file --------------------------------------------------------------
+  if [ -f ~/.first-login ]; then
     rm ~/.first-login
-fi
+  fi
 
-# Edit GRUB BOOT TIMEOUT ----------------------------------------------------------------
-sudo sed -i 's+GRUB_TIMEOUT=5+GRUB_TIMEOUT=1+g' /etc/default/grub && sudo update-grub
-clear #Clear the screen
-check_error "GRUB BOOT TIMEOUT"
+  # Edit GRUB BOOT TIMEOUT ----------------------------------------------------------------
+  sudo sed -i 's+GRUB_TIMEOUT=5+GRUB_TIMEOUT=1+g' /etc/default/grub && sudo update-grub
+  clear #Clear the screen
+  check_error "GRUB BOOT TIMEOUT"
 
-# Check for Nvidia graphics card and install drivers ----------------------------------------------
+  # Check for Nvidia graphics card and install drivers ----------------------------------------------
 
-if lsmod | grep -iq nouveau; then
+  if lsmod | grep -iq nouveau; then
     #sudo rmmod -f nouveau #remove test
     echo "blacklist nouveau" | sudo tee -a /etc/modprobe.d/nouveau-blacklist.conf
-fi
+  fi
 
-if lsmod | grep -iq nvidia; then
+  if lsmod | grep -iq nvidia; then
     sudo rmmod -f nvidia_modeset
     sudo rmmod -f nvidia_drm
     sudo rmmod -f nvidia
-fi
+  fi
 
-
-if lspci | grep -i nvidia; then    
+  if lspci | grep -i nvidia; then
     echo "Installing required packages..."
     sudo apt -y install linux-headers-$(uname -r)
     sudo apt -y install gcc make acpid dkms libglvnd-core-dev libglvnd0 libglvnd-dev
@@ -1851,89 +1819,87 @@ if lspci | grep -i nvidia; then
     check_error "downloading NVIDIA driver"
 
     chmod +x NVIDIA-Linux-x86_64-$NVIDIAGETVERSION.run
-#    echo 'nvidia-settings --assign CurrentMetaMode="nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }"' >> ~/.config/qtile/autostart.sh
+    #    echo 'nvidia-settings --assign CurrentMetaMode="nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }"' >> ~/.config/qtile/autostart.sh
     sudo ./NVIDIA-Linux-x86_64-$NVIDIAGETVERSION.run --silent --no-questions --disable-nouveau --allow-installation-with-running-driver -M proprietary --skip-module-load
     # --run-nvidia-xconfig
-fi
-clear #Clear the screen
-check_error "NVIDIA driver installation"
+  fi
+  clear #Clear the screen
+  check_error "NVIDIA driver installation"
 
+  # ---------------------------------------------------------------------------------------
+  # Install Done ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##
+  # ---------------------------------------------------------------------------------------
 
-# ---------------------------------------------------------------------------------------
-# Install Done ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##
-# ---------------------------------------------------------------------------------------
+  # Test Qtile config file.
+  # Run qtileconfig-test-venv or qtileconfig-test for no python venv.
 
-# Test Qtile config file.
-# Run qtileconfig-test-venv or qtileconfig-test for no python venv.
-
-# End of function start_installation
+  # End of function start_installation
 }
 
 # Start of update_qmade function
 function update_qmade() {
-cd /opt
+  cd /opt
 
-if [ -d qtile_venv ]; then
+  if [ -d qtile_venv ]; then
     sudo rm -rf qtile_venv
-fi
+  fi
 
-sudo python3 -m venv qtile_venv
-sudo chmod -R 777 qtile_venv
+  sudo python3 -m venv qtile_venv
+  sudo chmod -R 777 qtile_venv
 
-cd qtile_venv
+  cd qtile_venv
 
-git clone https://github.com/qtile/qtile.git
-git clone https://github.com/ITmail-dk/qmade.git
+  git clone https://github.com/qtile/qtile.git
+  git clone https://github.com/ITmail-dk/qmade.git
 
-source bin/activate
-pip install dbus-next psutil wheel pyxdg
-pip install -r qtile/requirements.txt
-bin/pip install qtile/.
+  source bin/activate
+  pip install dbus-next psutil wheel pyxdg
+  pip install -r qtile/requirements.txt
+  bin/pip install qtile/.
 
-# PyWAL install via pip3 for auto-generated color themes
-pip3 install pywal16[all]
-deactivate
+  # PyWAL install via pip3 for auto-generated color themes
+  pip3 install pywal16[all]
+  deactivate
 
-sudo cp bin/qtile /usr/bin/
-sudo cp bin/wal /usr/bin/
-sudo cp qmade/install.sh /usr/bin/qmade
-sudo chmod +x /usr/bin/qmade
+  sudo cp bin/qtile /usr/bin/
+  sudo cp bin/wal /usr/bin/
+  sudo cp qmade/install.sh /usr/bin/qmade
+  sudo chmod +x /usr/bin/qmade
 
-# SDDM New login wallpaper
-sudo chmod 777 /usr/share/sddm/themes/breeze
-sudo chmod 777 /usr/share/sddm/themes/breeze/theme.conf
+  # SDDM New login wallpaper
+  sudo chmod 777 /usr/share/sddm/themes/breeze
+  sudo chmod 777 /usr/share/sddm/themes/breeze/theme.conf
 
-sudo mkdir -p /usr/share/wallpapers
-sudo chmod 777 /usr/share/wallpapers
-sudo cp $(find qmade/wallpapers -type f -name "*.jpg" | shuf -n 1) /usr/share/wallpapers/login-wallpape.jpg
+  sudo mkdir -p /usr/share/wallpapers
+  sudo chmod 777 /usr/share/wallpapers
+  sudo cp $(find qmade/wallpapers -type f -name "*.jpg" | shuf -n 1) /usr/share/wallpapers/login-wallpape.jpg
 
-NEW_LOGIN_WALLPAPER="/usr/share/wallpapers/login-wallpape.jpg"
+  NEW_LOGIN_WALLPAPER="/usr/share/wallpapers/login-wallpape.jpg"
 
-if [ -f "/usr/share/sddm/themes/breeze/theme.conf" ]; then
+  if [ -f "/usr/share/sddm/themes/breeze/theme.conf" ]; then
     # Use sed to replace the background line
     sed -i "s|background=.*$|background=$NEW_LOGIN_WALLPAPER|" "/usr/share/sddm/themes/breeze/theme.conf"
     echo "Updated background image in /usr/share/sddm/themes/breeze/theme.conf"
-else
+  else
     echo "Error: File /usr/share/sddm/themes/breeze/theme.conf not found"
-fi
+  fi
 
-
-if [ -d /usr/share/xsessions/ ]; then
+  if [ -d /usr/share/xsessions/ ]; then
     find /usr/share/xsessions/ -name plasma* -exec sudo rm -f {} \;
     sudo update-alternatives --remove x-session-manager /usr/bin/startplasma-x11
-fi
-if [ -d /usr/share/wayland-sessions/ ]; then
+  fi
+  if [ -d /usr/share/wayland-sessions/ ]; then
     find /usr/share/wayland-sessions/ -name plasma* -exec sudo rm -f {} \;
     sudo update-alternatives --remove x-session-manager /usr/bin/startplasma-x11
-fi
+  fi
 
-echo "QMADE Update done ;-)"
-# End of update_qmade function
+  echo "QMADE Update done ;-)"
+  # End of update_qmade function
 }
 
 function nvidia_install_upgrade() {
-	echo "Nvidia install / Update."
-if lspci | grep -i nvidia; then    
+  echo "Nvidia install / Update."
+  if lspci | grep -i nvidia; then
     echo "Installing required packages..."
     sudo apt -y install linux-headers-$(uname -r)
     sudo apt -y install gcc make acpid dkms libglvnd-core-dev libglvnd0 libglvnd-dev
@@ -1961,56 +1927,54 @@ if lspci | grep -i nvidia; then
     check_error "downloading NVIDIA driver"
 
     chmod +x NVIDIA-Linux-x86_64-$NVIDIAGETVERSION.run
-#    echo 'nvidia-settings --assign CurrentMetaMode="nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }"' >> ~/.config/qtile/autostart.sh
+    #    echo 'nvidia-settings --assign CurrentMetaMode="nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }"' >> ~/.config/qtile/autostart.sh
     sudo ./NVIDIA-Linux-x86_64-$NVIDIAGETVERSION.run --silent --no-questions --disable-nouveau --allow-installation-with-running-driver -M proprietary --skip-module-load
     # --run-nvidia-xconfig
-fi
-clear #Clear the screen
-check_error "NVIDIA driver installation"
+  fi
+  clear #Clear the screen
+  check_error "NVIDIA driver installation"
 
-# End of nvidia_install_upgrad function
+  # End of nvidia_install_upgrad function
 }
-
 
 function help_wiki() {
-echo "Help / WiKi for QMADE ;-)"
+  echo "Help / WiKi for QMADE ;-)"
 }
-
 
 main() {
-    if [ -z "$1" ]; then
-        echo "Starting the installation."
-        start_installation
-        clear
-        sudo reboot
-    fi
+  if [ -z "$1" ]; then
+    echo "Starting the installation."
+    start_installation
+    clear
+    sudo reboot
+  fi
 
-    case $1 in
-        help)
-		echo "Help..!"
-		help_wiki
-		;;
-        update)
-		echo "Update QMADE."
-		update_qmade
-		;;
-	system-update)
-		echo "APT Update / Upgrade + QTILE / QMADE Upgrade."
-		sudo apt update && sudo apt upgrade -y && sudo apt clean && sudo apt autoremove -y && \
-		update_qmade && \
-		nvidia_install_upgrade
-		;;
-	system-dist-upgrade)
-		echo "Full System Dist Update / Upgrade + QTILE & QMADE."
-		sudo apt update && sudo apt full-upgrade -y && sudo apt dist-upgrade && \
-		update_qmade && \
-		nvidia_install_upgrade
-		;;
-        *)
-		echo "Unknown function: $1. Available functions are: help, update, system-update and system-dist-upgrade"
-		exit 1
-		;;
-    esac
+  case $1 in
+  help)
+    echo "Help..!"
+    help_wiki
+    ;;
+  update)
+    echo "Update QMADE."
+    update_qmade
+    ;;
+  system-update)
+    echo "APT Update / Upgrade + QTILE / QMADE Upgrade."
+    sudo apt update && sudo apt upgrade -y && sudo apt clean && sudo apt autoremove -y &&
+      update_qmade &&
+      nvidia_install_upgrade
+    ;;
+  system-dist-upgrade)
+    echo "Full System Dist Update / Upgrade + QTILE & QMADE."
+    sudo apt update && sudo apt full-upgrade -y && sudo apt dist-upgrade &&
+      update_qmade &&
+      nvidia_install_upgrade
+    ;;
+  *)
+    echo "Unknown function: $1. Available functions are: help, update, system-update and system-dist-upgrade"
+    exit 1
+    ;;
+  esac
 }
 
-main "$@
+main "$@"
