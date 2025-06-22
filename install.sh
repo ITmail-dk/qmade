@@ -1822,6 +1822,10 @@ if lsmod | grep -iq nvidia; then
     sudo rmmod -f nvidia
 fi
 
+# End of function start_installation
+}
+
+function nvidia_install_upgrade() {
 
 if lspci | grep -i nvidia; then    
     echo "Installing required packages..."
@@ -1857,7 +1861,7 @@ if lspci | grep -i nvidia; then
 fi
 clear #Clear the screen
 check_error "NVIDIA driver installation"
-
+}
 
 # ---------------------------------------------------------------------------------------
 # Install Done ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##
@@ -1868,8 +1872,6 @@ sudo reboot
 # Test Qtile config file.
 # Run qtileconfig-test-venv or qtileconfig-test for no python venv.
 
-# End of function start_installation
-}
 
 # Start of update_qmade function
 function update_qmade() {
@@ -1943,6 +1945,7 @@ main() {
     if [ -z "$1" ]; then
         echo "Starting the installation."
         start_installation
+	nvidia_install_upgrade
     fi
 
     case $1 in
@@ -1954,6 +1957,16 @@ main() {
             echo "Update QMADE."
             update_qmade
             ;;
+	system-update)
+		echo "APT Update / Upgrade + QTILE / QMADE Upgrade."
+		sudo apt update && sudo apt upgrade -y && sudo apt clean && sudo apt autoremove -y
+		update_qmade
+		;;
+	system-dist-upgrade)
+		sudo apt update && sudo apt full-upgrade -y && sudo apt dist-upgrade
+		update_qmade
+		nvidia_install_upgrade
+		;;
         *)
             echo "Unknown function: $1. Available functions are: help and update"
             exit 1
