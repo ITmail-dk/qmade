@@ -1822,10 +1822,6 @@ if lsmod | grep -iq nvidia; then
     sudo rmmod -f nvidia
 fi
 
-# End of function start_installation
-}
-
-function nvidia_install_upgrade() {
 
 if lspci | grep -i nvidia; then    
     echo "Installing required packages..."
@@ -1861,9 +1857,7 @@ if lspci | grep -i nvidia; then
 fi
 clear #Clear the screen
 check_error "NVIDIA driver installation"
-}
 
-nvidia_install_upgrade
 
 # ---------------------------------------------------------------------------------------
 # Install Done ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##
@@ -1874,6 +1868,8 @@ sudo reboot
 # Test Qtile config file.
 # Run qtileconfig-test-venv or qtileconfig-test for no python venv.
 
+# End of function start_installation
+}
 
 # Start of update_qmade function
 function update_qmade() {
@@ -1932,11 +1928,50 @@ if [ -d /usr/share/wayland-sessions/ ]; then
     sudo update-alternatives --remove x-session-manager /usr/bin/startplasma-x11
 fi
 
-
 echo "QMADE Update done ;-)"
-
 # End of update_qmade function
 }
+
+function nvidia_install_upgrade() {
+	echo "Nvidia install / Update."
+if lspci | grep -i nvidia; then    
+    echo "Installing required packages..."
+    sudo apt -y install linux-headers-$(uname -r)
+    sudo apt -y install gcc make acpid dkms libglvnd-core-dev libglvnd0 libglvnd-dev
+    check_error "package installation"
+
+    echo "Removing old NVIDIA drivers..."
+    sudo apt remove -y nvidia-* && sudo apt autoremove -y $(dpkg -l nvidia-driver* | grep ii | awk '{print $2}')
+    check_error "removal of old NVIDIA drivers"
+
+    echo "Enabling i386 architecture and installing 32-bit libraries..."
+    sudo dpkg --add-architecture i386 && sudo apt update && sudo apt install -y libc6:i386
+    check_error "installation of i386 libraries"
+
+    #echo "Updating GRUB configuration..."
+    #GRUB_CONF="/etc/default/grub"
+    #sudo sed -i '/^GRUB_CMDLINE_LINUX_DEFAULT=/ s/"$/ rd.driver.blacklist=nouveau"/' $GRUB_CONF
+    #check_error "updating GRUB configuration"
+    #sudo update-grub
+    #check_error "GRUB update"
+
+    #NVIDIAGETVERSION=570.133.07
+    NVIDIAGETVERSION="$(curl -s "https://www.nvidia.com/en-us/drivers/unix/" | grep "Latest Production Branch Version:" | awk -F'"> ' '{print $2}' | cut -d'<' -f1 | awk 'NR==1')"
+    echo "Downloading and installing NVIDIA $NVIDIAGETVERSION driver..."
+    wget https://us.download.nvidia.com/XFree86/Linux-x86_64/$NVIDIAGETVERSION/NVIDIA-Linux-x86_64-$NVIDIAGETVERSION.run
+    check_error "downloading NVIDIA driver"
+
+    chmod +x NVIDIA-Linux-x86_64-$NVIDIAGETVERSION.run
+#    echo 'nvidia-settings --assign CurrentMetaMode="nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }"' >> ~/.config/qtile/autostart.sh
+    sudo ./NVIDIA-Linux-x86_64-$NVIDIAGETVERSION.run --silent --no-questions --disable-nouveau --allow-installation-with-running-driver -M proprietary --skip-module-load
+    # --run-nvidia-xconfig
+fi
+clear #Clear the screen
+check_error "NVIDIA driver installation"
+
+# End of unvidia_install_upgrad function
+}
+
 
 function help_wiki() {
 echo "Help / WiKi for QMADE ;-)"
