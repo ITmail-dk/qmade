@@ -1961,21 +1961,21 @@ main() {
   fi
 
   case $1 in
-  help)
+  "help" | "--help" | "-h")
     echo "Help..!"
     help_wiki
     ;;
-  update)
+  "update" | "--update" | "-u")
     echo "Update QMADE."
     update_qmade
     ;;
-  system-update)
+  "system-update" | "--system-update" | "-su")
     echo "APT Update / Upgrade + QTILE / QMADE Upgrade."
     sudo apt update && sudo apt upgrade -y && sudo apt clean && sudo apt autoremove -y
     update_qmade
     nvidia_install_upgrade
     ;;
-  system-dist-upgrade)
+  "system-dist-upgrade" | "--system-dist-upgrade" | "-sdu")
     echo "Full System Distro Update / Upgrade + QTILE & QMADE."
     sudo apt update && sudo apt full-upgrade -y && sudo apt dist-upgrade
     update_qmade
