@@ -1908,8 +1908,9 @@ function nvidia_install_upgrade() {
       exit 1
     fi
   }
-  echo "Nvidia install / Update."
+
   if lspci | grep -i nvidia; then
+    echo "Nvidia install / Update."
     echo "Installing required packages..."
     sudo apt -y install linux-headers-$(uname -r)
     sudo apt -y install gcc make acpid dkms libglvnd-core-dev libglvnd0 libglvnd-dev
