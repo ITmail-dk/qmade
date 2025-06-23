@@ -42,9 +42,10 @@ check out the Qtile config file under Keybindings in "~/.config/qtile/config.py"
 
 
 ## Custom commands after installation
-- "qmade update" Updates Qtile + QMADE and the Python virtual environment,  and some file properties for sddm.
-- "qmade system-update" Runs a APT Update, Upgrade, Clean, Autoremove + QTILE & QMADE Update + NVIDIA Drivers Update.
-- "qmade system-dist-upgrade" Runs a system-update as a Full Dist Upgrade. (Run it after changing the source list)
+"qmade update" Updates Qtile + QMADE and the Python virtual environment, and some file properties for sddm.
+"qmade system-update" Runs a APT Update, Upgrade, Clean, Autoremove + QTILE & QMADE Update + NVIDIA Drivers Update.
+"qmade system-dist-upgrade" Runs a system-update as a Full Dist Upgrade. (Run it after changing the source list)
+
 
 ## Information:
 - Window Manager: Qtile (Github From Source)
@@ -69,3 +70,4 @@ check out the Qtile config file under Keybindings in "~/.config/qtile/config.py"
 ## Roadmap:
 - Compositor: Wayland + XWayland.
 - Audio: Needs work and better setup process and configuration.
+- Wiki: General information about the setup and how to do things.

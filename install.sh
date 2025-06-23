@@ -106,7 +106,7 @@ function start_installation() {
   git clone https://github.com/ITmail-dk/qmade.git
 
   # qmade to usr/bin
-  sudo cp qmade/install.sh /usr/bin/qmade
+  sudo cp -fu qmade/install.sh /usr/bin/qmade
   sudo chmod +x /usr/bin/qmade
 
   # Qtile Config file
@@ -122,7 +122,7 @@ function start_installation() {
   # Add Wallpapers
   if [ ! -d ~/Wallpapers ]; then
     mkdir -p ~/Wallpapers
-    cp qmade/wallpapers/* ~/Wallpapers/
+    cp -rfu qmade/wallpapers/* ~/Wallpapers/
   else
     echo "Wallpapers folder already exists."
   fi
@@ -132,7 +132,7 @@ function start_installation() {
     sudo mv /etc/apt/sources.list /etc/apt/sources.list.bak
   fi
 
-  sudo cp -r qmade/src/apt/* /etc/apt/
+  sudo cp -rfu qmade/src/apt/* /etc/apt/
 
   check_error "Copy APT Sources list"
 
@@ -369,8 +369,8 @@ MCINI
   pip3 install pywal16[all]
   deactivate
 
-  sudo cp bin/qtile /usr/bin/
-  sudo cp bin/wal /usr/bin/
+  sudo cp -fu bin/qtile /usr/bin/
+  sudo cp -fu bin/wal /usr/bin/
   clear #Clear the screen
   check_error "Install Qtile and PyWAL from qtile_venv"
 
@@ -1749,7 +1749,7 @@ EOF
   YAZI_VERSION=v25.4.8
   wget https://github.com/sxyazi/yazi/releases/download/$YAZI_VERSION/yazi-x86_64-unknown-linux-musl.zip
   unzip yazi-x86_64-unknown-linux-musl.zip
-  sudo cp yazi-x86_64-unknown-linux-musl/yazi /usr/bin/
+  sudo cp -fu yazi-x86_64-unknown-linux-musl/yazi /usr/bin/
   sudo chown root:root /usr/bin/yazi
   sudo chmod +x /usr/bin/yazi
 
@@ -1863,9 +1863,9 @@ function update_qmade() {
   pip3 install pywal16[all]
   deactivate
 
-  sudo cp bin/qtile /usr/bin/
-  sudo cp bin/wal /usr/bin/
-  sudo cp qmade/install.sh /usr/bin/qmade
+  sudo cp -fu bin/qtile /usr/bin/
+  sudo cp -fu bin/wal /usr/bin/
+  sudo cp -fu qmade/install.sh /usr/bin/qmade
   sudo chmod +x /usr/bin/qmade
 
   # SDDM New login wallpaper
