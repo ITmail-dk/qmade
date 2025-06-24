@@ -1899,6 +1899,22 @@ function update_qmade() {
   # End of update_qmade function
 }
 
+function update_waterfox() {
+  cd /tmp/
+  sudo rm -rf /opt/waterfox
+
+  # WaterFox update - https://www.waterfox.net/download/
+  echo -en "Enter the new version number of WaterFox: "
+  read WATERFOX_VERSION
+
+  wget -O waterfox.tar.bz2 https://cdn1.waterfox.net/waterfox/releases/$WATERFOX_VERSION/Linux_x86_64/waterfox-$WATERFOX_VERSION.tar.bz2
+  tar -xvf waterfox.tar.bz2
+  sudo mv waterfox /opt/
+  sudo chown -R root:root /opt/waterfox/
+
+  sudo ln -s /opt/waterfox/waterfox /usr/bin/waterfox
+}
+
 function nvidia_install_upgrade() {
   check_error() {
     if [ $? -ne 0 ]; then
@@ -1981,8 +1997,12 @@ main() {
     update_qmade
     nvidia_install_upgrade
     ;;
+  update-waterfox)
+    echo "Updating Waterfox"
+    update_waterfox
+    ;;
   *)
-    echo "Unknown function: $1. Available functions are: help, update, system-update and system-dist-upgrade"
+    echo "Unknown function: $1. Available functions are: help, update, system-update, system-dist-upgrade, update-waterfox"
     exit 1
     ;;
   esac
