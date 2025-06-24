@@ -1960,7 +1960,6 @@ function nvidia_install_upgrade() {
   fi
   clear #Clear the screen
   check_error "NVIDIA driver installation"
-  echo "Nvidia Done"
   # End of nvidia_install_upgrad function
 }
 
