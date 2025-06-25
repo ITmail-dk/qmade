@@ -742,7 +742,7 @@ monitor.bluez.rules = [
     }
   }
 ]
-  WIREPLUMERDISSUS'
+WIREPLUMERDISSUS'
 
   clear #Clear the screen
   check_error "Wireplumber disable suspension"
