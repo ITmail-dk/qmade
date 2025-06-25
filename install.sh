@@ -700,6 +700,54 @@ AUTONEWWALLPAPERANDCOLORSBIN'
 
   # ------------------------------------------------------------------------
 
+  # Wireplumber disable suspension
+  sudo mkdir -p /etc/wireplumber/wireplumber.conf.d/
+  sudo bash -c 'cat << "WIREPLUMERDISSUS" >> /etc/wireplumber/wireplumber.conf.d/51-disable-suspension.conf
+monitor.alsa.rules = [
+  {
+    matches = [
+      {
+        # Matches all sources
+        node.name = "~alsa_input.*"
+      },
+      {
+        # Matches all sinks
+        node.name = "~alsa_output.*"
+      }
+    ]
+    actions = {
+      update-props = {
+        session.suspend-timeout-seconds = 0
+      }
+    }
+  }
+]
+# bluetooth devices
+monitor.bluez.rules = [
+  {
+    matches = [
+      {
+        # Matches all sources
+        node.name = "~bluez_input.*"
+      },
+      {
+        # Matches all sinks
+        node.name = "~bluez_output.*"
+      }
+    ]
+    actions = {
+      update-props = {
+        session.suspend-timeout-seconds = 0
+      }
+    }
+  }
+]
+  WIREPLUMERDISSUS'
+
+  clear #Clear the screen
+  check_error "Wireplumber disable suspension"
+
+  # Qtile xsessions file
   sudo mkdir -p /usr/share/xsessions/
   sudo bash -c 'cat << "QTILEDESKTOP" >> /usr/share/xsessions/qtile.desktop
 [Desktop Entry]
@@ -746,7 +794,11 @@ xrdb ~/.Xresources &
 xset r rate 200 35 &
 xset b off &
 
-keynav &
+#keynav &
+#kdeconnectd &
+
+export color_prompt=yes
+export XDG_CURRENT_DESKTOP=qtile
 
 # Remove .first-login file --------------------------------------------------------------
 if [ -f ~/.first-login ]; then
