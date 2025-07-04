@@ -1956,15 +1956,16 @@ function update_waterfox() {
   sudo rm -rf /opt/waterfox
 
   # WaterFox update - https://www.waterfox.net/download/
-  echo -en "Enter the new version number of WaterFox: "
-  read WATERFOX_VERSION
+  #echo -en "Enter the new version number of WaterFox: "
+  #read WATERFOX_VERSION
+  WATERFOX_VERSION=$(curl -s "https://api.github.com/repos/BrowserWorks/waterfox/releases/latest" | grep '"tag_name"' | awk -F'"' '{print $4}')
 
   wget -O waterfox.tar.bz2 https://cdn1.waterfox.net/waterfox/releases/$WATERFOX_VERSION/Linux_x86_64/waterfox-$WATERFOX_VERSION.tar.bz2
   tar -xvf waterfox.tar.bz2
   sudo mv waterfox /opt/
   sudo chown -R root:root /opt/waterfox/
 
-  sudo ln -s /opt/waterfox/waterfox /usr/bin/waterfox
+  #sudo ln -s /opt/waterfox/waterfox /usr/bin/waterfox
 }
 
 function nvidia_install_upgrade() {
@@ -2053,7 +2054,7 @@ main() {
     update_waterfox
     ;;
   *)
-    echo "Unknown function: $1. Available functions are: help, update, system-update, system-dist-upgrade, update-waterfox"
+    echo "Unknown function: $1. Available functions are: help, update or -u, system-update or -su, system-dist-upgrade or -sdu, update-waterfox"
     exit 1
     ;;
   esac
