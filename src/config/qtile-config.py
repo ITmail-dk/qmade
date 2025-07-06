@@ -275,7 +275,7 @@ screens = [
     Screen(
         top=bar.Bar(
             [
-                widget.CurrentLayoutIcon(scale=0.7, padding=5),
+                widget.CurrentLayout(scale=0.7, padding=5, icon_first=True),
                 widget.Spacer(length=5),
                 widget.GroupBox(fontsize=18, highlight_method="text", this_current_screen_border="#f7f7f7", highlight_color=Color14, this_screen_border=Color3, urgent_border=Color7, active=Color5, inactive=Color8, borderwidth=0),
                 widget.Spacer(length=9),
