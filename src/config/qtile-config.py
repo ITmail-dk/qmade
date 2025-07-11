@@ -262,7 +262,7 @@ layouts = [
 ]
 
 widget_defaults = dict(
-    font="JetBrainsMono Nerd Font",
+    font="JetBrainsMono Nerd Font Propo",
     fontsize=14,
     background=Color0,
     padding=6,
@@ -276,12 +276,12 @@ screens = [
         top=bar.Bar(
             [
                 widget.CurrentLayout(scale=0.7, padding=5, icon_first=True),
-                widget.Spacer(length=5),
+                widget.Spacer(length=2),
                 widget.GroupBox(fontsize=18, highlight_method="text", this_current_screen_border="#f7f7f7", highlight_color=Color14, this_screen_border=Color3, urgent_border=Color7, active=Color5, inactive=Color8, borderwidth=0),
-                widget.Spacer(length=9),
+                widget.Spacer(length=2),
                 widget.Prompt(),
                 widget.Spacer(), # to get transparent background add background="#000000CC"
-                widget.WindowName(width=bar.CALCULATED, max_chars=120),
+                widget.WindowName(width=bar.CALCULATED, max_chars=130),
                 widget.Spacer(), # to get transparent background add background="#000000CC"
                 #widget.Systray(fmt="󱊖  {}", icon_size=16),
                 # NB Wayland is incompatible with Systray, consider using StatusNotifier
@@ -290,13 +290,13 @@ screens = [
                 #widget.NetGraph(type='line', line_width=1),
                 #widget.Net(prefix='M'),
                 #widget.ThermalSensor(format='CPU: {temp:.0f}{unit}'),
-                widget.Volume(fmt="  {}"),
-		widget.Spacer(length=5),
-                widget.Systray(fmt="󱊖  {}", icon_size=16),
-		widget.Spacer(length=5),
-                widget.Clock(fmt="  {}",format="%A %d-%m-%Y %H:%M %p"),
+                widget.Volume(fmt=" {}"),
+		widget.Spacer(length=7),
+                widget.Systray(background=Color0, padding=5, icon_size=16),
+		widget.Spacer(length=1),
+                widget.Clock(fmt=" {}",format="%A %d-%m-%Y %H:%M %p"),
                 widget.QuickExit(default_text='', countdown_format='{}', fontsize=16, countdown_start=3),
-                widget.Spacer(length=20),
+                widget.Spacer(length=10),
             ], 30, # Define bar height
             background="#000000CC", opacity=0.90, # Bar background color can also take transparency with "hex color code" or 0.XX
             margin=[5, 5, 0, 5], # Space around bar as int or list of ints [N E S W]
