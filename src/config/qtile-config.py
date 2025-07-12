@@ -138,6 +138,10 @@ keys = [
     Key([mod, "mod1"], "m", lazy.spawn("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"), desc='Volume Mute Toggle'),
     Key([mod, "mod1", "control"], "a", lazy.spawn("audio-toggle"), desc='Audio Source Toggle'),
 
+    Key([mod, "mod1"], "s", lazy.spawn("playerctl play-pause"), desc='Play-Pause'),
+    Key([mod, "mod1"], "p", lazy.spawn("playerctl previous"), desc='Previous'),
+    Key([mod, "mod1"], "n", lazy.spawn("playerctl next"), desc='Next'),
+
     # XF86 Audio & Brightness keys
     Key([mod, "shift"], "a", lazy.spawn("pavucontrol"), desc='Audio Control Panel'),
     Key([], "XF86AudioRaiseVolume", lazy.spawn("wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%+"), desc='Volume Up'),
