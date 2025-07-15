@@ -124,6 +124,19 @@ function start_installation() {
     cat qmade/src/etc/environment | sudo tee /etc/environment
   fi
 
+  # ADD CONFIG FILES TO ETC
+  if [ -f qmade/src/etc/modprobe.d/audio_disable_powersave.conf ]; then
+    cat qmade/src/etc/modprobe.d/audio_disable_powersave.conf | sudo tee /etc/modprobe.d/audio_disable_powersave.conf
+  fi
+
+  if [ -f qmade/src/etc/pipewire/pipewire.conf.d/pipewire.conf ]; then
+    cat qmade/src/etc/pipewire/pipewire.conf.d/pipewire.conf | sudo tee /etc/pipewire/pipewire.conf.d/pipewire.conf
+  fi
+
+  if [ -f qmade/src/etc/wireplumber/wireplumber.conf.d/51-disable-suspension.conf ]; then
+    cat qmade/src/etc/wireplumber/wireplumber.conf.d/51-disable-suspension.conf | sudo tee /etc/wireplumber/wireplumber.conf.d/51-disable-suspension.conf
+  fi
+
   # Add Wallpapers
   if [ ! -d ~/Wallpapers ]; then
     mkdir -p ~/Wallpapers
