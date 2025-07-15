@@ -1965,6 +1965,8 @@ function update_qmade() {
     sudo update-alternatives --remove x-session-manager /usr/bin/startplasma-x11
   fi
 
+  auto-new-wallpaper-and-colors
+
   echo "QMADE Update done ;-)"
   # End of update_qmade function
 }
