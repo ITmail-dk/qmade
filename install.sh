@@ -1770,13 +1770,13 @@ KITTYCONFIG
   cd /tmp/
 
   # FastFetch Install.
-  FASTFETCH_VERSION=2.40.3
+  FASTFETCH_VERSION=$(curl -s "https://api.github.com/repos/fastfetch-cli/fastfetch/releases/latest" | grep '"tag_name"' | awk -F'"' '{print $4}')
   wget https://github.com/fastfetch-cli/fastfetch/releases/download/$FASTFETCH_VERSION/fastfetch-linux-amd64.deb && sudo dpkg -i fastfetch-linux-amd64.deb && rm fastfetch-linux-amd64.deb
   clear #Clear the screen
   check_error "FastFetch install"
 
   # WaterFox install - https://www.waterfox.net/download/
-  WATERFOX_VERSION=6.5.7
+  WATERFOX_VERSION=$(curl -s "https://api.github.com/repos/BrowserWorks/waterfox/releases/latest" | grep '"tag_name"' | awk -F'"' '{print $4}')
   wget -O waterfox.tar.bz2 https://cdn1.waterfox.net/waterfox/releases/$WATERFOX_VERSION/Linux_x86_64/waterfox-$WATERFOX_VERSION.tar.bz2
   tar -xvf waterfox.tar.bz2
   sudo mv waterfox /opt/
@@ -1798,7 +1798,7 @@ EOF
 
   # Yazi File Manager
   # https://github.com/sxyazi/yazi/releases/latest
-  YAZI_VERSION=v25.4.8
+  YAZI_VERSION=$(curl -s "https://api.github.com/repos/sxyazi/yazi/releases/latest" | grep '"tag_name"' | awk -F'"' '{print $4}')
   wget https://github.com/sxyazi/yazi/releases/download/$YAZI_VERSION/yazi-x86_64-unknown-linux-musl.zip
   unzip yazi-x86_64-unknown-linux-musl.zip
   sudo cp -fu yazi-x86_64-unknown-linux-musl/yazi /usr/bin/
@@ -2042,12 +2042,14 @@ main() {
     sudo apt update && sudo apt upgrade -y && sudo apt clean && sudo apt autoremove -y
     update_qmade
     nvidia_install_upgrade
+    sudo update-initramfs -u -k all
     ;;
   "system-dist-upgrade" | "--system-dist-upgrade" | "-sdu")
     echo "Full System Distro Update / Upgrade + QTILE & QMADE."
     sudo apt update && sudo apt full-upgrade -y && sudo apt dist-upgrade
     update_qmade
     nvidia_install_upgrade
+    sudo update-initramfs -u -k all
     ;;
   update-waterfox)
     echo "Updating Waterfox"
