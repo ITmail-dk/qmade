@@ -269,7 +269,7 @@ widget_defaults = dict(
     font="JetBrainsMono Nerd Font Propo",
     fontsize=14,
     background=Color0,
-    padding=6,
+    padding=1,
 )
 extension_defaults = widget_defaults.copy()
 

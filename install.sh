@@ -119,6 +119,11 @@ function start_installation() {
   clear #Clear the screen
   check_error "Qtile Config file"
 
+  # ADD ETC Environment
+  if [ -f qmade/src/etc/environment ]; then
+    cat qmade/src/etc/environment | sudo tee /etc/environment
+  fi
+
   # Add Wallpapers
   if [ ! -d ~/Wallpapers ]; then
     mkdir -p ~/Wallpapers
