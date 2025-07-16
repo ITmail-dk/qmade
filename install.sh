@@ -108,6 +108,8 @@ function start_installation() {
   # qmade to usr/bin
   sudo cp -fu qmade/install.sh /usr/bin/qmade
   sudo chmod +x /usr/bin/qmade
+  sudo sed -i 's/start_installation #main-run/help_wiki #main-run/g' /usr/bin/qmade
+  sudo sed -i 's/sudo reboot #main-run/#sudo reboot #main-run/g' /usr/bin/qmade
 
   # Qtile Config file
   if [ ! -f ~/.config/qtile/config.py ]; then
@@ -1937,6 +1939,7 @@ function update_qmade() {
   sudo cp -fu bin/wal /usr/bin/
   sudo cp -fu qmade/install.sh /usr/bin/qmade
   sudo chmod +x /usr/bin/qmade
+  sudo sed -i 's/start_installation #main-run/help_wiki #main-run/g' /usr/bin/qmade
 
   # SDDM New login wallpaper
   sudo chmod 777 /usr/share/sddm/themes/breeze
@@ -2042,10 +2045,8 @@ function help_wiki() {
 
 main() {
   if [ -z "$1" ]; then
-    echo "Starting the installation."
-    start_installation
-    clear
-    sudo reboot
+    start_installation #main-run
+    sudo reboot        #main-run
   fi
 
   case $1 in
