@@ -691,24 +691,10 @@ PYWALCOLORSTEMPALETROFI
   check_error "gsettings set color-scheme"
 
   # auto-new-wallpaper-and-colors BIN
-  sudo bash -c 'cat << "AUTONEWWALLPAPERANDCOLORSBIN" >> /usr/bin/auto-new-wallpaper-and-colors
-#!/usr/bin/env bash
-
-wal --cols16 darken -q -i ~/Wallpapers --backend colorz
-# Backends: colorz, haishoku, wal, colorthief, fast_colorthief, okthief, schemer2, modern_colorthief
-
-notify-send -u low "Automatically new background and color theme" "Please wait while i find a new background image and some colors to match"
-
-qtile cmd-obj -o cmd -f reload_config
-kitty +kitten themes --reload-in=all Current-theme
-
-cp $(cat "$HOME/.cache/wal/wal") /usr/share/wallpapers/login-wallpape.jpg
-
-notify-send -u low "Automatically new background and color theme" "The background image and colors has been updated."
-
-AUTONEWWALLPAPERANDCOLORSBIN'
-
-  sudo chmod +x /usr/bin/auto-new-wallpaper-and-colors
+  if [ -f qmade/src/usr/bin/auto-new-wallpaper-and-colors.sh]; then
+    cat qmade/src/usr/bin/auto-new-wallpaper-and-colors.sh | sudo tee /usr/bin/auto-new-wallpaper-and-colors
+    sudo chmod +x /usr/bin/auto-new-wallpaper-and-colors
+  fi
   clear #Clear the screen
   check_error "auto-new-wallpaper-and-colors bin"
 
@@ -817,8 +803,8 @@ xset b off &
 #keynav &
 #kdeconnectd &
 
-export color_prompt=yes
-export XDG_CURRENT_DESKTOP=qtile
+#export color_prompt=yes
+#export XDG_CURRENT_DESKTOP=qtile
 
 # Remove .first-login file --------------------------------------------------------------
 if [ -f ~/.first-login ]; then
