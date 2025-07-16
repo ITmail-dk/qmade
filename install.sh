@@ -140,7 +140,7 @@ function start_installation() {
   fi
 
   # auto-new-wallpaper-and-colors BIN
-  if [ -f qmade/src/usr/bin/auto-new-wallpaper-and-colors.sh]; then
+  if [ -f qmade/src/usr/bin/auto-new-wallpaper-and-colors.sh ]; then
     cat qmade/src/usr/bin/auto-new-wallpaper-and-colors.sh | sudo tee /usr/bin/auto-new-wallpaper-and-colors
     sudo chmod +x /usr/bin/auto-new-wallpaper-and-colors
   fi
