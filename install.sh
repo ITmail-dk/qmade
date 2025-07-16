@@ -139,6 +139,14 @@ function start_installation() {
     cat qmade/src/etc/wireplumber/wireplumber.conf.d/51-disable-suspension.conf | sudo tee /etc/wireplumber/wireplumber.conf.d/51-disable-suspension.conf
   fi
 
+  # auto-new-wallpaper-and-colors BIN
+  if [ -f qmade/src/usr/bin/auto-new-wallpaper-and-colors.sh]; then
+    cat qmade/src/usr/bin/auto-new-wallpaper-and-colors.sh | sudo tee /usr/bin/auto-new-wallpaper-and-colors
+    sudo chmod +x /usr/bin/auto-new-wallpaper-and-colors
+  fi
+  clear #Clear the screen
+  check_error "auto-new-wallpaper-and-colors bin"
+
   # Add Wallpapers
   if [ ! -d ~/Wallpapers ]; then
     mkdir -p ~/Wallpapers
@@ -689,14 +697,6 @@ PYWALCOLORSTEMPALETROFI
   gsettings set org.gnome.desktop.interface color-scheme prefer-dark
   clear #Clear the screen
   check_error "gsettings set color-scheme"
-
-  # auto-new-wallpaper-and-colors BIN
-  if [ -f qmade/src/usr/bin/auto-new-wallpaper-and-colors.sh]; then
-    cat qmade/src/usr/bin/auto-new-wallpaper-and-colors.sh | sudo tee /usr/bin/auto-new-wallpaper-and-colors
-    sudo chmod +x /usr/bin/auto-new-wallpaper-and-colors
-  fi
-  clear #Clear the screen
-  check_error "auto-new-wallpaper-and-colors bin"
 
   #Midnight Commander
   mkdir -p ~/.config/mc
