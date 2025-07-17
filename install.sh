@@ -1844,6 +1844,7 @@ EOF
   clear #Clear the screen
   check_error "NVIDIA driver installation"
 
+  sudo reboot # Install done
   # ---------------------------------------------------------------------------------------
   # Install Done ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##
   # ---------------------------------------------------------------------------------------
@@ -1990,7 +1991,6 @@ function help_wiki() {
 main() {
   if [ -z "$1" ]; then
     start_installation #main-run
-    sudo reboot        #main-run
   fi
 
   case $1 in
