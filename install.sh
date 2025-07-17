@@ -1884,7 +1884,6 @@ function update_qmade() {
   sudo cp -fu bin/wal /usr/bin/
   sudo cp -fu qmade/install.sh /usr/bin/qmade
   sudo chmod +x /usr/bin/qmade
-  sudo sed -i 's/start_installation #main-run/help_wiki #main-run/g' /usr/bin/qmade
 
   # SDDM New login wallpaper
   sudo chmod 777 /usr/share/sddm/themes/breeze
@@ -1914,8 +1913,6 @@ function update_qmade() {
   fi
 
   auto-new-wallpaper-and-colors
-
-  echo "QMADE Update done ;-)"
   # End of update_qmade function
 }
 
@@ -2001,7 +1998,10 @@ main() {
   "update" | "--update" | "-u")
     echo "Update QMADE."
     update_qmade
+    sleep 1
     sudo sed -i 's/start_installation #main-run/help_wiki #main-run/g' /usr/bin/qmade
+    clear #Clear the screen
+    echo "QMADE Update Done ;-)"
     ;;
   "system-update" | "--system-update" | "-su")
     echo "APT Update / Upgrade + QTILE / QMADE Upgrade."
