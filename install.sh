@@ -2001,6 +2001,7 @@ main() {
   "update" | "--update" | "-u")
     echo "Update QMADE."
     update_qmade
+    sudo sed -i 's/start_installation #main-run/help_wiki #main-run/g' /usr/bin/qmade
     ;;
   "system-update" | "--system-update" | "-su")
     echo "APT Update / Upgrade + QTILE / QMADE Upgrade."
@@ -2021,7 +2022,7 @@ main() {
     update_waterfox
     ;;
   *)
-    echo "Unknown function: $1. Available functions are: help, update or -u, system-update or -su, system-dist-upgrade or -sdu, update-waterfox"
+    echo "Unknown function: $1 \n Available functions are: help, update or -u, system-update or -su, system-dist-upgrade or -sdu, update-waterfox"
     exit 1
     ;;
   esac
