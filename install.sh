@@ -2008,7 +2008,7 @@ main() {
     update_waterfox
     ;;
   *)
-    echo "Unknown function: $1 \n Available functions are: help, update or -u, system-update or -su, system-dist-upgrade or -sdu, update-waterfox"
+    echo -e "Unknown function: $1 \n - Available functions are: help, update or -u, system-update or -su, system-dist-upgrade or -sdu, update-waterfox"
     exit 1
     ;;
   esac
