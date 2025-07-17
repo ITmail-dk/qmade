@@ -1791,13 +1791,7 @@ EOF
     rm ~/.first-login
   fi
 
-  # Edit GRUB BOOT TIMEOUT ----------------------------------------------------------------
-  sudo sed -i 's+GRUB_TIMEOUT=5+GRUB_TIMEOUT=1+g' /etc/default/grub && sudo update-grub
-  clear #Clear the screen
-  check_error "GRUB BOOT TIMEOUT"
-
-  # Check for Nvidia graphics card and install drivers ----------------------------------------------
-
+  # Check for Nvidia graphics card and install drivers
   if lsmod | grep -iq nouveau; then
     #sudo rmmod -f nouveau #remove test
     echo "blacklist nouveau" | sudo tee -a /etc/modprobe.d/nouveau-blacklist.conf
@@ -1823,13 +1817,6 @@ EOF
     sudo dpkg --add-architecture i386 && sudo apt update && sudo apt install -y libc6:i386
     check_error "installation of i386 libraries"
 
-    #echo "Updating GRUB configuration..."
-    #GRUB_CONF="/etc/default/grub"
-    #sudo sed -i '/^GRUB_CMDLINE_LINUX_DEFAULT=/ s/"$/ rd.driver.blacklist=nouveau"/' $GRUB_CONF
-    #check_error "updating GRUB configuration"
-    #sudo update-grub
-    #check_error "GRUB update"
-
     #NVIDIAGETVERSION=570.133.07
     NVIDIAGETVERSION="$(curl -s "https://www.nvidia.com/en-us/drivers/unix/" | grep "Latest Production Branch Version:" | awk -F'"> ' '{print $2}' | cut -d'<' -f1 | awk 'NR==1')"
     echo "Downloading and installing NVIDIA $NVIDIAGETVERSION driver..."
@@ -1843,6 +1830,11 @@ EOF
   fi
   clear #Clear the screen
   check_error "NVIDIA driver installation"
+
+  # Edit GRUB BOOT TIMEOUT
+  sudo sed -i 's+GRUB_TIMEOUT=5+GRUB_TIMEOUT=1+g' /etc/default/grub && sudo update-grub
+  clear #Clear the screen
+  check_error "GRUB BOOT TIMEOUT"
 
   sudo reboot # Install done
   # ---------------------------------------------------------------------------------------
@@ -1958,13 +1950,6 @@ function nvidia_install_upgrade() {
     sudo dpkg --add-architecture i386 && sudo apt update && sudo apt install -y libc6:i386
     check_error "installation of i386 libraries"
 
-    #echo "Updating GRUB configuration..."
-    #GRUB_CONF="/etc/default/grub"
-    #sudo sed -i '/^GRUB_CMDLINE_LINUX_DEFAULT=/ s/"$/ rd.driver.blacklist=nouveau"/' $GRUB_CONF
-    #check_error "updating GRUB configuration"
-    #sudo update-grub
-    #check_error "GRUB update"
-
     #NVIDIAGETVERSION=570.133.07
     NVIDIAGETVERSION="$(curl -s "https://www.nvidia.com/en-us/drivers/unix/" | grep "Latest Production Branch Version:" | awk -F'"> ' '{print $2}' | cut -d'<' -f1 | awk 'NR==1')"
     echo "Downloading and installing NVIDIA $NVIDIAGETVERSION driver..."
@@ -1975,6 +1960,7 @@ function nvidia_install_upgrade() {
     #    echo 'nvidia-settings --assign CurrentMetaMode="nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }"' >> ~/.config/qtile/autostart.sh
     sudo ./NVIDIA-Linux-x86_64-$NVIDIAGETVERSION.run --silent --no-questions --disable-nouveau --allow-installation-with-running-driver -M proprietary --skip-module-load
     # --run-nvidia-xconfig
+    sudo update-grub
   fi
   clear #Clear the screen
   check_error "NVIDIA driver installation"
