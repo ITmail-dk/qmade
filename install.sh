@@ -121,6 +121,15 @@ function start_installation() {
   clear #Clear the screen
   check_error "Qtile Config file"
 
+  # Qtile Autostart.sh file
+  mkdir -p ~/.config/qtile/
+  if [ -f qmade/src/config/qtile-autostart.sh ]; then
+    cat qmade/src/config/qtile-autostart.sh >~/.config/qtile/autostart.sh
+    chmod +x ~/.config/qtile/autostart.sh
+  fi
+  clear #Clear the screen
+  check_error "Qtile Autostart.sh file"
+
   # ADD ETC Environment
   if [ -f qmade/src/etc/environment ]; then
     cat qmade/src/etc/environment | sudo tee /etc/environment
@@ -769,57 +778,6 @@ QTILEDESKTOP'
   echo "exec /usr/bin/qtile start" | sudo tee -a "/etc/skel/.xsession" >/dev/null
   clear #Clear the screen
   check_error "Add Qtile .xsession"
-
-  # Qtile Autostart.sh file
-  mkdir -p ~/.config/qtile/
-  if [ ! -f ~/.config/qtile/autostart.sh ]; then
-    cat <<"QTILEAUTOSTART" >~/.config/qtile/autostart.sh
-#!/usr/bin/env bash
-# Picom - https://manpages.debian.org/stable/picom/picom.1.en.html
-pgrep -x picom > /dev/null || picom --backend xrender --vsync --no-fading-openclose --no-fading-destroyed-argb &
-# Picom use... --backend glx or xrender, --vsync --no-vsync --no-fading-openclose --no-fading-destroyed-argb etc.
-
-exec /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 & # Graphical authentication agent
-
-autorandr --change &&
-
-# This here if statement sets your background image, with feh...
-# and is also used for the auto-generation of the background image and colors.
-if [ -f ~/.fehbg ]; then
-    . ~/.fehbg
-else
-    auto-new-wallpaper-and-colors
-    #feh --bg-scale $(find ~/Wallpapers -type f | shuf -n 1)
-fi
-
-wpctl set-volume @DEFAULT_AUDIO_SINK@ 10% &
-dunst &
-numlockx on &
-mpd &
-xrdb ~/.Xresources &
-xset r rate 200 35 &
-xset b off &
-
-#keynav &
-#kdeconnectd &
-
-#export color_prompt=yes
-#export XDG_CURRENT_DESKTOP=qtile
-
-# Remove .first-login file --------------------------------------------------------------
-if [ -f ~/.first-login ]; then
-    rm ~/.first-login
-fi
-
-QTILEAUTOSTART
-
-    chmod +x ~/.config/qtile/autostart.sh
-
-  else
-    echo "File autostart.sh already exists."
-  fi
-  clear #Clear the screen
-  check_error "Qtile Autostart.sh file"
 
   # Synaptics devices
   if grep -iq 'synaptics|synap' /proc/bus/input/devices; then
