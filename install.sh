@@ -1910,7 +1910,6 @@ function update_qmade() {
     sudo update-alternatives --remove x-session-manager /usr/bin/startplasma-x11
   fi
 
-  auto-new-wallpaper-and-colors
   # End of update_qmade function
 }
 
@@ -1990,6 +1989,7 @@ main() {
   "update" | "--update" | "-u")
     echo "Update QMADE."
     update_qmade
+    auto-new-wallpaper-and-colors
     sleep 1
     sudo sed -i 's/start_installation #main-run/help_wiki #main-run/g' /usr/bin/qmade
     clear #Clear the screen
