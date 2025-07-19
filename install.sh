@@ -94,8 +94,6 @@ function start_installation() {
   check_error "APT Update Nr. 1"
 
   # QMADE Git install + clone
-  cd /tmp/
-
   # Check if the GIT is installed
   if ! dpkg -s git >/dev/null 2>&1; then
     echo "Git is not installed, Installing git now..."
@@ -103,6 +101,7 @@ function start_installation() {
   fi
 
   # QMADE git clone
+  cd /tmp/
   git clone https://github.com/ITmail-dk/qmade.git
 
   # qmade to usr/bin
@@ -112,7 +111,7 @@ function start_installation() {
   sudo sed -i 's/sudo reboot #main-run/#sudo reboot #main-run/g' /usr/bin/qmade
 
   # Qtile Config file
-  if [ ! -f ~/.config/qtile/config.py ]; then
+  if [ -f qmade/src/config/qtile-config.py ]; then
     mkdir -p ~/.config/qtile/
     cat qmade/src/config/qtile-config.py >~/.config/qtile/config.py
   else
@@ -143,13 +142,13 @@ function start_installation() {
   check_error "audio_disable_powersave.conf file copy"
 
   if [ -f qmade/src/etc/pipewire/pipewire.conf.d/pipewire.conf ]; then
-    sudo mkdir -p /etc/pipewire/pipewire.conf.d/
+    sudo mkdir -p /etc/pipewire/pipewire.conf.d
     cat qmade/src/etc/pipewire/pipewire.conf.d/pipewire.conf | sudo tee /etc/pipewire/pipewire.conf.d/pipewire.conf
   fi
   check_error "pipewire.conf file copy"
 
   if [ -f qmade/src/etc/wireplumber/wireplumber.conf.d/51-disable-suspension.conf ]; then
-    sudo mkdir -p /etc/wireplumber/wireplumber.conf.d/
+    sudo mkdir -p /etc/wireplumber/wireplumber.conf.d
     cat qmade/src/etc/wireplumber/wireplumber.conf.d/51-disable-suspension.conf | sudo tee /etc/wireplumber/wireplumber.conf.d/51-disable-suspension.conf
   fi
   check_error "51-disable-suspension.conf copy"
@@ -178,7 +177,7 @@ function start_installation() {
 
   # Check and Copy APT Sources List
   if [ -f /etc/apt/sources.list ]; then
-    sudo mv /etc/apt/sources.list /etc/apt/sources.list.bak
+    sudo mv /etc/apt/sources.list /etc/apt/old-type-sources.list.bak
   fi
 
   sudo cp -rfu qmade/src/apt/* /etc/apt/
