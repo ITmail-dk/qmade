@@ -143,11 +143,13 @@ function start_installation() {
   check_error "audio_disable_powersave.conf file copy"
 
   if [ -f qmade/src/etc/pipewire/pipewire.conf.d/pipewire.conf ]; then
+    sudo mkdir -p /etc/pipewire/pipewire.conf.d/
     cat qmade/src/etc/pipewire/pipewire.conf.d/pipewire.conf | sudo tee /etc/pipewire/pipewire.conf.d/pipewire.conf
   fi
   check_error "pipewire.conf file copy"
 
   if [ -f qmade/src/etc/wireplumber/wireplumber.conf.d/51-disable-suspension.conf ]; then
+    sudo mkdir -p /etc/wireplumber/wireplumber.conf.d/
     cat qmade/src/etc/wireplumber/wireplumber.conf.d/51-disable-suspension.conf | sudo tee /etc/wireplumber/wireplumber.conf.d/51-disable-suspension.conf
   fi
   check_error "51-disable-suspension.conf copy"
