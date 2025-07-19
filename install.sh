@@ -1989,10 +1989,10 @@ main() {
     echo "Update QMADE."
     update_qmade
     auto-new-wallpaper-and-colors
-    sleep 1
+    sleep 0.25
     sudo sed -i 's/start_installation #main-run/help_wiki #main-run/g' /usr/bin/qmade
     clear #Clear the screen
-    echo "QMADE Update Done ;-)"
+    echo "QMADE Update is Done ;-)"
     ;;
   "system-update" | "--system-update" | "-su")
     echo "APT Update / Upgrade + QTILE / QMADE Upgrade."
@@ -2000,6 +2000,8 @@ main() {
     update_qmade
     nvidia_install_upgrade
     sudo update-initramfs -u -k all
+    clear #Clear the screen
+    echo "We are done with the System Update / Upgrade + QTILE & QMADE."
     ;;
   "system-dist-upgrade" | "--system-dist-upgrade" | "-sdu")
     echo "Full System Distro Update / Upgrade + QTILE & QMADE."
@@ -2007,10 +2009,14 @@ main() {
     update_qmade
     nvidia_install_upgrade
     sudo update-initramfs -u -k all
+    clear #Clear the screen
+    echo "We are done with the Full System Update / Upgrade + QTILE & QMADE."
     ;;
   update-waterfox)
     echo "Updating Waterfox"
     update_waterfox
+    clear #Clear the screen
+    echo "Waterfox update is Done."
     ;;
   *)
     echo -e "Unknown function: $1 \n - Available functions are: help, update or -u, system-update or -su, system-dist-upgrade or -sdu, update-waterfox"
