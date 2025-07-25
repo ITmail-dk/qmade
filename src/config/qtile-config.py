@@ -112,22 +112,12 @@ keys = [
     # Split = all windows displayed
     # Unsplit = 1 window displayed, like Max layout, but still with
     # multiple stack panes
-    Key(
-        [mod, "shift"],
-        "Return",
-        lazy.layout.toggle_split(),
-        desc="Toggle between split and unsplit sides of stack",
-    ),
+    Key([mod, "shift"], "space", lazy.layout.toggle_split(), desc="Toggle between split and unsplit sides of stack"),
 
     # Toggle between different layouts as defined below
     Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
     Key([mod], "w", lazy.window.kill(), desc="Kill focused window"),
-    Key(
-        [mod],
-        "f",
-        lazy.window.toggle_fullscreen(),
-        desc="Toggle fullscreen on the focused window",
-    ),
+    Key([mod], "f", lazy.window.toggle_fullscreen(), desc="Toggle fullscreen on the focused window"),
     Key([mod], "t", lazy.window.toggle_floating(), desc="Toggle floating on the focused window"),
     Key([mod, "mod1", "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "mod1", "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
@@ -279,7 +269,7 @@ screens = [
     Screen(
         top=bar.Bar(
             [
-                widget.CurrentLayout(scale=0.7, padding=5, icon_first=True),
+                widget.CurrentLayout(scale=0.7, padding=5, mode='icon' icon_first=True),
                 widget.Spacer(length=2),
                 widget.GroupBox(fontsize=18, highlight_method="text", this_current_screen_border="#f7f7f7", highlight_color=Color14, this_screen_border=Color3, urgent_border=Color7, active=Color5, inactive=Color8, borderwidth=0),
                 widget.Spacer(length=2),

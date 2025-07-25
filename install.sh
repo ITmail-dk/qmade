@@ -204,8 +204,9 @@ function start_installation() {
   # -------------------------------------------------------------------------------------------------
   # Core System APT install
   sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install bash-completion xserver-xorg x11-utils xinit acl arandr autorandr picom fwupd colord mesa-utils htop wget curl git tmux numlockx kitty neovim xdg-utils cups cups-common lm-sensors fancontrol xbacklight brightnessctl unzip network-manager dnsutils dunst libnotify-bin notify-osd xsecurelock pm-utils rofi 7zip jq poppler-utils fd-find ripgrep zoxide imagemagick nsxiv mpv flameshot mc thunar gvfs gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq font-manager fontconfig fontconfig-config fonts-recommended fonts-liberation fonts-freefont-ttf fonts-noto-core libfontconfig1 pipewire pipewire-audio pipewire-alsa pipewire-pulse pipewire-jack wireplumber libspa-0.2-bluetooth pavucontrol playerctl alsa-utils qpwgraph sddm-theme-breeze sddm-theme-maui ffmpeg cmake remmina libreoffice linux-cpupower plymouth plymouth-themes
+
   # For packages that might be missing so it doesn't stop the big apt installation of packages or slow it down
-  for i in policykit-1 policykit-1-gnome keynav yt-dlp; do
+  for i in policykit-1 policykit-1-gnome gum keynav yt-dlp; do
     sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install $i
   done
 
@@ -322,8 +323,8 @@ function start_installation() {
   clear #Clear the screen
   check_error "Bash Alias Echo"
 
-  PROFILESFILE=~/.profile
-  echo "export color_prompt=yes" >>$PROFILESFILE
+  #PROFILESFILE=~/.profile
+  #echo "export color_prompt=yes" >>$PROFILESFILE
 
   # Set User folders via xdg-user-dirs-update & xdg-mime default.
   # ls /usr/share/applications/ Find The Default run.: "xdg-mime query default inode/directory"
@@ -1473,7 +1474,7 @@ EOF
     echo "Installing required packages..."
     sudo apt -y install linux-headers-$(uname -r)
     sudo apt -y install gcc make acpid dkms libglvnd-core-dev libglvnd0 libglvnd-dev
-    check_error "package installation"
+    check_error "Nvidia installing required packages"
 
     echo "Removing old NVIDIA drivers..."
     sudo apt remove -y nvidia-* && sudo apt autoremove -y $(dpkg -l nvidia-driver* | grep ii | awk '{print $2}')
@@ -1604,12 +1605,16 @@ function nvidia_install_upgrade() {
     fi
   }
 
+  if [ ! -f "/etc/modprobe.d/nouveau-blacklist.conf" ]; then
+    echo "blacklist nouveau" | sudo tee -a /etc/modprobe.d/nouveau-blacklist.conf
+  fi
+
   if lspci | grep -i nvidia; then
     echo "Nvidia install / Update."
     echo "Installing required packages..."
     sudo apt -y install linux-headers-$(uname -r)
     sudo apt -y install gcc make acpid dkms libglvnd-core-dev libglvnd0 libglvnd-dev
-    check_error "package installation"
+    check_error "Installing required package"
 
     echo "Removing old NVIDIA drivers..."
     sudo apt remove -y nvidia-* && sudo apt autoremove -y $(dpkg -l nvidia-driver* | grep ii | awk '{print $2}')
