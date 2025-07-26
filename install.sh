@@ -1665,13 +1665,13 @@ main() {
     echo "QMADE Update is Done ;-)"
     ;;
   "system-update" | "--system-update" | "-su")
-    echo "APT Update / Upgrade + QTILE / QMADE Upgrade."
+    echo -e "System APT Update / Upgrade + QTILE / QMADE Upgrade."
     sudo apt update && sudo apt upgrade -y && sudo apt clean && sudo apt autoremove -y
     update_qmade
     nvidia_install_upgrade
     sudo update-initramfs -u -k all
     clear #Clear the screen
-    echo "We are done with the System Update / Upgrade + QTILE & QMADE."
+    echo -e "We are done with the System Update / Upgrade + QTILE & QMADE.\nYou should consider rebooting after a system update."
     ;;
   "system-dist-upgrade" | "--system-dist-upgrade" | "-sdu")
     echo "Full System Distro Update / Upgrade + QTILE & QMADE."
@@ -1680,7 +1680,7 @@ main() {
     nvidia_install_upgrade
     sudo update-initramfs -u -k all
     clear #Clear the screen
-    echo "We are done with the Full System Update / Upgrade + QTILE & QMADE."
+    echo -e "We are done with the Full System Update / Upgrade + QTILE & QMADE.\nYou should consider rebooting after a system update."
     ;;
   update-waterfox)
     echo "Updating Waterfox"
