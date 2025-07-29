@@ -46,6 +46,8 @@ check out the Qtile config file under Keybindings in "~/.config/qtile/config.py"
 "qmade system-update" Runs a APT Update, Upgrade, Clean, Autoremove + QTILE & QMADE Update + NVIDIA Drivers Update.
 "qmade system-dist-upgrade" Runs a system-update as a Full Dist Upgrade. (Run it after changing the source list)
 
+## Nvidia Drivers
+- Latest Production Branch Version of the driver, will be installed during the installation if you have an NVIDIA GPU.
 
 ## Information:
 - Window Manager: Qtile (Github From Source)

@@ -25,7 +25,7 @@ function setup() {
   sudo sed -i '/spkgtk\.cfg/d; /spk\.cfg/d' $ISO_WORK_TMP/isolinux/menu.cfg
   sudo sed -i 's/--- quiet/--- quiet file=\/cdrom\/preseed.cfg/' $ISO_WORK_TMP/isolinux/gtk.cfg
   sudo sed -i '0,/--- quiet/ s/--- quiet/--- quiet file=\/cdrom\/preseed.cfg/' $ISO_WORK_TMP/boot/grub/grub.cfg
-  sudo apt reinstall --download-only -y -o Dir::Cache="./" -o Dir::Cache::archives="iso-extract/var/cache/apt/archives" install \
+  sudo apt reinstall --download-only -y -o Dir::Cache="./" -o Dir::Cache::archives="iso-extract/var/cache/apt/archives" \
     bash-completion xserver-xorg x11-utils xinit acl arandr autorandr picom fwupd colord mesa-utils htop wget curl git tmux \
     numlockx kitty neovim xdg-utils cups cups-common lm-sensors fancontrol xbacklight brightnessctl unzip network-manager \
     dnsutils dunst libnotify-bin notify-osd xsecurelock pm-utils rofi 7zip jq poppler-utils fd-find ripgrep zoxide sddm \
@@ -33,7 +33,7 @@ function setup() {
     notepadqq font-manager fontconfig fontconfig-config fonts-recommended fonts-liberation fonts-freefont-ttf \
     fonts-noto-core libfontconfig1 pipewire pipewire-audio pipewire-alsa pipewire-pulse pipewire-jack wireplumber \
     libspa-0.2-bluetooth pavucontrol alsa-utils qpwgraph sddm-theme-breeze sddm-theme-maui ffmpeg cmake \
-    policykit-1 policykit-1-gnome remmina libreoffice keynav
+    policykit-1-gnome remmina libreoffice keynav
   sudo chmod -R +r iso-extract/var/
   make
 }

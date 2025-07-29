@@ -1485,7 +1485,8 @@ EOF
     check_error "installation of i386 libraries"
 
     #NVIDIAGETVERSION=570.133.07
-    NVIDIAGETVERSION="$(curl -s "https://www.nvidia.com/en-us/drivers/unix/" | grep "Latest Production Branch Version:" | awk -F'"> ' '{print $2}' | cut -d'<' -f1 | awk 'NR==1')"
+    #NVIDIAGETVERSION="$(curl -s "https://www.nvidia.com/en-us/drivers/unix/" | grep "Latest Production Branch Version:" | awk -F'"> ' '{print $2}' | cut -d'<' -f1 | awk 'NR==1')"
+    NVIDIAGETVERSION="$(curl -s "https://api.github.com/repos/NVIDIA/open-gpu-kernel-modules/releases/latest" | grep '"tag_name"' | awk -F'"' '{print $4}')"
     echo "Downloading and installing NVIDIA $NVIDIAGETVERSION driver..."
     wget https://us.download.nvidia.com/XFree86/Linux-x86_64/$NVIDIAGETVERSION/NVIDIA-Linux-x86_64-$NVIDIAGETVERSION.run
     check_error "downloading NVIDIA driver"
@@ -1625,7 +1626,9 @@ function nvidia_install_upgrade() {
     check_error "installation of i386 libraries"
 
     #NVIDIAGETVERSION=570.133.07
-    NVIDIAGETVERSION="$(curl -s "https://www.nvidia.com/en-us/drivers/unix/" | grep "Latest Production Branch Version:" | awk -F'"> ' '{print $2}' | cut -d'<' -f1 | awk 'NR==1')"
+    #NVIDIAGETVERSION="$(curl -s "https://www.nvidia.com/en-us/drivers/unix/" | grep "Latest Production Branch Version:" | awk -F'"> ' '{print $2}' | cut -d'<' -f1 | awk 'NR==1')"
+    # Latest Nvidia Beta driver version
+    NVIDIAGETVERSION="$(curl -s "https://api.github.com/repos/NVIDIA/open-gpu-kernel-modules/releases/latest" | grep '"tag_name"' | awk -F'"' '{print $4}')"
     echo "Downloading and installing NVIDIA $NVIDIAGETVERSION driver..."
     wget https://us.download.nvidia.com/XFree86/Linux-x86_64/$NVIDIAGETVERSION/NVIDIA-Linux-x86_64-$NVIDIAGETVERSION.run
     check_error "downloading NVIDIA driver"
