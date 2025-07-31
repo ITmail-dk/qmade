@@ -9,6 +9,8 @@ Start the installation as regular users with SUDO rights, after you login to you
 Run this one command to start Qmade install and you're good to go.: 
 
     curl -sfL https://raw.githubusercontent.com/ITmail-dk/qmade/main/install.sh | bash
+or
+    wget -qO- https://raw.githubusercontent.com/ITmail-dk/qmade/main/install.sh | bash
 
 ![Screenshots of the Desktop](screenshots/screenshot_01.jpg)
 
