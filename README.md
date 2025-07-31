@@ -10,14 +10,10 @@ Run this one command to start Qmade install and you're good to go.:
 
     curl -sfL https://raw.githubusercontent.com/ITmail-dk/qmade/main/install.sh | bash
 
-*Or you can run these commands... if you think it's easier.*
-
-    sudo apt install -y git && git clone https://github.com/ITmail-dk/qmade && cd qmade && . install.sh
-
 ![Screenshots of the Desktop](screenshots/screenshot_01.jpg)
 
 ## Keybindings
-Default Modkey is the Windows key (**MOD4**) and **MOD1** is Alt Left.
+Default Modkey is the WINDOWS KEY (**MOD4**) and **MOD1** is the ALT KEY.
 
 **WIN + Enter** = Opens a Terminal.
 
@@ -51,7 +47,7 @@ check out the Qtile config file under Keybindings in "~/.config/qtile/config.py"
 
 ## Information:
 - Window Manager: Qtile (Github From Source)
-- Compositor: X11, Picom
+- Compositor: X11 & Picom
 - Bar / Panel: Qtile Bar
 - Terminal: Kitty
 - Shell: Bash
@@ -70,6 +66,6 @@ check out the Qtile config file under Keybindings in "~/.config/qtile/config.py"
 - Screenshot tool: Flameshot
 
 ## Roadmap:
-- Compositor: Wayland + XWayland.
-- Audio: Needs work and better setup process and configuration.
+- Compositor: Wayland when it's ready.
+- Audio: Needs more work and better setup process and configuration.
 - Wiki: General information about the setup and how to do things.
