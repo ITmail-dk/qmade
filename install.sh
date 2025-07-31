@@ -414,7 +414,8 @@ MCINI
   pip install -r qtile/requirements.txt
   bin/pip install qtile/.
   # PyWAL install via pip3 for auto-generated color themes
-  pip3 install pywal16[all]
+  #pip3 install pywal16[all]
+  pip3 install pywal16[colorz]
   deactivate
 
   sudo cp -fu bin/qtile /usr/bin/
