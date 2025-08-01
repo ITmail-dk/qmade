@@ -1534,8 +1534,8 @@ function update_qmade() {
   sudo chmod -R 777 qtile_venv
 
   cd qtile_venv
-
-  git clone https://github.com/qtile/qtile.git
+  #git clone https://github.com/qtile/qtile.git
+  git clone https://github.com/qtile/qtile.git --branch v0.32.0 # Specific version number tag
   git clone https://github.com/ITmail-dk/qmade.git
 
   source bin/activate
