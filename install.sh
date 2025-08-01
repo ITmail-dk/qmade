@@ -71,7 +71,7 @@ function start_installation() {
   # Check if it's a Debian system installation and get the version codename.
   if [ -f /etc/debian_version ]; then
     . /etc/os-release #Get the VERSION_CODENAME
-    VERSION_CODENAME_SHOULD_NOT_BE=trixie
+    VERSION_CODENAME_SHOULD_NOT_BE=codename-her
   else
     echo -e "${RED} This installation should only be run on a Debian Linux System. ${NC}"
     echo -e "${RED} See more at https://github.com/ITmail-dk/qmade/ ${NC}"
@@ -206,7 +206,7 @@ function start_installation() {
   sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install bash-completion xserver-xorg x11-utils xinit acl arandr autorandr picom fwupd colord mesa-utils htop wget curl git tmux numlockx kitty neovim xdg-utils cups cups-common lm-sensors fancontrol xbacklight brightnessctl unzip network-manager dnsutils dunst libnotify-bin notify-osd xsecurelock pm-utils rofi 7zip jq poppler-utils fd-find ripgrep zoxide imagemagick nsxiv mpv flameshot mc thunar gvfs gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq font-manager fontconfig fontconfig-config fonts-recommended fonts-liberation fonts-freefont-ttf fonts-noto-core libfontconfig1 pipewire pipewire-audio pipewire-alsa pipewire-pulse pipewire-jack wireplumber libspa-0.2-bluetooth pavucontrol playerctl alsa-utils qpwgraph sddm-theme-breeze sddm-theme-maui ffmpeg cmake remmina libreoffice linux-cpupower plymouth plymouth-themes
 
   # For packages that might be missing so it doesn't stop the big apt installation of packages or slow it down
-  for i in policykit-1 policykit-1-gnome gum keynav yt-dlp; do
+  for i in policykit-1 policykit-1-gnome gum keynav yt-dlp xautolock speedcrunch fonts-arkpandora freerdp2-x11 libfreerdp-client2-2 libfreerdp2-2 libwinpr2-2; do
     sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install $i
   done
 
@@ -805,18 +805,6 @@ EOF
   fi
   clear #Clear the screen
   check_error "Add Synaptics Autostart.sh file"
-
-  # APT install under Unstable and Testing
-  if [[ "$VERSION_CODENAME" == "$VERSION_CODENAME_SHOULD_NOT_BE" ]]; then
-    echo "Your version of Debian is not compatible with This package"
-  else
-    sudo DEBIAN_FRONTEND=noninteractive apt install -y freerdp2-x11 libfreerdp-client2-2 libfreerdp2-2 libwinpr2-2
-    sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install xautolock speedcrunch fonts-arkpandora
-    echo "# Lock the computer automatically after X time of minutes, using xautolock and xsecurelock." | tee -a ~/.config/qtile/autostart.sh
-    echo 'xautolock -time 120 -locker "xsecurelock" -detectsleep -secure &' | tee -a ~/.config/qtile/autostart.sh
-  fi
-  clear #Clear the screen
-  check_error "APT install under Unstable and Testing"
 
   # MPD Setup & config START
 
