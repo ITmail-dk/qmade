@@ -209,7 +209,7 @@ function start_installation() {
   sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install bash-completion xserver-xorg x11-utils xinit acl arandr autorandr picom fwupd colord mesa-utils htop wget curl git tmux numlockx kitty neovim xdg-utils ufw gufw cups cups-common lm-sensors fancontrol xbacklight brightnessctl unzip network-manager dnsutils dunst libnotify-bin notify-osd xsecurelock pm-utils rofi 7zip jq poppler-utils fd-find ripgrep zoxide imagemagick nsxiv mpv flameshot mc thunar gvfs gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq font-manager fontconfig fontconfig-config fonts-recommended fonts-liberation fonts-freefont-ttf fonts-noto-core libfontconfig1 pipewire pipewire-audio pipewire-alsa pipewire-pulse pipewire-jack wireplumber libspa-0.2-bluetooth pavucontrol playerctl alsa-utils qpwgraph sddm-theme-breeze ffmpeg build-essential dkms cmake remmina libreoffice linux-cpupower plymouth plymouth-themes
 
   # For packages that might be missing so it doesn't stop the big apt installation of packages or slow it down
-  for i in policykit-1 policykit-1-gnome gum keynav yt-dlp xautolock speedcrunch fonts-arkpandora freerdp2-x11 libfreerdp-client2-2 libfreerdp2-2 libwinpr2-2; do
+  for i in policykit-1 policykit-1-gnome keynav yt-dlp xautolock speedcrunch fonts-arkpandora freerdp2-x11 libfreerdp-client2-2 libfreerdp2-2 libwinpr2-2; do
     sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install $i
   done
 
