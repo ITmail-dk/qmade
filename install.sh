@@ -216,7 +216,7 @@ function start_installation() {
 
   # -------------------------------------------------------------------------------------------------
   # Core System APT install
-  sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install bash-completion xserver-xorg x11-utils xinit polkitd pkexec acl arandr autorandr picom fwupd colord mesa-utils htop wget curl git tmux numlockx kitty neovim xdg-utils ufw gufw cups cups-common lm-sensors fancontrol xbacklight brightnessctl unzip network-manager dnsutils dunst libnotify-bin notify-osd xsecurelock pm-utils rofi 7zip jq poppler-utils fd-find ripgrep zoxide imagemagick nsxiv mpv flameshot mc thunar gvfs gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq font-manager fontconfig fontconfig-config fonts-recommended fonts-liberation fonts-freefont-ttf fonts-noto-core libfontconfig1 pipewire pipewire-audio pipewire-alsa pipewire-pulse pipewire-jack wireplumber libspa-0.2-bluetooth pavucontrol playerctl alsa-utils qpwgraph sddm-theme-breeze ffmpeg build-essential dkms cmake remmina libreoffice linux-cpupower plymouth plymouth-themes keynav yt-dlp xautolock speedcrunch freerdp2-x11 libfreerdp-client2-2 libfreerdp2-2 libwinpr2-2
+  sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install bash-completion xserver-xorg x11-utils xinit polkitd pkexec acl arandr autorandr picom fwupd colord mesa-utils htop wget curl git tmux numlockx kitty neovim xdg-utils ufw gufw cups cups-common lm-sensors fancontrol xbacklight brightnessctl unzip network-manager dnsutils dunst libnotify-bin notify-osd xsecurelock pm-utils rofi 7zip jq poppler-utils fd-find ripgrep zoxide imagemagick nsxiv mpv flameshot mc thunar gvfs gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq font-manager fontconfig fontconfig-config fonts-recommended fonts-liberation fonts-freefont-ttf fonts-noto-core libfontconfig1 pipewire pipewire-audio pipewire-alsa pipewire-pulse pipewire-jack wireplumber libspa-0.2-bluetooth pavucontrol playerctl alsa-utils qpwgraph sddm-theme-breeze ffmpeg build-essential dkms cmake remmina libreoffice linux-cpupower plymouth plymouth-themes keynav yt-dlp xautolock speedcrunch
 
   sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install linux-headers-$(uname -r)
   sudo DEBIAN_FRONTEND=noninteractive apt -y install sddm --no-install-recommends
@@ -224,6 +224,12 @@ function start_installation() {
 
   # APT install extra packages
   #sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install
+
+  if [ "$VERSION_CODENAME" == "trixie" ] || [ "$VERSION_CODENAME" == "sid" ]; then
+    echo " "
+  else
+    sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install freerdp2-x11 libfreerdp-client2-2 libfreerdp2-2 libwinpr2-2
+  fi
 
   clear #Clear the screen
   check_error "APT install extra packages"
