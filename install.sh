@@ -1305,7 +1305,7 @@ ROFIWIFI
     mkdir -p ~/.config/rofi
     cat <<"ROFIPOWERMENU" >~/.config/rofi/powermenu.sh
 #!/usr/bin/env bash
-chosen=$(printf "󰒲  Suspend System\n  System Shutdown\n󰤄  Hibernate System\n  Lockdown Mode\n  Reboot" | rofi -dmenu -i -theme-str '@import "powermenu.rasi"')
+chosen=$(printf "  System Shutdown\n󰒲  Suspend System\n󰤄  Hibernate System\n  Lockdown Mode\n  Reboot" | rofi -dmenu -i -theme-str '@import "powermenu.rasi"')
 
 case "$chosen" in
     "󰒲  Suspend System") sudo systemctl suspend ;;
