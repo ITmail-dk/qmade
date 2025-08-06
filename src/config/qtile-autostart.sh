@@ -3,7 +3,7 @@
 pgrep -x picom >/dev/null || picom --backend xrender --vsync --no-fading-openclose --no-fading-destroyed-argb &
 # Picom use... --backend glx or xrender, --vsync --no-vsync --no-fading-openclose --no-fading-destroyed-argb etc.
 
-#exec /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 & # Graphical authentication agent
+exec /usr/bin/lxpolkit & # Graphical authentication agent
 
 autorandr --change &&
 
