@@ -102,7 +102,7 @@ function start_installation() {
 
   # QMADE git clone
   cd /tmp/
-  git clone https://github.com/ITmail-dk/qmade.git
+  git clone --depth 1 https://github.com/ITmail-dk/qmade.git
 
   # qmade to usr/bin
   sudo cp -fu qmade/install.sh /usr/bin/qmade
@@ -408,8 +408,8 @@ MCINI
     sudo rm -rf qtile
   fi
 
-  git clone https://github.com/qtile/qtile.git --branch v0.32.0 # Specific version number tag
-  #git clone https://github.com/qtile/qtile.git
+  git clone --depth 1 https://github.com/qtile/qtile.git --branch v0.32.0 # Specific version number tag
+  #git clone --depth 1 https://github.com/qtile/qtile.git
 
   source /opt/qtile_venv/bin/activate
   pip install dbus-next psutil wheel pyxdg
@@ -902,7 +902,7 @@ MPDCONFIG
   check_error "Nano config"
 
   # Neovim setup config Start
-  #git clone https://github.com/LazyVim/starter ~/.config/nvim
+  #git clone --depth 1 https://github.com/LazyVim/starter ~/.config/nvim
   #rm -rf ~/.config/nvim/.git
 
   if [ ! -f ~/.config/nvim/init.vim ]; then
@@ -1063,7 +1063,7 @@ FONTSLOCALCONFIG'
   check_error "Remove plasma sessions .desktop"
 
   sudo rm -rf /tmp/EliverLara-Nordic
-  sudo git clone https://github.com/EliverLara/Nordic /tmp/EliverLara-Nordic
+  sudo git clone --depth 1 https://github.com/EliverLara/Nordic /tmp/EliverLara-Nordic
   sudo cp -r /tmp/EliverLara-Nordic /usr/share/themes/
 
   sudo mkdir -p /usr/share/sddm/themes/Nordic-darker/
@@ -1078,7 +1078,7 @@ FONTSLOCALCONFIG'
     sudo rm -rf Nordzy-cursors
   fi
 
-  git clone https://github.com/alvatip/Nordzy-cursors
+  git clone --depth 1 https://github.com/alvatip/Nordzy-cursors
   cd Nordzy-cursors
   sudo ./install.sh
   cd /tmp/
@@ -1096,7 +1096,7 @@ FONTSLOCALCONFIG'
     sudo rm -rf Nordzy-icon
   fi
 
-  git clone https://github.com/alvatip/Nordzy-icon
+  git clone --depth 1 https://github.com/alvatip/Nordzy-icon
   cd Nordzy-icon/
   sudo ./install.sh
   cd /tmp/
@@ -1524,8 +1524,8 @@ function update_qmade() {
   sudo chmod -R 777 qtile_venv
 
   cd qtile_venv
-  git clone https://github.com/qtile/qtile.git
-  git clone https://github.com/ITmail-dk/qmade.git
+  git clone --depth 1 https://github.com/qtile/qtile.git
+  git clone --depth 1 https://github.com/ITmail-dk/qmade.git
 
   source bin/activate
   pip install dbus-next psutil wheel pyxdg
