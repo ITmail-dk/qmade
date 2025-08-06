@@ -58,6 +58,8 @@ function start_installation() {
   BLUE="\033[0;94m"
 
   # Function to check and exit on error # check_error "TXT"
+  set -euo pipefail
+
   check_error() {
     if [ $? -ne 0 ]; then
       echo -e "${RED} An error occurred during installation and has been stopped. ${NC}"
