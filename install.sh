@@ -185,6 +185,16 @@ function start_installation() {
   sudo cp -rfu qmade/src/apt/* /etc/apt/
   check_error "Copy APT Sources list"
 
+  if [ "$VERSION_CODENAME" == "trixie" ] || [ "$VERSION_CODENAME" == "sid" ]; then
+    if grep -q "Suites: bookworm bookworm-updates bookworm-backports" "/etc/apt/sources.list.d/debian.sources"; then
+      echo "Sentence found. Replacing..."
+      sudo sed -i "s/Suites: bookworm bookworm-updates bookworm-backports/Suites: sid bookworm-updates bookworm-backports/g" "/etc/apt/sources.list.d/debian.sources"
+    else
+      echo "Sentence not found. No changes made."
+    fi
+  fi
+  check_error "Check and replace APT Sources list distro"
+
   # Check for version of Debian and replace in source list of necessary
 
   # Sudoers ------------------------------------------------------------------------------------------------------------------------------------
