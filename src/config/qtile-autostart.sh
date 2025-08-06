@@ -3,7 +3,7 @@
 pgrep -x picom >/dev/null || picom --backend xrender --vsync --no-fading-openclose --no-fading-destroyed-argb &
 # Picom use... --backend glx or xrender, --vsync --no-vsync --no-fading-openclose --no-fading-destroyed-argb etc.
 
-exec /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 & # Graphical authentication agent
+#exec /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 & # Graphical authentication agent
 
 autorandr --change &&
 
@@ -20,7 +20,10 @@ wpctl set-volume @DEFAULT_AUDIO_SINK@ 20% &
 dunst &
 numlockx on &
 mpd &
-xrdb ~/.Xresources &
+
+if [ -f ~/.Xresources ]; then
+  xrdb ~/.Xresources &
+fi
 
 # Turn off the Screen after X time in seconds
 # Time: standby, suspend, off
