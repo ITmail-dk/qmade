@@ -401,7 +401,9 @@ MCINI
 
   # Qtile Core Dependencies apt install
   sudo DEBIAN_FRONTEND=noninteractive apt install -y feh python3-full python3-pip python3-venv pipx libxkbcommon-dev libxkbcommon-x11-dev libcairo2-dev pkg-config
-  clear #Clear the screen
+  curl -LsSf https://astral.sh/uv/install.sh | sh # Install UV Python package and project manager.
+  source $HOME/.local/bin/env                     # Activate UV after install
+  clear                                           #Clear the screen
   check_error "Qtile Core Dependencies apt install"
 
   # Install Qtile from source via github and Pip
@@ -423,22 +425,25 @@ MCINI
 
   #git clone --depth 1 https://github.com/qtile/qtile.git
   if [ "$VERSION_CODENAME" == "trixie" ] || [ "$VERSION_CODENAME" == "sid" ]; then
-    git clone --depth 1 https://github.com/qtile/qtile.git # The latest version of Qtile
+    #git clone --depth 1 https://github.com/qtile/qtile.git # The latest version of Qtile
+    uv tool install qtile # The latest version of Qtile via UV
+    uv tool install pywal16[colorz]
+    sudo cp -fu ~/.local/bin/qtile /usr/bin/
+    sudo cp -fu ~/.local/bin/wal /usr/bin/
   else
     git clone --depth 1 https://github.com/qtile/qtile.git --branch v0.32.0 # Specific version of Qtile
+    source /opt/qtile_venv/bin/activate
+    pip install dbus-next psutil wheel pyxdg
+    pip install -r qtile/requirements.txt
+    bin/pip install qtile/.
+    # PyWAL install via pip3 for auto-generated color themes
+    #pip3 install pywal16[all]
+    pip3 install pywal16[colorz]
+    deactivate
+    sudo cp -fu bin/qtile /usr/bin/
+    sudo cp -fu bin/wal /usr/bin/
   fi
 
-  source /opt/qtile_venv/bin/activate
-  pip install dbus-next psutil wheel pyxdg
-  pip install -r qtile/requirements.txt
-  bin/pip install qtile/.
-  # PyWAL install via pip3 for auto-generated color themes
-  #pip3 install pywal16[all]
-  pip3 install pywal16[colorz]
-  deactivate
-
-  sudo cp -fu bin/qtile /usr/bin/
-  sudo cp -fu bin/wal /usr/bin/
   clear #Clear the screen
   check_error "Install Qtile and PyWAL from qtile_venv"
 
@@ -446,7 +451,7 @@ MCINI
   cat <<"PYWALCOLORSJSON" >~/.cache/wal/colors.json
 {
     "checksum": "85abc768e55abc92396e0c76280093cc",
-    "wallpaper": "/home/mara/Wallpapers/default_wallpaper.jpg",
+    "wallpaper": "/home/username/Wallpapers/default_wallpaper.jpg",
     "alpha": "100",
 
     "special": {
