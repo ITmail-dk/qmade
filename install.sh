@@ -421,8 +421,12 @@ MCINI
     sudo rm -rf qtile
   fi
 
-  git clone --depth 1 https://github.com/qtile/qtile.git --branch v0.32.0 # Specific version number tag
   #git clone --depth 1 https://github.com/qtile/qtile.git
+  if [ "$VERSION_CODENAME" == "trixie" ] || [ "$VERSION_CODENAME" == "sid" ]; then
+    git clone --depth 1 https://github.com/qtile/qtile.git # The latest version of Qtile
+  else
+    git clone --depth 1 https://github.com/qtile/qtile.git --branch v0.32.0 # Specific version of Qtile
+  fi
 
   source /opt/qtile_venv/bin/activate
   pip install dbus-next psutil wheel pyxdg
