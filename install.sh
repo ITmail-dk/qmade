@@ -1537,31 +1537,46 @@ EOF
 # Start of update_qmade function
 function update_qmade() {
   cd /opt
-
-  if [ -d qtile_venv ]; then
-    sudo rm -rf qtile_venv
+  if command -v uv &>/dev/null; then
+    echo "UV is already installed."
+  else
+    echo "UV is not installed. Installing..."
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+    source $HOME/.local/bin/env
+    echo "UV installed successfully."
   fi
 
-  sudo python3 -m venv qtile_venv
-  sudo chmod -R 777 qtile_venv
-
-  cd qtile_venv
-  git clone --depth 1 https://github.com/qtile/qtile.git
-  git clone --depth 1 https://github.com/ITmail-dk/qmade.git
-
-  source bin/activate
-  pip install dbus-next psutil wheel pyxdg
-  pip install -r qtile/requirements.txt
-  bin/pip install qtile/.
-
-  # PyWAL install via pip3 for auto-generated color themes
-  pip3 install pywal16[all]
-  deactivate
-
-  sudo cp -fu bin/qtile /usr/bin/
-  sudo cp -fu bin/wal /usr/bin/
-  sudo cp -fu qmade/install.sh /usr/bin/qmade
-  sudo chmod +x /usr/bin/qmade
+  if [ "$VERSION_CODENAME" == "trixie" ] || [ "$VERSION_CODENAME" == "sid" ]; then
+    #git clone --depth 1 https://github.com/qtile/qtile.git # The latest version of Qtile
+    git clone --depth 1 https://github.com/ITmail-dk/qmade.git
+    sudo cp -fu qmade/install.sh /usr/bin/qmade
+    sudo chmod +x /usr/bin/qmade
+    uv tool install qtile # The latest version of Qtile via UV
+    uv tool install pywal16[colorz]
+    sudo cp -fu ~/.local/bin/qtile /usr/bin/
+    sudo cp -fu ~/.local/bin/wal /usr/bin/
+  else
+    if [ -d qtile_venv ]; then
+      sudo rm -rf qtile_venv
+    fi
+    sudo python3 -m venv qtile_venv
+    sudo chmod -R 777 qtile_venv
+    cd qtile_venv
+    git clone --depth 1 https://github.com/ITmail-dk/qmade.git
+    git clone --depth 1 https://github.com/qtile/qtile.git --branch v0.32.0 # Specific version of Qtile
+    source /opt/qtile_venv/bin/activate
+    pip install dbus-next psutil wheel pyxdg
+    pip install -r qtile/requirements.txt
+    bin/pip install qtile/.
+    # PyWAL install via pip3 for auto-generated color themes
+    #pip3 install pywal16[all]
+    pip3 install pywal16[colorz]
+    deactivate
+    sudo cp -fu qmade/install.sh /usr/bin/qmade
+    sudo chmod +x /usr/bin/qmade
+    sudo cp -fu bin/qtile /usr/bin/
+    sudo cp -fu bin/wal /usr/bin/
+  fi
 
   # SDDM New login wallpaper
   sudo chmod 777 /usr/share/sddm/themes/breeze
