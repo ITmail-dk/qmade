@@ -1537,6 +1537,9 @@ EOF
 # Start of update_qmade function
 function update_qmade() {
   cd /opt
+  if [[ -f /etc/os-release ]]; then
+    . /etc/os-release #Get the VERSION_CODENAME
+  fi
   if command -v uv &>/dev/null; then
     echo " "
   else
@@ -1545,8 +1548,10 @@ function update_qmade() {
     source $HOME/.local/bin/env
     echo "UV installed successfully."
   fi
-
+  cd /opt
   if [ "$VERSION_CODENAME" == "trixie" ] || [ "$VERSION_CODENAME" == "sid" ]; then
+    sudo mkdir qtile_venv
+    sudo chmod -R 777 qtile_venv && cd qtile_venv
     #git clone --depth 1 https://github.com/qtile/qtile.git # The latest version of Qtile
     git clone --depth 1 https://github.com/ITmail-dk/qmade.git
     sudo cp -fu qmade/install.sh /usr/bin/qmade
