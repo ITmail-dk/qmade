@@ -1538,7 +1538,7 @@ EOF
 function update_qmade() {
   cd /opt
   if command -v uv &>/dev/null; then
-    echo "UV is already installed."
+    echo " "
   else
     echo "UV is not installed. Installing..."
     curl -LsSf https://astral.sh/uv/install.sh | sh
@@ -1707,6 +1707,7 @@ main() {
     echo "Full System Distro Update / Upgrade + QTILE & QMADE."
     sudo apt update && sudo apt full-upgrade -y && sudo apt dist-upgrade
     update_qmade
+    update_waterfox
     nvidia_install_upgrade
     sudo update-initramfs -u -k all
     clear #Clear the screen
