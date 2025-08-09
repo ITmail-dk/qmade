@@ -413,24 +413,15 @@ MCINI
 
   # Python3 venv Qtile install
   # Upgrade run: python3 -m venv --upgrade qtile_venv
-
-  cd /opt/
-  sudo python3 -m venv qtile_venv
-  sudo chmod -R 777 /opt/qtile_venv
-  cd /opt/qtile_venv
-
-  if [ -d qtile ]; then
-    sudo rm -rf qtile
-  fi
-
-  #git clone --depth 1 https://github.com/qtile/qtile.git
-  if [ "$VERSION_CODENAME" == "trixie" ] || [ "$VERSION_CODENAME" == "sid" ]; then
-    #git clone --depth 1 https://github.com/qtile/qtile.git # The latest version of Qtile
-    uv tool install qtile # The latest version of Qtile via UV
-    uv tool install pywal16[colorz]
-    sudo cp -fu ~/.local/bin/qtile /usr/bin/
-    sudo cp -fu ~/.local/bin/wal /usr/bin/
-  else
+  cd /opt
+  if [ "$VERSION_CODENAME" == "bookworm" ]; then
+    if [ -d qtile_venv ]; then
+      sudo rm -rf qtile_venv
+    fi
+    sudo python3 -m venv qtile_venv
+    sudo chmod -R 777 qtile_venv
+    cd qtile_venv
+    git clone --depth 1 https://github.com/ITmail-dk/qmade.git
     git clone --depth 1 https://github.com/qtile/qtile.git --branch v0.32.0 # Specific version of Qtile
     source /opt/qtile_venv/bin/activate
     pip install dbus-next psutil wheel pyxdg
@@ -440,8 +431,21 @@ MCINI
     #pip3 install pywal16[all]
     pip3 install pywal16[colorz]
     deactivate
+    sudo cp -fu qmade/install.sh /usr/bin/qmade
+    sudo chmod +x /usr/bin/qmade
     sudo cp -fu bin/qtile /usr/bin/
     sudo cp -fu bin/wal /usr/bin/
+  else
+    sudo mkdir qtile_venv
+    sudo chmod -R 777 qtile_venv && cd qtile_venv
+    #git clone --depth 1 https://github.com/qtile/qtile.git # The latest version of Qtile
+    git clone --depth 1 https://github.com/ITmail-dk/qmade.git
+    sudo cp -fu qmade/install.sh /usr/bin/qmade
+    sudo chmod +x /usr/bin/qmade
+    uv tool install qtile # The latest version of Qtile via UV
+    uv tool install pywal16[colorz]
+    sudo cp -fu ~/.local/bin/qtile /usr/bin/
+    sudo cp -fu ~/.local/bin/wal /usr/bin/
   fi
 
   clear #Clear the screen
@@ -1541,26 +1545,13 @@ function update_qmade() {
     . /etc/os-release #Get the VERSION_CODENAME
   fi
   if command -v uv &>/dev/null; then
-    echo " "
+    echo "UV is installed..."
   else
-    echo "UV is not installed. Installing..."
-    curl -LsSf https://astral.sh/uv/install.sh | sh
+    curl -LsSf https://astral.sh/uv/install.sh | sh # Install UV Python package manager.
     source $HOME/.local/bin/env
-    echo "UV installed successfully."
   fi
   cd /opt
-  if [ "$VERSION_CODENAME" == "trixie" ] || [ "$VERSION_CODENAME" == "sid" ]; then
-    sudo mkdir qtile_venv
-    sudo chmod -R 777 qtile_venv && cd qtile_venv
-    #git clone --depth 1 https://github.com/qtile/qtile.git # The latest version of Qtile
-    git clone --depth 1 https://github.com/ITmail-dk/qmade.git
-    sudo cp -fu qmade/install.sh /usr/bin/qmade
-    sudo chmod +x /usr/bin/qmade
-    uv tool install qtile # The latest version of Qtile via UV
-    uv tool install pywal16[colorz]
-    sudo cp -fu ~/.local/bin/qtile /usr/bin/
-    sudo cp -fu ~/.local/bin/wal /usr/bin/
-  else
+  if [ "$VERSION_CODENAME" == "bookworm" ]; then
     if [ -d qtile_venv ]; then
       sudo rm -rf qtile_venv
     fi
@@ -1581,6 +1572,17 @@ function update_qmade() {
     sudo chmod +x /usr/bin/qmade
     sudo cp -fu bin/qtile /usr/bin/
     sudo cp -fu bin/wal /usr/bin/
+  else
+    sudo mkdir qtile_venv
+    sudo chmod -R 777 qtile_venv && cd qtile_venv
+    #git clone --depth 1 https://github.com/qtile/qtile.git # The latest version of Qtile
+    git clone --depth 1 https://github.com/ITmail-dk/qmade.git
+    sudo cp -fu qmade/install.sh /usr/bin/qmade
+    sudo chmod +x /usr/bin/qmade
+    uv tool install qtile # The latest version of Qtile via UV
+    uv tool install pywal16[colorz]
+    sudo cp -fu ~/.local/bin/qtile /usr/bin/
+    sudo cp -fu ~/.local/bin/wal /usr/bin/
   fi
 
   # SDDM New login wallpaper
