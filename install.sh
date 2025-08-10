@@ -182,17 +182,36 @@ function start_installation() {
     sudo mv /etc/apt/sources.list /etc/apt/old-type-sources.list.bak
   fi
 
+  # Copy in new APT files
   sudo cp -rfu qmade/src/apt/* /etc/apt/
-  check_error "Copy APT Sources list"
+  check_error "Copy APT Sources list files"
 
-  if [ "$VERSION_CODENAME" == "trixie" ] || [ "$VERSION_CODENAME" == "sid" ]; then
-    if grep -q "Suites: bookworm bookworm-updates bookworm-backports" "/etc/apt/sources.list.d/debian.sources"; then
-      echo "Sentence found. Replacing..."
-      sudo sed -i "s/Suites: bookworm bookworm-updates bookworm-backports/Suites: sid bookworm-updates bookworm-backports/g" "/etc/apt/sources.list.d/debian.sources"
-    else
-      echo "Sentence not found. No changes made."
-    fi
-  fi
+  #Get the VERSION_CODENAME to determine changes to be made in APT source list.
+  OS_VERSION_FOR_APT=$(lsb_release -cs)
+  case "$OS_VERSION_FOR_APT" in
+  bookworm)
+    echo "Bookworm Detected."
+    sudo sed -i 's/APTLISTOS/bookworm/g' /etc/apt/sources.list.d/debian.sources
+    ;;
+  trixie)
+    echo "Trixie Detected."
+    sudo sed -i 's/APTLISTOS/trixie/g' /etc/apt/sources.list.d/debian.sources
+    ;;
+  *)
+    echo "Unknown Debian release: $OS_VERSION_FOR_APT.  Stop action taken."
+    exit 1
+    ;;
+  esac
+  # this IF statement will be replaced by the CASE...
+  #if [ "$VERSION_CODENAME" == "trixie" ] || [ "$VERSION_CODENAME" == "sid" ]; then
+  #  if grep -q "Suites: bookworm" "/etc/apt/sources.list.d/debian.sources"; then
+  #    echo "Sentence found. Replacing..."
+  #    sudo sed -i 's/APTLISTOSbookworm/trixie/g' /etc/apt/sources.list.d/debian.sources
+  #    #sudo sed -i "s/Suites: bookworm bookworm-updates bookworm-backports/Suites: sid bookworm-updates bookworm-backports/g" "/etc/apt/sources.list.d/debian.sources"
+  #  else
+  #    echo "APT Sources list, No changes made."
+  #  fi
+  #fi
   check_error "Check and replace APT Sources list distro"
 
   # Check for version of Debian and replace in source list of necessary
@@ -1472,7 +1491,7 @@ EOF
 
   # Remove .first-login file --------------------------------------------------------------
   if [ -f ~/.first-login ]; then
-    rm ~/.first-login
+    sudo rm -f ~/.first-login
   fi
 
   # Check for Nvidia graphics card and install drivers
@@ -1551,6 +1570,25 @@ function update_qmade() {
     source $HOME/.local/bin/env
   fi
   cd /opt
+
+  #Get the VERSION_CODENAME
+  OS_VERSION_FOR_APT=$(lsb_release -cs)
+  case "$OS_VERSION_FOR_APT" in
+  bookworm)
+    echo "Bookworm Detected."
+    ;;
+  trixie)
+    echo "Trixie Detected."
+    ;;
+  sid)
+    echo "Sid Detected."
+    ;;
+  *)
+    echo "Unknown Debian release: $OS_VERSION_FOR_APT.  Stop action taken."
+    exit 1
+    ;;
+  esac
+
   if [ "$VERSION_CODENAME" == "bookworm" ]; then
     if [ -d qtile_venv ]; then
       sudo rm -rf qtile_venv
