@@ -25,12 +25,11 @@ if [ -f ~/.Xresources ]; then
   xrdb ~/.Xresources &
 fi
 
-# Turn off the Screen after X time in seconds
-# Time: standby, suspend, off
-xset dpms 2700 2700 2700
-
 #keynav &
 #kdeconnectd &
+
+# Turn off the Screen after X time in seconds
+xset s 2700 &
 
 # Remove .first-login file --------------------------------------------------------------
 if [ -f ~/.first-login ]; then
