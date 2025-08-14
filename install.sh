@@ -57,8 +57,8 @@ function start_installation() {
   YELLOW="\033[0;33m"
   BLUE="\033[0;94m"
 
-  # Function to check and exit on error # check_error "TXT"
-  set -euo pipefail
+  # Function to check and exit on error use, check_error "TXT"
+  #set -euo pipefail # Can be good, but can also cause errors in things that are incorrectly aligned versions bash
 
   check_error() {
     if [ $? -ne 0 ]; then
@@ -103,7 +103,7 @@ function start_installation() {
   fi
 
   # QMADE git clone
-  cd /tmp/
+  cd /tmp/ || exit
   git clone --depth 1 https://github.com/ITmail-dk/qmade.git
 
   # qmade to usr/bin
@@ -133,7 +133,7 @@ function start_installation() {
 
   # ADD ETC Environment
   if [ -f qmade/src/etc/environment ]; then
-    cat qmade/src/etc/environment | sudo tee /etc/environment
+    cat "qmade/src/etc/environment" | sudo tee /etc/environment
   fi
   check_error "etc environment file copy"
 
@@ -218,7 +218,7 @@ function start_installation() {
 
   # Sudoers ------------------------------------------------------------------------------------------------------------------------------------
   # Add User NOPASSWD to shutdown now and reboot
-  echo "$USER ALL=(ALL) NOPASSWD: /sbin/shutdown now, /sbin/reboot, /sbin/pm-suspend" | sudo tee -a /etc/sudoers.d/$USER && sudo visudo -c -f /etc/sudoers.d/$USER
+  echo "$USER ALL=(ALL) NOPASSWD: /sbin/shutdown now, /sbin/reboot, /usr/bin/systemctl suspend, /usr/bin/systemctl hibernate, /usr/bin/yazi" | sudo tee -a /etc/sudoers.d/$USER && sudo visudo -c -f /etc/sudoers.d/$USER
   check_error "Sudo User NOPASSWD to shutdown now and reboot"
 
   # Set sudo password timeout
@@ -1124,9 +1124,9 @@ FONTSLOCALCONFIG'
   fi
 
   git clone --depth 1 https://github.com/alvatip/Nordzy-cursors
-  cd Nordzy-cursors
+  cd Nordzy-cursors || exit
   sudo ./install.sh
-  cd /tmp/
+  cd /tmp/ || exit
 
   # .Xresources
   # Xcursor.theme: Nordzy-cursors
@@ -1135,16 +1135,16 @@ FONTSLOCALCONFIG'
   # Nordzy-icon --------------------------------------------------------
   # https://github.com/alvatip/Nordzy-icon
 
-  cd /tmp/
+  cd /tmp/ || exit
 
   if [ -d Nordzy-icon ]; then
     sudo rm -rf Nordzy-icon
   fi
 
   git clone --depth 1 https://github.com/alvatip/Nordzy-icon
-  cd Nordzy-icon/
+  cd Nordzy-icon/ || exit
   sudo ./install.sh
-  cd /tmp/
+  cd /tmp/ || exit
 
   # GTK Settings START --------------------------------------------------------
   # /etc/gtk-3.0/settings.ini
