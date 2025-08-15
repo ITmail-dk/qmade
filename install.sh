@@ -218,11 +218,11 @@ function start_installation() {
 
   # Sudoers ------------------------------------------------------------------------------------------------------------------------------------
   # Add User NOPASSWD to shutdown now and reboot
-  echo "$USER ALL=(ALL) NOPASSWD: /sbin/shutdown now, /sbin/reboot, /usr/bin/systemctl suspend, /usr/bin/systemctl hibernate, /usr/bin/yazi" | sudo tee -a /etc/sudoers.d/$USER && sudo visudo -c -f /etc/sudoers.d/$USER
+  echo "$USER ALL=(ALL) NOPASSWD: /sbin/shutdown now, /sbin/reboot, /usr/bin/systemctl suspend, /usr/bin/systemctl hibernate, /usr/bin/yazi" | sudo tee -a /etc/sudoers.d/$USER && sudo visudo -c -f /etc/sudoers.d/"$USER"
   check_error "Sudo User NOPASSWD to shutdown now and reboot"
 
   # Set sudo password timeout
-  echo "Defaults timestamp_timeout=25" | sudo tee -a /etc/sudoers.d/$USER && sudo visudo -c -f /etc/sudoers.d/$USER
+  echo "Defaults timestamp_timeout=25" | sudo tee -a /etc/sudoers.d/$USER && sudo visudo -c -f /etc/sudoers.d/"$USER"
   check_error "Set sudo password timeout"
   # Sudoers ------------------------------------------------------------------------------------------------------------------------------------
 
@@ -237,7 +237,7 @@ function start_installation() {
   # Core System APT install
   sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install bash-completion xserver-xorg x11-utils xinit polkitd pkexec lxpolkit acl arandr autorandr picom fwupd colord mesa-utils htop wget curl git tmux numlockx kitty neovim xdg-utils ufw gufw cups cups-common lm-sensors fancontrol xbacklight brightnessctl unzip network-manager bind9-dnsutils dunst libnotify-bin notify-osd xsecurelock pm-utils rofi 7zip jq poppler-utils fd-find ripgrep zoxide imagemagick nsxiv mpv flameshot mc thunar gvfs gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq font-manager fontconfig fontconfig-config fonts-recommended fonts-liberation fonts-freefont-ttf fonts-noto-core libfontconfig1 pipewire pipewire-audio pipewire-alsa pipewire-pulse pipewire-jack wireplumber libspa-0.2-bluetooth pavucontrol playerctl alsa-utils qpwgraph sddm-theme-breeze ffmpeg build-essential dkms cmake remmina libreoffice linux-cpupower plymouth plymouth-themes keynav yt-dlp qalculate-gtk xss-lock
 
-  sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install linux-headers-$(uname -r)
+  sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install linux-headers-"$(uname -r)"
   sudo DEBIAN_FRONTEND=noninteractive apt -y install sddm --no-install-recommends
   check_error "Core System APT install"
 
@@ -421,25 +421,25 @@ MCINI
   # Qtile Core Dependencies apt install
   sudo DEBIAN_FRONTEND=noninteractive apt install -y feh python3-full python3-pip python3-venv pipx libxkbcommon-dev libxkbcommon-x11-dev libcairo2-dev pkg-config
   curl -LsSf https://astral.sh/uv/install.sh | sh # Install UV Python package and project manager.
-  source $HOME/.local/bin/env                     # Activate UV after install
+  source "$HOME"/.local/bin/env                   # Activate UV after install
   clear                                           #Clear the screen
   check_error "Qtile Core Dependencies apt install"
 
   # Install Qtile from source via github and Pip
-  cd ~
+  cd ~ || exit
   mkdir -p ~/.local/bin
   mkdir -p ~/.local/src
 
   # Python3 venv Qtile install
   # Upgrade run: python3 -m venv --upgrade qtile_venv
-  cd /opt
+  cd /opt || exit
   if [ "$VERSION_CODENAME" == "bookworm" ]; then
     if [ -d qtile_venv ]; then
       sudo rm -rf qtile_venv
     fi
     sudo python3 -m venv qtile_venv
     sudo chmod -R 777 qtile_venv
-    cd qtile_venv
+    cd qtile_venv || exit
     git clone --depth 1 https://github.com/ITmail-dk/qmade.git
     git clone --depth 1 https://github.com/qtile/qtile.git --branch v0.32.0 # Specific version of Qtile
     source /opt/qtile_venv/bin/activate
@@ -456,7 +456,7 @@ MCINI
     sudo cp -fu bin/wal /usr/bin/
   else
     sudo mkdir qtile_venv
-    sudo chmod -R 777 qtile_venv && cd qtile_venv
+    sudo chmod -R 777 qtile_venv && cd qtile_venv || exit
     #git clone --depth 1 https://github.com/qtile/qtile.git # The latest version of Qtile
     git clone --depth 1 https://github.com/ITmail-dk/qmade.git
     sudo cp -fu qmade/install.sh /usr/bin/qmade
@@ -844,7 +844,7 @@ QTILEDESKTOP'
     sudo DEBIAN_FRONTEND=noninteractive apt install -y xserver-xorg-input-synaptics
     check_error "Failed to install xserver-xorg-input-synaptics"
 
-    cat <<EOF | tee -a "~/.config/qtile/autostart.sh" >/dev/null
+    cat <<EOF | tee -a "$HOME/.config/qtile/autostart.sh" >/dev/null
 # Synaptics - Touchpad left click and right click.
 synclient TapButton1=1 TapButton2=3 &
 EOF
@@ -1118,7 +1118,7 @@ FONTSLOCALCONFIG'
 
   # https://github.com/alvatip/Nordzy-cursors
 
-  cd /tmp/
+  cd /tmp/ || exit
   if [ -d Nordzy-cursors ]; then
     sudo rm -rf Nordzy-cursors
   fi
@@ -1414,7 +1414,7 @@ XFCE4HELPER
 
   sudo mkdir -p /usr/share/wallpapers
   sudo chmod 777 /usr/share/wallpapers
-  sudo cp $(find /tmp/qmade/wallpapers -type f -name "*.jpg" | shuf -n 1) /usr/share/wallpapers/login-wallpape.jpg
+  sudo cp "$(find /tmp/qmade/wallpapers -type f -name "*.jpg" | shuf -n 1)" /usr/share/wallpapers/login-wallpape.jpg
   sudo chmod 777 /usr/share/wallpapers/login-wallpape.jpg
 
   # SDDM New login wallpaper
@@ -1434,17 +1434,17 @@ XFCE4HELPER
   check_error "NEW SDDM LOGIN WALLPAPER"
 
   # ---------------------------------------------------------------------------------------
-  cd /tmp/
+  cd /tmp/ || exit
 
   # FastFetch Install.
   FASTFETCH_VERSION=$(curl -s "https://api.github.com/repos/fastfetch-cli/fastfetch/releases/latest" | grep '"tag_name"' | awk -F'"' '{print $4}')
-  wget https://github.com/fastfetch-cli/fastfetch/releases/download/$FASTFETCH_VERSION/fastfetch-linux-amd64.deb && sudo dpkg -i fastfetch-linux-amd64.deb && rm fastfetch-linux-amd64.deb
+  wget https://github.com/fastfetch-cli/fastfetch/releases/download/"$FASTFETCH_VERSION"/fastfetch-linux-amd64.deb && sudo dpkg -i fastfetch-linux-amd64.deb && rm fastfetch-linux-amd64.deb
   clear #Clear the screen
   check_error "FastFetch install"
 
   # WaterFox install - https://www.waterfox.net/download/
   WATERFOX_VERSION=$(curl -s "https://api.github.com/repos/BrowserWorks/waterfox/releases/latest" | grep '"tag_name"' | awk -F'"' '{print $4}')
-  wget -O waterfox.tar.bz2 https://cdn1.waterfox.net/waterfox/releases/$WATERFOX_VERSION/Linux_x86_64/waterfox-$WATERFOX_VERSION.tar.bz2
+  wget -O waterfox.tar.bz2 https://cdn1.waterfox.net/waterfox/releases/"$WATERFOX_VERSION"/Linux_x86_64/waterfox-"$WATERFOX_VERSION".tar.bz2
   tar -xvf waterfox.tar.bz2
   sudo mv waterfox /opt/
   sudo chown -R root:root /opt/waterfox/
@@ -1466,7 +1466,7 @@ EOF
   # Yazi File Manager
   # https://github.com/sxyazi/yazi/releases/latest
   YAZI_VERSION=$(curl -s "https://api.github.com/repos/sxyazi/yazi/releases/latest" | grep '"tag_name"' | awk -F'"' '{print $4}')
-  wget https://github.com/sxyazi/yazi/releases/download/$YAZI_VERSION/yazi-x86_64-unknown-linux-musl.zip
+  wget https://github.com/sxyazi/yazi/releases/download/"$YAZI_VERSION"/yazi-x86_64-unknown-linux-musl.zip
   unzip yazi-x86_64-unknown-linux-musl.zip
   sudo cp -fu yazi-x86_64-unknown-linux-musl/yazi /usr/bin/
   sudo chown root:root /usr/bin/yazi
@@ -1477,7 +1477,7 @@ EOF
 
   # Systemctl enable --user
   # See list run: systemctl list-unit-files --state=enabled
-  if [ $(whoami) != "root" ]; then
+  if [ "$(whoami)" != "root" ]; then
     # Sound systemctl enable --user
     systemctl enable --user --now pipewire.socket pipewire-pulse.socket wireplumber.service
   else
@@ -1508,12 +1508,12 @@ EOF
 
   if lspci | grep -i nvidia; then
     echo "Installing required packages..."
-    sudo apt -y install linux-headers-$(uname -r)
+    sudo apt -y install linux-headers-"$(uname -r)"
     sudo apt -y install gcc make acpid dkms libglvnd-core-dev libglvnd0 libglvnd-dev
     check_error "Nvidia installing required packages"
 
     echo "Removing old NVIDIA drivers..."
-    sudo apt remove -y nvidia-* && sudo apt autoremove -y $(dpkg -l nvidia-driver* | grep ii | awk '{print $2}')
+    sudo apt remove -y nvidia-* && sudo apt autoremove -y "$(dpkg -l nvidia-driver* | grep ii | awk '{print $2}')"
     check_error "removal of old NVIDIA drivers"
 
     echo "Enabling i386 architecture and installing 32-bit libraries..."
@@ -1524,12 +1524,12 @@ EOF
     #NVIDIAGETVERSION="$(curl -s "https://www.nvidia.com/en-us/drivers/unix/" | grep "Latest Production Branch Version:" | awk -F'"> ' '{print $2}' | cut -d'<' -f1 | awk 'NR==1')"
     NVIDIAGETVERSION="$(curl -s "https://api.github.com/repos/NVIDIA/open-gpu-kernel-modules/releases/latest" | grep '"tag_name"' | awk -F'"' '{print $4}')"
     echo "Downloading and installing NVIDIA $NVIDIAGETVERSION driver..."
-    wget https://us.download.nvidia.com/XFree86/Linux-x86_64/$NVIDIAGETVERSION/NVIDIA-Linux-x86_64-$NVIDIAGETVERSION.run
+    wget https://us.download.nvidia.com/XFree86/Linux-x86_64/"$NVIDIAGETVERSION"/NVIDIA-Linux-x86_64-"$NVIDIAGETVERSION".run
     check_error "downloading NVIDIA driver"
 
-    chmod +x NVIDIA-Linux-x86_64-$NVIDIAGETVERSION.run
+    chmod +x NVIDIA-Linux-x86_64-"$NVIDIAGETVERSION".run
     #    echo 'nvidia-settings --assign CurrentMetaMode="nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }"' >> ~/.config/qtile/autostart.sh
-    sudo ./NVIDIA-Linux-x86_64-$NVIDIAGETVERSION.run --silent --no-questions --disable-nouveau --allow-installation-with-running-driver -M proprietary --skip-module-load
+    sudo ./NVIDIA-Linux-x86_64-"$NVIDIAGETVERSION".run --silent --no-questions --disable-nouveau --allow-installation-with-running-driver -M proprietary --skip-module-load
     # --run-nvidia-xconfig
     if command -v docker &>/dev/null; then
       curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --yes --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
@@ -1567,7 +1567,7 @@ EOF
 
 # Start of update_qmade function
 function update_qmade() {
-  cd /opt
+  cd /opt || exit
   if [[ -f /etc/os-release ]]; then
     . /etc/os-release #Get the VERSION_CODENAME
   fi
@@ -1575,9 +1575,9 @@ function update_qmade() {
     echo "UV is installed..."
   else
     curl -LsSf https://astral.sh/uv/install.sh | sh # Install UV Python package manager.
-    source $HOME/.local/bin/env
+    source "$HOME"/.local/bin/env
   fi
-  cd /opt
+  cd /opt || exit
 
   #Get the VERSION_CODENAME
   OS_VERSION_FOR_APT=$(lsb_release -cs)
@@ -1603,7 +1603,7 @@ function update_qmade() {
     fi
     sudo python3 -m venv qtile_venv
     sudo chmod -R 777 qtile_venv
-    cd qtile_venv
+    cd qtile_venv || exit
     git clone --depth 1 https://github.com/ITmail-dk/qmade.git
     git clone --depth 1 https://github.com/qtile/qtile.git --branch v0.32.0 # Specific version of Qtile
     source /opt/qtile_venv/bin/activate
@@ -1620,7 +1620,7 @@ function update_qmade() {
     sudo cp -fu bin/wal /usr/bin/
   else
     sudo mkdir qtile_venv
-    sudo chmod -R 777 qtile_venv && cd qtile_venv
+    sudo chmod -R 777 qtile_venv && cd qtile_venv || exit
     #git clone --depth 1 https://github.com/qtile/qtile.git # The latest version of Qtile
     git clone --depth 1 https://github.com/ITmail-dk/qmade.git
     sudo cp -fu qmade/install.sh /usr/bin/qmade
@@ -1637,7 +1637,7 @@ function update_qmade() {
 
   sudo mkdir -p /usr/share/wallpapers
   sudo chmod 777 /usr/share/wallpapers
-  sudo cp $(find qmade/wallpapers -type f -name "*.jpg" | shuf -n 1) /usr/share/wallpapers/login-wallpape.jpg
+  sudo cp "$(find qmade/wallpapers -type f -name "*.jpg" | shuf -n 1)" /usr/share/wallpapers/login-wallpape.jpg
 
   NEW_LOGIN_WALLPAPER="/usr/share/wallpapers/login-wallpape.jpg"
 
@@ -1661,7 +1661,7 @@ function update_qmade() {
 }
 
 function update_waterfox() {
-  cd /tmp/
+  cd /tmp/ || exit
   sudo rm -rf /opt/waterfox
 
   # WaterFox update - https://www.waterfox.net/download/
@@ -1669,7 +1669,7 @@ function update_waterfox() {
   #read WATERFOX_VERSION
   WATERFOX_VERSION=$(curl -s "https://api.github.com/repos/BrowserWorks/waterfox/releases/latest" | grep '"tag_name"' | awk -F'"' '{print $4}')
 
-  wget -O waterfox.tar.bz2 https://cdn1.waterfox.net/waterfox/releases/$WATERFOX_VERSION/Linux_x86_64/waterfox-$WATERFOX_VERSION.tar.bz2
+  wget -O waterfox.tar.bz2 https://cdn1.waterfox.net/waterfox/releases/"$WATERFOX_VERSION"/Linux_x86_64/waterfox-"$WATERFOX_VERSION".tar.bz2
   tar -xvf waterfox.tar.bz2
   sudo mv waterfox /opt/
   sudo chown -R root:root /opt/waterfox/
@@ -1693,12 +1693,12 @@ function nvidia_install_upgrade() {
   if lspci | grep -i nvidia; then
     echo "Nvidia install / Update."
     echo "Installing required packages..."
-    sudo apt -y install linux-headers-$(uname -r)
+    sudo apt -y install linux-headers-"$(uname -r)"
     sudo apt -y install gcc make acpid dkms libglvnd-core-dev libglvnd0 libglvnd-dev
     check_error "Installing required package"
 
     echo "Removing old NVIDIA drivers..."
-    sudo apt remove -y nvidia-* && sudo apt autoremove -y $(dpkg -l nvidia-driver* | grep ii | awk '{print $2}')
+    sudo apt remove -y nvidia-* && sudo apt autoremove -y "$(dpkg -l nvidia-driver* | grep ii | awk '{print $2}')"
     check_error "removal of old NVIDIA drivers"
 
     echo "Enabling i386 architecture and installing 32-bit libraries..."
@@ -1710,12 +1710,11 @@ function nvidia_install_upgrade() {
     # Latest Nvidia Beta driver version
     NVIDIAGETVERSION="$(curl -s "https://api.github.com/repos/NVIDIA/open-gpu-kernel-modules/releases/latest" | grep '"tag_name"' | awk -F'"' '{print $4}')"
     echo "Downloading and installing NVIDIA $NVIDIAGETVERSION driver..."
-    wget https://us.download.nvidia.com/XFree86/Linux-x86_64/$NVIDIAGETVERSION/NVIDIA-Linux-x86_64-$NVIDIAGETVERSION.run
+    wget https://us.download.nvidia.com/XFree86/Linux-x86_64/"$NVIDIAGETVERSION"/NVIDIA-Linux-x86_64-"$NVIDIAGETVERSION".run
     check_error "downloading NVIDIA driver"
-
-    chmod +x NVIDIA-Linux-x86_64-$NVIDIAGETVERSION.run
+    chmod +x NVIDIA-Linux-x86_64-"$NVIDIAGETVERSION".run
     #    echo 'nvidia-settings --assign CurrentMetaMode="nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }"' >> ~/.config/qtile/autostart.sh
-    sudo ./NVIDIA-Linux-x86_64-$NVIDIAGETVERSION.run --silent --no-questions --disable-nouveau --allow-installation-with-running-driver -M proprietary --skip-module-load
+    sudo ./NVIDIA-Linux-x86_64-"$NVIDIAGETVERSION".run --silent --no-questions --disable-nouveau --allow-installation-with-running-driver -M proprietary --skip-module-load
     # --run-nvidia-xconfig
     sudo update-grub
     if command -v docker &>/dev/null; then
@@ -1733,7 +1732,7 @@ function nvidia_install_upgrade() {
 }
 
 function help_wiki() {
-  echo "Help / WiKi for QMADE ;-)"
+  echo "Help / WiKi for QMADE"
 }
 
 main() {
@@ -1742,43 +1741,43 @@ main() {
   fi
 
   case $1 in
-  "help" | "--help" | "-h")
+  help | --help | -h)
     echo "Help..!"
     help_wiki
     ;;
-  "update" | "--update" | "-u")
-    echo "Update QMADE."
+  update | --update | -u)
+    echo "Update QMADE"
     update_qmade
     auto-new-wallpaper-and-colors
     sleep 0.25
     sudo sed -i 's/start_installation #main-run/help_wiki #main-run/g' /usr/bin/qmade
     clear #Clear the screen
-    echo "QMADE Update is Done ;-)"
+    echo "QMADE Update is finished"
     ;;
-  "system-update" | "--system-update" | "-su")
+  system-update | --system-update | -su)
     echo -e "System APT Update / Upgrade + QTILE / QMADE Upgrade."
     sudo apt update && sudo apt upgrade -y && sudo apt clean && sudo apt autoremove -y
     update_qmade
     nvidia_install_upgrade
     sudo update-initramfs -u -k all
     clear #Clear the screen
-    echo -e "We are done with the System Update / Upgrade + QTILE & QMADE.\nYou should consider rebooting after a system update."
+    echo -e "We are finished with the System Update / Upgrade + QTILE & QMADE.\nYou should consider rebooting after a system update."
     ;;
-  "system-dist-upgrade" | "--system-dist-upgrade" | "-sdu")
-    echo "Full System Distro Update / Upgrade + QTILE & QMADE."
+  system-dist-upgrade | --system-dist-upgrade | -sdu)
+    echo "Full System Distro Update and Upgrade"
     sudo apt update && sudo apt full-upgrade -y && sudo apt dist-upgrade
     update_qmade
     update_waterfox
     nvidia_install_upgrade
     sudo update-initramfs -u -k all
     clear #Clear the screen
-    echo -e "We are done with the Full System Update / Upgrade + QTILE & QMADE.\nYou should consider rebooting after a system update."
+    echo -e "We are finished with the Full System Update / Upgrade\nYou should consider rebooting after a system update."
     ;;
   update-waterfox)
     echo "Updating Waterfox"
     update_waterfox
     clear #Clear the screen
-    echo "Waterfox update is Done."
+    echo "Waterfox update is finished."
     ;;
   *)
     echo -e "Unknown function: $1 \n - Available functions are: help, update or -u, system-update or -su, system-dist-upgrade or -sdu, update-waterfox"
@@ -1787,4 +1786,4 @@ main() {
   esac
 }
 
-main "$@"
+"$@" main
