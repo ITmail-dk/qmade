@@ -5,14 +5,14 @@
 DEBIAN_ISO_URL=https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/
 GET_ISO_NAME=$(curl -s https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/ | grep -oP 'debian-\d+(?:\.\d+)+-amd64-netinst\.iso' | head -n 1)
 PRESEED_ISO_NAME=QMADE-Debian
-WORK_DIR=$(pwd)
+#WORK_DIR=$(pwd)
 ISO_WORK_TMP=iso-extract
 
 # Setup the environment for creating the new ISO version.
 function setup() {
   sudo apt update && sudo apt install -y wget git xorriso isolinux p7zip-full fakeroot binutils
   if [ ! -f Debian-source.iso ]; then
-    wget -O Debian-source.iso $DEBIAN_ISO_URL/$GET_ISO_NAME
+    wget -O Debian-source.iso $DEBIAN_ISO_URL/"$GET_ISO_NAME"
   fi
   xorriso -osirrox on -indev Debian-source.iso -extract / $ISO_WORK_TMP
   sudo chmod -R +w $ISO_WORK_TMP
@@ -43,7 +43,7 @@ function make() {
   if [ -d $ISO_WORK_TMP ]; then
     if [ -f $PRESEED_ISO_NAME.iso ]; then rm $PRESEED_ISO_NAME.iso; fi
     xorriso -as mkisofs -o $PRESEED_ISO_NAME.iso -V "Debian QMADE" -isohybrid-mbr /usr/lib/ISOLINUX/isohdpfx.bin -c isolinux/boot.cat -b isolinux/isolinux.bin -no-emul-boot -boot-load-size 4 -boot-info-table -eltorito-alt-boot -e boot/grub/efi.img -no-emul-boot -isohybrid-gpt-basdat $ISO_WORK_TMP
-    ls -lah *.iso
+    ls -lah ./*.iso
 
   else
     echo "$ISO_WORK_TMP does not exist, runing setup..."
@@ -54,11 +54,11 @@ function make() {
 function usb() {
   lsblk
   echo -en "Enter the name of the USB Disk so sda, sdb etc..: "
-  read USB_DISK
+  read -r USB_DISK
   clear
-  sudo dd bs=4M status=progress conv=fsync oflag=direct if=$(pwd)/$PRESEED_ISO_NAME.iso of=/dev/$USB_DISK
-  echo "ISO to USB All done ;-)"
+  sudo dd bs=4M status=progress conv=fsync oflag=direct if="$(pwd)"/$PRESEED_ISO_NAME.iso of=/dev/"$USB_DISK"
+  echo "ISO to USB All done."
 }
 
 # Run the function by, function_name
-$@ make
+"$@" make
