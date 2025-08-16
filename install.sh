@@ -50,13 +50,18 @@ function start_installation() {
 
   # Set Echo colors
   # for c in {0..255}; do tput setaf $c; tput setaf $c | cat -v; echo =$c; done
+  # shellcheck disable=SC2034
   NC="\033[0m"
+  # shellcheck disable=SC2034
   RED="\033[0;31m"
+  # shellcheck disable=SC2034
   RED2="\033[38;5;196m"
+  # shellcheck disable=SC2034
   GREEN="\033[0;32m"
+  # shellcheck disable=SC2034
   YELLOW="\033[0;33m"
+  # shellcheck disable=SC2034
   BLUE="\033[0;94m"
-
   # Function to check and exit on error use, check_error "TXT"
   #set -euo pipefail # Can be good, but can also cause errors in things that are incorrectly aligned versions bash
 
@@ -71,15 +76,17 @@ function start_installation() {
 
   clear #Clear the screen
   # Check if it's a Debian system installation and get the version codename.
+  # shellcheck disable=SC1091
   if [ -f /etc/debian_version ]; then
     . /etc/os-release #Get the VERSION_CODENAME
+    # shellcheck disable=SC2034
     VERSION_CODENAME_SHOULD_NOT_BE=codename-her
   else
     echo -e "${RED} This installation should only be run on a Debian Linux System. ${NC}"
     echo -e "${RED} See more at https://github.com/ITmail-dk/qmade/ ${NC}"
     exit 1
   fi
-
+  # shellcheck disable=SC1091
   echo -e "${GREEN} ${NC}"
   echo -e "${GREEN} "
   echo -e "${GREEN}      Starting the QMADE installation"
@@ -133,36 +140,42 @@ function start_installation() {
 
   # ADD ETC Environment
   if [ -f qmade/src/etc/environment ]; then
+    # shellcheck disable=SC2002
     cat "qmade/src/etc/environment" | sudo tee /etc/environment
   fi
   check_error "etc environment file copy"
 
   # ADD CONFIG FILES TO ETC
   if [ -f qmade/src/etc/modprobe.d/audio_disable_powersave.conf ]; then
+    # shellcheck disable=SC2002
     cat qmade/src/etc/modprobe.d/audio_disable_powersave.conf | sudo tee /etc/modprobe.d/audio_disable_powersave.conf
   fi
   check_error "audio_disable_powersave.conf file copy"
 
   if [ -f qmade/src/etc/pipewire/pipewire.conf.d/pipewire.conf ]; then
     sudo mkdir -p /etc/pipewire/pipewire.conf.d
+    # shellcheck disable=SC2002
     cat qmade/src/etc/pipewire/pipewire.conf.d/pipewire.conf | sudo tee /etc/pipewire/pipewire.conf.d/pipewire.conf
   fi
   check_error "pipewire.conf file copy"
 
   if [ -f qmade/src/etc/wireplumber/wireplumber.conf.d/51-disable-suspension.conf ]; then
     sudo mkdir -p /etc/wireplumber/wireplumber.conf.d
+    # shellcheck disable=SC2002
     cat qmade/src/etc/wireplumber/wireplumber.conf.d/51-disable-suspension.conf | sudo tee /etc/wireplumber/wireplumber.conf.d/51-disable-suspension.conf
   fi
   check_error "51-disable-suspension.conf copy"
 
   if [ -f qmade/src/config/kitty.conf ]; then
     mkdir -p ~/.config/kitty/themes
+    # shellcheck disable=SC2002
     cat qmade/src/config/kitty.conf >~/.config/kitty/kitty.conf
   fi
   check_error "Kitty config file copy"
 
   # auto-new-wallpaper-and-colors BIN
   if [ -f qmade/src/usr/bin/auto-new-wallpaper-and-colors.sh ]; then
+    # shellcheck disable=SC2002
     cat qmade/src/usr/bin/auto-new-wallpaper-and-colors.sh | sudo tee /usr/bin/auto-new-wallpaper-and-colors
     sudo chmod +x /usr/bin/auto-new-wallpaper-and-colors
   fi
@@ -218,11 +231,11 @@ function start_installation() {
 
   # Sudoers ------------------------------------------------------------------------------------------------------------------------------------
   # Add User NOPASSWD to shutdown now and reboot
-  echo "$USER ALL=(ALL) NOPASSWD: /sbin/shutdown now, /sbin/reboot, /usr/bin/systemctl suspend, /usr/bin/systemctl hibernate, /usr/bin/yazi" | sudo tee -a /etc/sudoers.d/$USER && sudo visudo -c -f /etc/sudoers.d/"$USER"
+  echo "$USER ALL=(ALL) NOPASSWD: /sbin/shutdown now, /sbin/reboot, /usr/bin/systemctl suspend, /usr/bin/systemctl hibernate, /usr/bin/yazi" | sudo tee -a /etc/sudoers.d/"$USER" && sudo visudo -c -f /etc/sudoers.d/"$USER"
   check_error "Sudo User NOPASSWD to shutdown now and reboot"
 
   # Set sudo password timeout
-  echo "Defaults timestamp_timeout=25" | sudo tee -a /etc/sudoers.d/$USER && sudo visudo -c -f /etc/sudoers.d/"$USER"
+  echo "Defaults timestamp_timeout=25" | sudo tee -a /etc/sudoers.d/"$USER" && sudo visudo -c -f /etc/sudoers.d/"$USER"
   check_error "Set sudo password timeout"
   # Sudoers ------------------------------------------------------------------------------------------------------------------------------------
 
@@ -332,8 +345,9 @@ function start_installation() {
 
   # Alias echo to ~/.bashrc or ~/.bash_aliases
   BASHALIASFILE=~/.bashrc
-
+  # shellcheck disable=SC2129
   echo 'alias ls="ls --color=auto --group-directories-first -v -lah"' >>$BASHALIASFILE
+  # shellcheck disable=SC2129
   echo 'alias ll="ls --color=auto --group-directories-first -v -lah"' >>$BASHALIASFILE
 
   echo 'alias df="df -h"' >>$BASHALIASFILE
@@ -341,8 +355,11 @@ function start_installation() {
   echo 'alias neofetch="fastfetch"' >>$BASHALIASFILE
 
   echo 'alias upup="sudo apt update && sudo apt upgrade -y && sudo apt clean && sudo apt autoremove -y"' >>$BASHALIASFILE
-
+  # shellcheck disable=SC2028
+  # shellcheck disable=SC2016
   echo 'bind '"'"'"\C-f":"open "$(fzf)"\n"'"'" >>$BASHALIASFILE
+  # shellcheck disable=SC2028
+  # shellcheck disable=SC2016
   echo 'alias lsman="compgen -c | fzf | xargs man"' >>$BASHALIASFILE
 
   echo 'alias qtileconfig="nano ~/.config/qtile/config.py"' >>$BASHALIASFILE
@@ -351,8 +368,9 @@ function start_installation() {
   echo 'alias autostart-edit="nano ~/.config/qtile/autostart.sh"' >>$BASHALIASFILE
   echo 'alias vi="nvim"' >>$BASHALIASFILE
   echo 'alias vim="nvim"' >>$BASHALIASFILE
+  # shellcheck disable=SC2026
   echo 'alias ytdl="yt-dlp -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best'"' >>$BASHALIASFILE
-
+  # shellcheck disable=SC2026
   clear #Clear the screen
   check_error "Bash Alias Echo"
 
@@ -421,8 +439,10 @@ MCINI
   # Qtile Core Dependencies apt install
   sudo DEBIAN_FRONTEND=noninteractive apt install -y feh python3-full python3-pip python3-venv pipx libxkbcommon-dev libxkbcommon-x11-dev libcairo2-dev pkg-config
   curl -LsSf https://astral.sh/uv/install.sh | sh # Install UV Python package and project manager.
-  source "$HOME"/.local/bin/env                   # Activate UV after install
-  clear                                           #Clear the screen
+  # shellcheck disable=SC1091
+  source "$HOME"/.local/bin/env # Activate UV after install
+  # shellcheck disable=SC1091
+  clear #Clear the screen
   check_error "Qtile Core Dependencies apt install"
 
   # Install Qtile from source via github and Pip
@@ -442,13 +462,17 @@ MCINI
     cd qtile_venv || exit
     git clone --depth 1 https://github.com/ITmail-dk/qmade.git
     git clone --depth 1 https://github.com/qtile/qtile.git --branch v0.32.0 # Specific version of Qtile
+    # shellcheck disable=SC1091
     source /opt/qtile_venv/bin/activate
+    # shellcheck disable=SC1091
     pip install dbus-next psutil wheel pyxdg
     pip install -r qtile/requirements.txt
     bin/pip install qtile/.
     # PyWAL install via pip3 for auto-generated color themes
     #pip3 install pywal16[all]
+    # shellcheck disable=SC2102
     pip3 install pywal16[colorz]
+    # shellcheck disable=SC2102
     deactivate
     sudo cp -fu qmade/install.sh /usr/bin/qmade
     sudo chmod +x /usr/bin/qmade
@@ -462,7 +486,9 @@ MCINI
     sudo cp -fu qmade/install.sh /usr/bin/qmade
     sudo chmod +x /usr/bin/qmade
     uv tool install qtile # The latest version of Qtile via UV
+    # shellcheck disable=SC2102
     uv tool install pywal16[colorz]
+    # shellcheck disable=SC2102
     sudo cp -fu ~/.local/bin/qtile /usr/bin/
     sudo cp -fu ~/.local/bin/wal /usr/bin/
   fi
@@ -1097,10 +1123,12 @@ FONTSLOCALCONFIG'
   check_error "Themes Fonts local.conf"
 
   if [ -d /usr/share/xsessions/ ]; then
+    # shellcheck disable=SC2061
     find /usr/share/xsessions/ -name plasma* -exec sudo rm -f {} \;
     sudo update-alternatives --remove x-session-manager /usr/bin/startplasma-x11
   fi
   if [ -d /usr/share/wayland-sessions/ ]; then
+    # shellcheck disable=SC2061
     find /usr/share/wayland-sessions/ -name plasma* -exec sudo rm -f {} \;
     sudo update-alternatives --remove x-session-manager /usr/bin/startplasma-x11
   fi
@@ -1568,9 +1596,11 @@ EOF
 # Start of update_qmade function
 function update_qmade() {
   cd /opt || exit
+  # shellcheck disable=SC1091
   if [[ -f /etc/os-release ]]; then
     . /etc/os-release #Get the VERSION_CODENAME
   fi
+  # shellcheck disable=SC1091
   if command -v uv &>/dev/null; then
     echo "UV is installed..."
   else
@@ -1606,13 +1636,17 @@ function update_qmade() {
     cd qtile_venv || exit
     git clone --depth 1 https://github.com/ITmail-dk/qmade.git
     git clone --depth 1 https://github.com/qtile/qtile.git --branch v0.32.0 # Specific version of Qtile
+    # shellcheck disable=SC1091
     source /opt/qtile_venv/bin/activate
+    # shellcheck disable=SC1091
     pip install dbus-next psutil wheel pyxdg
     pip install -r qtile/requirements.txt
     bin/pip install qtile/.
     # PyWAL install via pip3 for auto-generated color themes
     #pip3 install pywal16[all]
+    # shellcheck disable=SC2102
     pip3 install pywal16[colorz]
+    # shellcheck disable=SC2102
     deactivate
     sudo cp -fu qmade/install.sh /usr/bin/qmade
     sudo chmod +x /usr/bin/qmade
@@ -1626,7 +1660,9 @@ function update_qmade() {
     sudo cp -fu qmade/install.sh /usr/bin/qmade
     sudo chmod +x /usr/bin/qmade
     uv tool install qtile # The latest version of Qtile via UV
+    # shellcheck disable=SC2102
     uv tool install pywal16[colorz]
+    # shellcheck disable=SC2102
     sudo cp -fu ~/.local/bin/qtile /usr/bin/
     sudo cp -fu ~/.local/bin/wal /usr/bin/
   fi
@@ -1650,10 +1686,12 @@ function update_qmade() {
   fi
 
   if [ -d /usr/share/xsessions/ ]; then
+    # shellcheck disable=SC2061
     find /usr/share/xsessions/ -name plasma* -exec sudo rm -f {} \;
     sudo update-alternatives --remove x-session-manager /usr/bin/startplasma-x11
   fi
   if [ -d /usr/share/wayland-sessions/ ]; then
+    # shellcheck disable=SC2061
     find /usr/share/wayland-sessions/ -name plasma* -exec sudo rm -f {} \;
     sudo update-alternatives --remove x-session-manager /usr/bin/startplasma-x11
   fi
