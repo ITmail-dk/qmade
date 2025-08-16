@@ -355,11 +355,8 @@ function start_installation() {
   echo 'alias neofetch="fastfetch"' >>$BASHALIASFILE
 
   echo 'alias upup="sudo apt update && sudo apt upgrade -y && sudo apt clean && sudo apt autoremove -y"' >>$BASHALIASFILE
-  # shellcheck disable=SC2028
-  # shellcheck disable=SC2016
+  # shellcheck disable=SC2028,SC2016
   echo 'bind '"'"'"\C-f":"open "$(fzf)"\n"'"'" >>$BASHALIASFILE
-  # shellcheck disable=SC2028
-  # shellcheck disable=SC2016
   echo 'alias lsman="compgen -c | fzf | xargs man"' >>$BASHALIASFILE
 
   echo 'alias qtileconfig="nano ~/.config/qtile/config.py"' >>$BASHALIASFILE
@@ -370,7 +367,6 @@ function start_installation() {
   echo 'alias vim="nvim"' >>$BASHALIASFILE
   # shellcheck disable=SC2026
   echo 'alias ytdl="yt-dlp -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best'"' >>$BASHALIASFILE
-  # shellcheck disable=SC2026
   clear #Clear the screen
   check_error "Bash Alias Echo"
 
@@ -441,8 +437,7 @@ MCINI
   curl -LsSf https://astral.sh/uv/install.sh | sh # Install UV Python package and project manager.
   # shellcheck disable=SC1091
   source "$HOME"/.local/bin/env # Activate UV after install
-  # shellcheck disable=SC1091
-  clear #Clear the screen
+  clear                         #Clear the screen
   check_error "Qtile Core Dependencies apt install"
 
   # Install Qtile from source via github and Pip
@@ -464,7 +459,6 @@ MCINI
     git clone --depth 1 https://github.com/qtile/qtile.git --branch v0.32.0 # Specific version of Qtile
     # shellcheck disable=SC1091
     source /opt/qtile_venv/bin/activate
-    # shellcheck disable=SC1091
     pip install dbus-next psutil wheel pyxdg
     pip install -r qtile/requirements.txt
     bin/pip install qtile/.
@@ -472,7 +466,6 @@ MCINI
     #pip3 install pywal16[all]
     # shellcheck disable=SC2102
     pip3 install pywal16[colorz]
-    # shellcheck disable=SC2102
     deactivate
     sudo cp -fu qmade/install.sh /usr/bin/qmade
     sudo chmod +x /usr/bin/qmade
@@ -488,7 +481,6 @@ MCINI
     uv tool install qtile # The latest version of Qtile via UV
     # shellcheck disable=SC2102
     uv tool install pywal16[colorz]
-    # shellcheck disable=SC2102
     sudo cp -fu ~/.local/bin/qtile /usr/bin/
     sudo cp -fu ~/.local/bin/wal /usr/bin/
   fi
@@ -1638,7 +1630,6 @@ function update_qmade() {
     git clone --depth 1 https://github.com/qtile/qtile.git --branch v0.32.0 # Specific version of Qtile
     # shellcheck disable=SC1091
     source /opt/qtile_venv/bin/activate
-    # shellcheck disable=SC1091
     pip install dbus-next psutil wheel pyxdg
     pip install -r qtile/requirements.txt
     bin/pip install qtile/.
@@ -1646,7 +1637,6 @@ function update_qmade() {
     #pip3 install pywal16[all]
     # shellcheck disable=SC2102
     pip3 install pywal16[colorz]
-    # shellcheck disable=SC2102
     deactivate
     sudo cp -fu qmade/install.sh /usr/bin/qmade
     sudo chmod +x /usr/bin/qmade
@@ -1662,7 +1652,6 @@ function update_qmade() {
     uv tool install qtile # The latest version of Qtile via UV
     # shellcheck disable=SC2102
     uv tool install pywal16[colorz]
-    # shellcheck disable=SC2102
     sudo cp -fu ~/.local/bin/qtile /usr/bin/
     sudo cp -fu ~/.local/bin/wal /usr/bin/
   fi
