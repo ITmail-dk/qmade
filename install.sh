@@ -210,6 +210,11 @@ function start_installation() {
     echo "Trixie Detected."
     sudo sed -i 's/APTLISTOS/trixie/g' /etc/apt/sources.list.d/debian.sources
     ;;
+  forky)
+    echo "Forky Detected."
+    sudo sed -i "s/Suites: APTLISTOS APTLISTOS-updates APTLISTOS-backports/Suites: sid trixie-updates trixie-backports/g" "/etc/apt/sources.list.d/debian.sources"
+    sudo sed -i "s/Suites: APTLISTOS-security/Suites: trixie-security/g" "/etc/apt/sources.list.d/debian.sources"
+    ;;
   *)
     echo "Unknown Debian release: $OS_VERSION_FOR_APT.  Stop action taken."
     exit 1
