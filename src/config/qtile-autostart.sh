@@ -5,18 +5,19 @@ pgrep -x picom >/dev/null || picom --backend xrender --vsync --no-fading-openclo
 
 exec /usr/bin/lxpolkit & # Graphical authentication agent
 
-autorandr --change &&
+autorandr --change &
 
-  # This here if statement sets your background image, with feh...
-  # and is also used for the auto-generation of the background image and colors.
-  if [ -f ~/.fehbg ]; then
-    . ~/.fehbg
-  else
-    auto-new-wallpaper-and-colors
-    #feh --bg-scale $(find ~/Wallpapers -type f | shuf -n 1)
-  fi
+# This here if statement sets your background image, with feh...
+# and is also used for the auto-generation of the background image and colors.
+if [ -f ~/.fehbg ]; then
+  . ~/.fehbg
+else
+  auto-new-wallpaper-and-colors
+  #feh --bg-scale $(find ~/Wallpapers -type f | shuf -n 1)
+fi
 
-wpctl set-volume @DEFAULT_AUDIO_SINK@ 20% &
+wpctl set-mute @DEFAULT_AUDIO_SINK@ 0 &
+wpctl set-volume @DEFAULT_AUDIO_SINK@ 25% &
 dunst &
 numlockx on &
 mpd &

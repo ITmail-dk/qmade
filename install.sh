@@ -1786,6 +1786,7 @@ main() {
     sudo apt update && sudo apt upgrade -y && sudo apt clean && sudo apt autoremove -y
     update_qmade
     nvidia_install_upgrade
+    sudo dkms autoinstall
     sudo update-initramfs -u -k all
     clear #Clear the screen
     echo -e "We are finished with the System Update / Upgrade + QTILE & QMADE.\nYou should consider rebooting after a system update."
@@ -1796,6 +1797,7 @@ main() {
     update_qmade
     update_waterfox
     nvidia_install_upgrade
+    sudo dkms autoinstall
     sudo update-initramfs -u -k all
     clear #Clear the screen
     echo -e "We are finished with the Full System Update / Upgrade\nYou should consider rebooting after a system update."
