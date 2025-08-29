@@ -1558,8 +1558,13 @@ EOF
     sudo ./NVIDIA-Linux-x86_64-"$NVIDIAGETVERSION".run --silent --no-questions --disable-nouveau --allow-installation-with-running-driver -M proprietary --skip-module-load
     # --run-nvidia-xconfig
     if command -v docker &>/dev/null; then
-      curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --yes --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
-      curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+      if [ ! -f "/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg" ]; then
+        curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --yes --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
+      fi
+
+      if [ ! -f "/etc/apt/sources.list.d/nvidia-container-toolkit.list" ]; then
+        curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+      fi
       sudo apt update
       sudo apt install -y nvidia-container-toolkit
       sudo nvidia-ctk runtime configure --runtime=docker
