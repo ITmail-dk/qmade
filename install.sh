@@ -1625,6 +1625,7 @@ function update_qmade() {
   esac
 
   if [ "$VERSION_CODENAME" == "bookworm" ]; then
+    cd /opt || exit
     if [ -d qtile_venv ]; then
       sudo rm -rf qtile_venv
     fi
@@ -1648,6 +1649,7 @@ function update_qmade() {
     sudo cp -fu bin/qtile /usr/bin/
     sudo cp -fu bin/wal /usr/bin/
   else
+    cd /opt || exit
     if [ -d qtile_venv ]; then
       sudo rm -rf qtile_venv
     fi
