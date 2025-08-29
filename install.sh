@@ -1538,7 +1538,8 @@ EOF
     check_error "Nvidia installing required packages"
 
     echo "Removing old NVIDIA drivers..."
-    sudo apt remove -y nvidia-* && sudo apt autoremove -y "$(dpkg -l nvidia-driver* | grep ii | awk '{print $2}')"
+    sudo apt remove -y nvidia-* && sudo apt autoremove -y
+    # OLD sudo apt remove -y nvidia-* && sudo apt autoremove -y "$(dpkg -l nvidia-driver* | grep ii | awk '{print $2}')"
     check_error "removal of old NVIDIA drivers"
 
     echo "Enabling i386 architecture and installing 32-bit libraries..."
@@ -1752,7 +1753,8 @@ function nvidia_install_upgrade() {
     check_error "Installing required package"
 
     echo "Removing old NVIDIA drivers..."
-    sudo apt remove -y nvidia-* && sudo apt autoremove -y "$(dpkg -l nvidia-driver* | grep ii | awk '{print $2}')"
+    sudo apt remove -y nvidia-* && sudo apt autoremove -y
+    # OLD sudo apt remove -y nvidia-* && sudo apt autoremove -y "$(dpkg -l nvidia-driver* | grep ii | awk '{print $2}')"
     check_error "removal of old NVIDIA drivers"
 
     echo "Enabling i386 architecture and installing 32-bit libraries..."
