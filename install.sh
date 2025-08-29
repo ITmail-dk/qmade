@@ -1810,6 +1810,7 @@ main() {
   "help" | "--help" | "-h")
     echo "Help..!"
     help_wiki
+    exit 0
     ;;
   "update" | "--update" | "-u")
     echo "Update QMADE"
@@ -1819,6 +1820,7 @@ main() {
     sudo sed -i 's/start_installation #main-run/help_wiki #main-run/g' /usr/bin/qmade
     clear #Clear the screen
     echo "QMADE Update is finished"
+    exit 0
     ;;
   "system-update" | "--system-update" | "-su")
     echo -e "System APT Update / Upgrade + QTILE / QMADE Upgrade."
@@ -1829,6 +1831,7 @@ main() {
     sudo update-initramfs -u -k all
     clear #Clear the screen
     echo -e "We are finished with the System Update / Upgrade + QTILE & QMADE.\nYou should consider rebooting after a system update."
+    exit 0
     ;;
   "system-dist-upgrade" | "--system-dist-upgrade" | "-sdu")
     echo "Full System Distro Update and Upgrade"
@@ -1840,12 +1843,14 @@ main() {
     sudo update-initramfs -u -k all
     clear #Clear the screen
     echo -e "We are finished with the Full System Update / Upgrade\nYou should consider rebooting after a system update."
+    exit 0
     ;;
   "update-waterfox" | "-uwf")
     echo "Updating Waterfox"
     update_waterfox
     clear #Clear the screen
     echo "Waterfox update is finished."
+    exit 0
     ;;
   *)
     echo -e "Unknown function: $1 \n - Available functions are: help, update or -u, system-update or -su, system-dist-upgrade or -sdu, update-waterfox or -uwf"
