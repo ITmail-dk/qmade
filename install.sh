@@ -1753,8 +1753,13 @@ function nvidia_install_upgrade() {
     # --run-nvidia-xconfig
     sudo update-grub
     if command -v docker &>/dev/null; then
-      curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --yes --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
-      curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+      if [ ! -f /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg ]; then
+        curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --yes --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
+      fi
+
+      if [ ! -f /etc/apt/sources.list.d/nvidia-container-toolkit.list ]; then
+        curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+      fi
       sudo apt update
       sudo apt install -y nvidia-container-toolkit
       sudo nvidia-ctk runtime configure --runtime=docker
@@ -1810,17 +1815,17 @@ main() {
     clear #Clear the screen
     echo -e "We are finished with the Full System Update / Upgrade\nYou should consider rebooting after a system update."
     ;;
-  update-waterfox)
+  update-waterfox | -uwf)
     echo "Updating Waterfox"
     update_waterfox
     clear #Clear the screen
     echo "Waterfox update is finished."
     ;;
   *)
-    echo -e "Unknown function: $1 \n - Available functions are: help, update or -u, system-update or -su, system-dist-upgrade or -sdu, update-waterfox"
+    echo -e "Unknown function: $1 \n - Available functions are: help, update or -u, system-update or -su, system-dist-upgrade or -sdu, update-waterfox or -uwf"
     exit 1
     ;;
   esac
 }
 
-"$@" main
+main "$@"
