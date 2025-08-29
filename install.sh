@@ -1686,14 +1686,31 @@ function update_qmade() {
 
   if [ -d /usr/share/xsessions/ ]; then
     # shellcheck disable=SC2061
-    find /usr/share/xsessions/ -name plasma* -exec sudo rm -f {} \;
-    sudo update-alternatives --remove x-session-manager /usr/bin/startplasma-x11
+    if find /usr/share/xsessions/ -maxdepth 1 -type f -name "plasma*" -print -quit | grep -q .; then
+      find /usr/share/xsessions/ -name plasma* -exec sudo rm -f {} \;
+      find /usr/share/wayland-sessions/ -name plasma* -exec sudo rm -f {} \;
+      sudo update-alternatives --remove x-session-manager /usr/bin/startplasma-x11
+    fi
   fi
-  if [ -d /usr/share/wayland-sessions/ ]; then
-    # shellcheck disable=SC2061
-    find /usr/share/wayland-sessions/ -name plasma* -exec sudo rm -f {} \;
-    sudo update-alternatives --remove x-session-manager /usr/bin/startplasma-x11
-  fi
+
+  #  if [ -d /usr/share/wayland-sessions/ ]; then
+  #    # shellcheck disable=SC2061
+  #    if find /usr/share/wayland-sessions/ -maxdepth 1 -type f -name "plasma*" -print -quit | grep -q .; then
+  #      find /usr/share/wayland-sessions/ -name plasma* -exec sudo rm -f {} \;
+  #      sudo update-alternatives --remove x-session-manager /usr/bin/startplasma-x11
+  #    fi
+  #  fi
+  # OLD
+  #  if [ -d /usr/share/xsessions/ ]; then
+  #    # shellcheck disable=SC2061
+  #    find /usr/share/xsessions/ -name plasma* -exec sudo rm -f {} \;
+  #    sudo update-alternatives --remove x-session-manager /usr/bin/startplasma-x11
+  #  fi
+  #  if [ -d /usr/share/wayland-sessions/ ]; then
+  #    # shellcheck disable=SC2061
+  #    find /usr/share/wayland-sessions/ -name plasma* -exec sudo rm -f {} \;
+  #    sudo update-alternatives --remove x-session-manager /usr/bin/startplasma-x11
+  #  fi
   # End of update_qmade function
 }
 
@@ -1755,11 +1772,11 @@ function nvidia_install_upgrade() {
     # --run-nvidia-xconfig
     sudo update-grub
     if command -v docker &>/dev/null; then
-      if [ ! -f /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg ]; then
+      if [ ! -f "/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg" ]; then
         curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --yes --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
       fi
 
-      if [ ! -f /etc/apt/sources.list.d/nvidia-container-toolkit.list ]; then
+      if [ ! -f "/etc/apt/sources.list.d/nvidia-container-toolkit.list" ]; then
         curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
       fi
       sudo apt update
