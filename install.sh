@@ -1807,11 +1807,11 @@ main() {
   fi
 
   case $1 in
-  help | --help | -h)
+  "help" | "--help" | "-h")
     echo "Help..!"
     help_wiki
     ;;
-  update | --update | -u)
+  "update" | "--update" | "-u")
     echo "Update QMADE"
     update_qmade
     auto-new-wallpaper-and-colors
@@ -1820,7 +1820,7 @@ main() {
     clear #Clear the screen
     echo "QMADE Update is finished"
     ;;
-  system-update | --system-update | -su)
+  "system-update" | "--system-update" | "-su")
     echo -e "System APT Update / Upgrade + QTILE / QMADE Upgrade."
     sudo apt update && sudo apt upgrade -y && sudo apt clean && sudo apt autoremove -y
     update_qmade
@@ -1830,7 +1830,7 @@ main() {
     clear #Clear the screen
     echo -e "We are finished with the System Update / Upgrade + QTILE & QMADE.\nYou should consider rebooting after a system update."
     ;;
-  system-dist-upgrade | --system-dist-upgrade | -sdu)
+  "system-dist-upgrade" | "--system-dist-upgrade" | "-sdu")
     echo "Full System Distro Update and Upgrade"
     sudo apt update && sudo apt full-upgrade -y && sudo apt dist-upgrade
     update_qmade
@@ -1841,7 +1841,7 @@ main() {
     clear #Clear the screen
     echo -e "We are finished with the Full System Update / Upgrade\nYou should consider rebooting after a system update."
     ;;
-  update-waterfox | -uwf)
+  "update-waterfox" | "-uwf")
     echo "Updating Waterfox"
     update_waterfox
     clear #Clear the screen
