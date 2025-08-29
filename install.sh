@@ -253,7 +253,7 @@ function start_installation() {
 
   # -------------------------------------------------------------------------------------------------
   # Core System APT install
-  sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install bash-completion xserver-xorg x11-utils xinit polkitd pkexec lxpolkit acl arandr autorandr picom fwupd colord mesa-utils htop wget curl git tmux numlockx kitty neovim xdg-utils ufw gufw cups cups-common lm-sensors fancontrol xbacklight brightnessctl unzip network-manager bind9-dnsutils dunst libnotify-bin notify-osd xsecurelock pm-utils rofi 7zip jq poppler-utils fd-find ripgrep zoxide imagemagick nsxiv mpv flameshot mc thunar gvfs gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq font-manager fontconfig fontconfig-config fonts-recommended fonts-liberation fonts-freefont-ttf fonts-noto-core libfontconfig1 pipewire pipewire-audio pipewire-alsa pipewire-pulse pipewire-jack wireplumber libspa-0.2-bluetooth pavucontrol playerctl alsa-utils qpwgraph sddm-theme-breeze ffmpeg build-essential dkms cmake remmina libreoffice linux-cpupower plymouth plymouth-themes keynav yt-dlp qalculate-gtk xss-lock
+  sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install bash-completion xserver-xorg x11-utils xinit polkitd pkexec lxpolkit acl arandr autorandr picom fwupd colord mesa-utils htop wget curl git tmux numlockx kitty neovim xdg-utils ufw gufw cups cups-common lm-sensors fancontrol xbacklight brightnessctl unzip network-manager bind9-dnsutils dunst libnotify-bin notify-osd xsecurelock pm-utils rofi 7zip jq poppler-utils fd-find ripgrep zoxide imagemagick nsxiv mpv flameshot mc thunar gvfs gvfs-backends parted gparted mpd mpc ncmpcpp fzf ccrypt xarchiver notepadqq font-manager fontconfig fontconfig-config fonts-recommended fonts-liberation fonts-freefont-ttf fonts-noto-core libfontconfig1 pipewire pipewire-audio pipewire-alsa pipewire-pulse pipewire-jack wireplumber libspa-0.2-bluetooth pavucontrol playerctl alsa-utils qpwgraph sddm-theme-breeze ffmpeg build-essential dkms cmake remmina libreoffice linux-cpupower plymouth plymouth-themes keynav yt-dlp qalculate-gtk xss-lock power-profiles-daemon
 
   sudo DEBIAN_FRONTEND=noninteractive apt -y --ignore-missing install linux-headers-"$(uname -r)"
   sudo DEBIAN_FRONTEND=noninteractive apt -y install sddm --no-install-recommends
@@ -1648,15 +1648,18 @@ function update_qmade() {
     sudo cp -fu bin/qtile /usr/bin/
     sudo cp -fu bin/wal /usr/bin/
   else
+    if [ -d qtile_venv ]; then
+      sudo rm -rf qtile_venv
+    fi
     sudo mkdir qtile_venv
     sudo chmod -R 777 qtile_venv && cd qtile_venv || exit
     #git clone --depth 1 https://github.com/qtile/qtile.git # The latest version of Qtile
     git clone --depth 1 https://github.com/ITmail-dk/qmade.git
     sudo cp -fu qmade/install.sh /usr/bin/qmade
     sudo chmod +x /usr/bin/qmade
-    uv tool install qtile # The latest version of Qtile via UV
+    uv tool install qtile --force # The latest version of Qtile via UV
     # shellcheck disable=SC2102
-    uv tool install pywal16[colorz]
+    uv tool install pywal16[colorz] --force # if you want all the options for color generation use [all] instead of [colorz]
     sudo cp -fu ~/.local/bin/qtile /usr/bin/
     sudo cp -fu ~/.local/bin/wal /usr/bin/
   fi
